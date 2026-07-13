@@ -1,0 +1,191 @@
+/* Theme Color */
+
+a,
+.theme_color,
+.btn-style-one:hover,
+.btn-style-two:hover,
+.header-upper .main-menu .navigation > li:hover > a,
+.header-upper .main-menu .navigation > li.current > a,
+.services-block-three .inner-box h3 a:hover,
+.services-block-four .inner-box h3 a:hover,
+.services-block-four .inner-box .icon-box,
+.featured-block .inner-box h3 a:hover,
+.featured-block .inner-box .icon-box .icon,
+.news-block .inner-box .lower-content .author span,
+.news-block .inner-box .lower-content h3 a:hover,
+.news-block .inner-box .lower-content .detail:hover,
+.header-upper .main-menu .navigation > li.current-menu-item > a,
+.main-footer .footer-bottom .copyright a,
+.header-style-two .info-box .icon-box,
+.services-block .inner-box .icon-box,
+.services-block .inner-box h3 a:hover,
+.page-info .bread-crumb li,
+.page-info .bread-crumb li a:hover,
+.page-info .share-icon a:hover,
+.page-info .share-icon .icon,
+.services-block-five .inner-box .lower-content .detail,
+.services-block-five .inner-box .lower-content h3 a:hover,
+.team-member .inner-box .lower-content .designation,
+.list-style-two li:before,
+.services-block-six .inner-box h4 a:hover,
+.services-block-six .inner-box .icon-box,
+.accordion-box .block .acc-btn.active,
+.accordion-box .block .acc-btn.active .icon-outer .icon-minus,
+.accordion-box .block .acc-btn.active .icon-outer,
+.blog-cat li a:hover,
+.sidebar .popular-posts .post a,
+.sidebar .popular-posts .post a:hover,
+.social-icon-three a:hover,
+.contact-info .inner .icon-box,
+.error-search-box .form-group input:focus + button,
+.error-search-box .form-group button:hover,
+.main-header .header-top .login-link,
+.header-style-two .btn-box .appoint-btn{
+	color:#39CCCC;
+}
+
+/*Background Color*/
+
+.main-header .header-top,
+.btn-style-one,
+.scroll-to-top:hover,
+.main-menu .navigation > li > ul > li:hover > a,
+.main-menu .navigation > li > ul > li  > ul > li > a:hover,
+.sticky-header .main-menu .navigation > li:hover > a,
+.sticky-header .main-menu .navigation > li.current > a,
+.gallery-item .inner-box .image .overlay-box .content .icon:hover,
+.sticky-header .main-menu .navigation > li.current-menu-item > a,
+.news-block .inner-box .image .post-date,
+.btn-style-three:hover,
+.ui-state-active, .ui-widget-content .ui-state-active,
+.clients-section,
+.main-footer .logo-widget .form-group input[type="submit"],
+.main-footer .logo-widget button,
+.social-icon-one li a:hover,
+.header-style-two .header-lower,
+.testimonial-section,
+.social-icon-two li a:hover,
+.sidebar .sidebar-category .list li a:hover,
+.sidebar .sidebar-category .list li.current a,
+.sidebar-testimonial .owl-dots .owl-dot.active span,
+.sidebar-testimonial .owl-dots .owl-dot:hover span,
+.info-widget .inner,
+.styled-pagination li a:hover,
+.styled-pagination li a.active,
+.prod-tabs .tab-btns .tab-btn.active-btn,
+.list-box li:before,
+.sidebar .search-box .form-group button,
+.sidebar .popular-tags a:hover,
+.comment-form button,
+.accordion-box.style-two .block .acc-btn.active .icon-outer,
+.sidebar-brochure .brochure:hover{
+	background-color:#39CCCC;
+}
+
+/*Border Color*/
+
+.btn-style-one,
+.btn-style-one:hover,
+.btn-style-two:hover,
+.main-menu .navigation > li > ul,
+.main-menu .navigation > li > ul > li > ul,
+.main-menu .navigation > li > ul > li > ul,
+.main-header .nav-outer .dropdown-outer .dropdown-menu,
+.main-header .search-panel input:focus,
+.main-header .search-panel select:focus,
+.services-block-three .inner-box .image,
+.testimonial-block .inner-box .author-box .author-inner .author-img,
+.btn-style-three:hover,
+.default-form .form-group input[type="text"]:focus,
+.default-form .form-group input[type="tel"]:focus,
+.default-form .form-group input[type="email"]:focus,
+.default-form .form-group textarea:focus,
+.social-icon-one li a:hover,
+.social-icon-two li a:hover,
+.services-block-five .inner-box .image,
+.header-style-two .search-form .form-group input[type="search"]:focus,
+.accordion-box .block .acc-btn.active .icon-outer,
+.styled-pagination li a:hover,
+.styled-pagination li a.active,
+.sidebar .search-box .form-group input:focus,
+.sidebar .popular-tags a:hover,
+.blog-single .inner-box .lower-content .text blockquote,
+.comment-form .form-group input[type="text"]:focus,
+.comment-form .form-group input[type="email"]:focus,
+.comment-form .form-group textarea:focus,
+.comment-form button,
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus,
+.faq-section .faq-search-box .form-group input:focus,
+.faq-form .form-group input[type="text"]:focus,
+.faq-form .form-group input[type="password"]:focus,
+.faq-form .form-group input[type="tel"]:focus,
+.faq-form .form-group input[type="email"]:focus,
+.faq-form .form-group select:focus,
+.faq-form .form-group textarea:focus,
+.error-search-box .form-group input:focus,
+.sidebar-brochure .brochure:hover{
+	border-color:#39CCCC;
+}
+
+.services-block-five .inner-box .lower-content:after{
+	border-top-color:#39CCCC;
+}
+
+/*RGBA Color Light*/
+
+.services-block-two .inner-box .image:before{
+	background-color:rgba(57,204,204,0.70);
+}
+
+/*RGBA Color Dark*/
+
+.gallery-item .inner-box .image .overlay-box,
+.default-gallery-item .inner-box .overlay-box .overlay-inner{
+	background-color:rgba(57,204,204,0.80);
+}
+
+.services-block-two .inner-box .image .overlay-box{
+	background-color:rgba(57,204,204,0.95);
+}
+
+.fullwidth-services .title-column:before{
+	background-color:rgba(57,204,204,0.86);
+}
+
+.fullwidth-section .outer-box .background-image:before{
+	background-color:rgba(57,204,204,0.96);
+}
+
+.main-header .header-top .login-link,
+.header-style-two .btn-box .appoint-btn{
+	background-color:#ffffff;
+}
+
+@media only screen and (max-width: 767px){
+	
+	.main-menu .navbar-header .navbar-toggle{
+		border-color:#ffffff;
+	}
+	
+	.main-menu .navbar-header .navbar-toggle,
+	.main-menu .navbar-collapse > .navigation,
+	.main-menu .navbar-collapse > .navigation > li > ul,
+	.main-menu .navbar-collapse > .navigation > li > ul > li > ul,
+	.main-menu .navbar-collapse > .navigation > li > a,
+	.main-menu .navbar-collapse > .navigation > li > ul > li > a,
+	.main-menu .navbar-collapse > .navigation > li > ul > li > ul > li > a,
+	.main-menu .navbar-collapse > .navigation > li > a:hover,
+	.main-menu .navbar-collapse > .navigation > li > a:active,
+	.main-menu .navbar-collapse > .navigation > li > a:focus,
+	.main-menu .navbar-collapse > .navigation > li:hover > a,
+	.main-menu .navbar-collapse > .navigation > li > ul > li:hover > a,
+	.main-menu .navbar-collapse > .navigation > li > ul > li > ul > li:hover > a,
+	.main-menu .navbar-collapse > .navigation > li.current > a,
+	.main-menu .navbar-collapse > .navigation > li.current-menu-item > a,
+	.header-style-two.inner-header .main-menu .navigation > li > a{
+		background-color:#39CCCC;
+	}
+	
+}

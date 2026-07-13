@@ -1,61 +1,85 @@
-# e-ppid
+# Aplikasi e-PPID v2 (Laravel 12 Version)
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Aplikasi **e-PPID (Pejabat Pengelola Informasi dan Dokumentasi)** versi 2 merupakan sistem informasi terpadu yang memfasilitasi pelaporan, permohonan informasi, dan dokumentasi layanan publik. 
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Proyek ini adalah hasil **Refactoring/Migrasi** dari *framework* peninggalan CodeIgniter 3 (PHP 5.6) ke dalam arsitektur modern **Laravel 12 (PHP 8.2)** dengan mengadaptasi model keamanan otentikasi *Multi-Guard* (pemisahan logis antara data Admin dan data Masyarakat/Pemohon).
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🛠️ Persyaratan Sistem (System Requirements)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Sebelum melakukan instalasi, pastikan *server* atau lingkungan pengembangan (Localhost) Anda memenuhi syarat minimum berikut:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **PHP** : Versi `8.2` atau lebih baru.
+- **Database** : MySQL `8.0+` atau MariaDB.
+- **Web Server** : Nginx atau Apache (Laragon/XAMPP direkomendasikan untuk Windows).
+- **Composer** : *Dependency Manager* PHP versi terbaru.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 🚀 Panduan Instalasi Cepat
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Ikuti langkah-langkah di bawah ini untuk menjalankan aplikasi pada *local machine* (komputer lokal) Anda.
 
-## Laravel Sponsors
+### 1. Kloning Repositori
+Jika Anda mendapatkan *source code* berupa file `.zip`, ekstrak folder tersebut. Masuk ke dalam direktori aplikasi melalui Terminal (Command Prompt / Git Bash):
+```bash
+cd c:/laragon/www/e-ppidv2
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 2. Instalasi Dependensi (Packages)
+Pastikan Anda sudah menginstal Composer. Jalankan perintah berikut untuk mengunduh seluruh *library* pendukung Laravel:
+```bash
+composer install
+```
 
-### Premium Partners
+### 3. Konfigurasi Environment (`.env`)
+Laravel membutuhkan file penyimpan konfigurasi rahasia (`.env`).
+- Salin *template* file konfigurasi bawaan. Di Terminal, jalankan:
+  ```bash
+  cp .env.example .env
+  ```
+- Buka file `.env` menggunakan *code editor* pilihan Anda (seperti VSCode), dan modifikasi bagian *Database* agar sesuai dengan koneksi MySQL Anda:
+  ```ini
+  DB_CONNECTION=mysql
+  DB_HOST=127.0.0.1
+  DB_PORT=3306
+  DB_DATABASE=ptgaramc_ppid    # Sesuaikan nama database
+  DB_USERNAME=root
+  DB_PASSWORD=
+  ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 4. Buat Kunci Enkripsi (App Key)
+Amankan instalasi Anda dengan men-generate *encryption key*. Kunci ini krusial untuk sesi pengguna:
+```bash
+php artisan key:generate
+```
 
-## Contributing
+### 5. Konfigurasi Storage & Folder Upload
+Sistem e-PPID sangat bergantung pada fitur unggah berkas (seperti KTP, Akta, Surat Keputusan).
+Pastikan *directory* (folder) berikut ada di dalam proyek Anda dan memiliki izin tulis (_write permission_):
+- `public/file/` (Untuk unggahan surat tanggapan dan berkas admin)
+- `public/upload/` (Untuk foto bukti kependudukan)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 6. Jalankan Server Development
+Anda dapat menyalakan *built-in server* Laravel dengan perintah:
+```bash
+php artisan serve
+```
+Akses aplikasi melalui browser di: `http://localhost:8000`
 
-## Code of Conduct
+> **Note**: Jika Anda menggunakan **Laragon**, Anda cukup mengakses URL *virtual host* (misal: `http://e-ppidv2.test`) langsung dari browser tanpa perlu mengeksekusi `php artisan serve`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 📚 Bacaan Lebih Lanjut
+Untuk pemahaman mendalam secara arsitektur pengembangan dan modifikasi lanjutan, Anda dapat membaca dokumentasi yang terlampir pada direktori `/docs/`:
+- **`docs/laporan.md`** : Dokumen ringkas riwayat migrasi hulu ke hilir.
+- **`docs/dokumentasi_teknis.md`** : Peta dan alur perjalanan MVC arsitektur.
+- **`docs/dokumentasi_fitur.md`** : Bedah teknis API dan pergerakan antar modul/fitur fungsional.
+- **`docs/dokumentasi_maintenance.md`** : Konfigurasi ERD, `.env`, dan kumpulan modul pihak ketiga.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+> **Developer Note**
+> Aplikasi ini dibangun dengan metode _hybrid_ untuk menekan ongkos perubahan UI/UX pengguna awal. Oleh karenanya, hindari penambahan *package backend* pihak ketiga (seperti DataTables Laravel Package) secara sembarangan yang bisa memicu intervensi merusak pada logika JavaScript jQuery bawaan (skrip DataTables dan AJAX form asli) di dalam file *View*. 
