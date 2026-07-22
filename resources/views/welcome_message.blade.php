@@ -86,6 +86,29 @@
             -moz-background-size: cover;
             -o-background-size: cover;
             background-size: cover;
+            z-index: 1;
+        }
+
+        .page-title::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+        }
+
+        .page-title .auto-container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-title h1 {
+            color: #ffffff;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+            font-weight: bold;
         }
 
         .se-pre-con {
@@ -152,7 +175,7 @@
                 <div class="auto-container">
                     <div class="row clearfix">
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="copyright">&copy; 2019 <a href="{{ url('secure') }}">PT Garam</a> All Rights Reserved. </div>
+                            <div class="copyright">&copy; 2026 <a href="{{ url('secure') }}">PT Garam</a> All Rights Reserved. </div>
                         </div>
                     </div>
                 </div>

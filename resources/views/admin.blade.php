@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -17,6 +17,123 @@
   <link href="{{ url('/') }}/assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
   <link href="{{ url('/') }}/assets/css/material-dashboard.min.css?v=2.1.0" rel="stylesheet" />
   <link href="{{ url('/') }}/assets/demo/demo.css" rel="stylesheet" />
+  <style>
+    /* Modern Soft UI Overrides */
+    body {
+        background-color: #f4f7fe; /* Very light soft blue-grey */
+    }
+    .card {
+        border-radius: 16px;
+        box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.05) !important;
+        border: none;
+    }
+    .card-stats .card-header.card-header-icon .card-title {
+        color: #2b3674;
+        font-weight: 700;
+    }
+    .card-stats .card-header.card-header-icon .card-category {
+        color: #a3aed1;
+        font-weight: 500;
+    }
+    /* Soft Colors for Stats Cards */
+    .card .card-header-soft-warning {
+        background: linear-gradient(60deg, #ffd8a8, #ffc078);
+        box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.05), 0 7px 10px -5px rgba(255, 192, 120, 0.4) !important;
+    }
+    .card .card-header-soft-success {
+        background: linear-gradient(60deg, #b2f2bb, #8ce99a);
+        box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.05), 0 7px 10px -5px rgba(140, 233, 154, 0.4) !important;
+    }
+    .card .card-header-soft-danger {
+        background: linear-gradient(60deg, #ffc9c9, #ffa8a8);
+        box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.05), 0 7px 10px -5px rgba(255, 168, 168, 0.4) !important;
+    }
+    .card .card-header-soft-info {
+        background: linear-gradient(60deg, #a5d8ff, #74c0fc);
+        box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.05), 0 7px 10px -5px rgba(116, 192, 252, 0.4) !important;
+    }
+    /* Update icons inside soft headers */
+    .card-header-soft-warning .card-icon i,
+    .card-header-soft-success .card-icon i,
+    .card-header-soft-danger .card-icon i,
+    .card-header-soft-info .card-icon i {
+        color: #fff !important; /* Make icon white */
+    }
+    .card .card-header-soft-warning .card-icon,
+    .card .card-header-soft-success .card-icon,
+    .card .card-header-soft-danger .card-icon,
+    .card .card-header-soft-info .card-icon {
+        border-radius: 12px;
+    }
+
+    /* Clean Table Styling */
+    .table-modern {
+        border-collapse: separate;
+        border-spacing: 0 8px;
+    }
+    .table-modern thead th {
+        border: none;
+        color: #a3aed1 !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+    }
+    .table-modern tbody tr {
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        border-radius: 8px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .table-modern tbody tr:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+    .table-modern tbody td {
+        border: none;
+        vertical-align: middle;
+        padding: 12px 8px;
+        color: #2b3674;
+    }
+    .table-modern tbody td:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+    }
+    .table-modern tbody td:last-child {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+    .card-header-custom-title {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border-bottom: 1px solid #edf2f9;
+        padding: 20px !important;
+    }
+    .card-header-custom-title .card-title {
+        color: #2b3674 !important;
+        font-weight: 700;
+    }
+    .card-header-custom-title .card-category {
+        color: #a3aed1 !important;
+    }
+    
+    /* Sidebar modern tweaks */
+    .sidebar .nav li.active > a {
+        background-color: #f4f7fe !important;
+        color: #4318ff !important;
+        box-shadow: none !important;
+        border-radius: 10px;
+        margin: 10px 15px;
+    }
+    .sidebar .nav li.active > a i {
+        color: #4318ff !important;
+    }
+    .sidebar .sidebar-wrapper {
+        box-shadow: 2px 0 20px rgba(0,0,0,0.02);
+    }
+    .main-panel > .navbar {
+        box-shadow: none;
+    }
+  </style>
 </head>
 
 <body class="">
