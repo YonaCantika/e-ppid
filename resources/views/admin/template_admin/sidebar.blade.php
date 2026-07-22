@@ -1,33 +1,99 @@
+<style>
+    /* Modern Sidebar Customization */
+    .main-sidebar.custom-sidebar {
+        background-color: #ffffff;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.04) !important;
+        border-right: 1px solid #f1f5f9;
+    }
+    .custom-sidebar .brand-link {
+        border-bottom: 1px solid #f1f5f9 !important;
+        color: #1e293b !important;
+        padding: 22px 1rem;
+        display: flex;
+        align-items: center;
+    }
+    .custom-sidebar .brand-link .nav-icon {
+        color: #5a5ce2;
+        font-size: 1.5rem;
+        margin-right: 12px;
+    }
+    .custom-sidebar .brand-link .brand-text {
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: 0.3px;
+    }
+    
+    .custom-sidebar .sidebar {
+        padding-top: 15px;
+    }
+    
+    .custom-sidebar .nav-sidebar .nav-item .nav-link {
+        border-radius: 10px;
+        color: #64748b;
+        margin: 6px 12px;
+        padding: 12px 15px;
+        transition: all 0.2s ease;
+    }
+    .custom-sidebar .nav-sidebar .nav-item .nav-link p {
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+    .custom-sidebar .nav-sidebar .nav-item .nav-link:hover {
+        background-color: #f8fafc;
+        color: #5a5ce2;
+    }
+    .custom-sidebar .nav-sidebar .nav-item .nav-link.active, 
+    .custom-sidebar .nav-sidebar .nav-item .nav-link.active:hover {
+        background-color: #eef2ff !important;
+        color: #5a5ce2 !important;
+        box-shadow: none !important;
+    }
+    .custom-sidebar .nav-sidebar .nav-icon {
+        color: inherit;
+        font-size: 1.2rem;
+        margin-right: 12px;
+        transition: color 0.2s ease;
+    }
+    
+    .custom-sidebar .nav-treeview .nav-link {
+        padding-left: 45px !important;
+        margin: 2px 12px !important;
+    }
+    
+    .custom-sidebar .nav-header {
+        color: #94a3b8;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        padding: 10px 20px 5px;
+        text-transform: uppercase;
+    }
+</style>
 
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar custom-sidebar elevation-0">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-        <i class="nav-icon fas fa-user-alt"></i>
-        <span class="brand-text font-weight-light">{{ Auth::guard('web')->user()->name ?? 'Admin' }}</span>
+        <i class="nav-icon fas fa-layer-group"></i>
+        <span class="brand-text font-weight-light">E-PPID Admin</span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Sidebar user (optional) -->
-
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-                with font-awesome or any other icon font library -->
-                <li class="nav-item has-treeview">
-                    <a href="{{ url('/') }}/admin" class="nav-link">
-                        <i class="nav-icon fas fa-tasks"></i>
-                        <p>
-                        My Task
-                        <i class="right fas fa-angle-left"></i>
-                        </p>
+                
+                <li class="nav-item">
+                    <a href="{{ url('/') }}/admin" class="nav-link {{ Request::is('admin') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>My Task</p>
                     </a>
                 </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-edit"></i>
+                
+                <li class="nav-item has-treeview {{ Request::is('admin/view_permohonan') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('admin/view_permohonan') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-envelope-open-text"></i>
                         <p>
                         Daftar Permohonan
                         <i class="right fas fa-angle-left"></i>
@@ -35,30 +101,31 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('/') }}/admin/view_permohonan" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
+                            <a href="{{ url('/') }}/admin/view_permohonan" class="nav-link {{ Request::is('admin/view_permohonan') ? 'active' : '' }}">
+                            <i class="fas fa-circle nav-icon" style="font-size: 0.5rem; margin-top: 5px;"></i>
                             <p>Jawab Permohonan</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item has-treeview">
-                    <a href="{{ url('/') }}/admin/view_pemohon" class="nav-link">
+                
+                <li class="nav-item">
+                    <a href="{{ url('/') }}/admin/view_pemohon" class="nav-link {{ Request::is('admin/view_pemohon') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
-                        <p>
-                        Pemohon
-                        <i class="right fas fa-angle-left"></i>
-                        </p>
+                        <p>Pemohon</p>
+                    </a>
+                </li>
+                
+                <li class="nav-header">AKUN</li>
+                <li class="nav-item">
+                    <a href="{{ url('secure/logout') }}" class="nav-link text-danger">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>Logout</p>
                     </a>
                 </li>
             </ul>
-
         </nav>
     <!-- /.sidebar-menu -->
     </div>
 <!-- /.sidebar -->
 </aside>
-
-
-
-

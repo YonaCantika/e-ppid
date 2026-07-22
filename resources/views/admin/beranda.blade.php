@@ -1,9 +1,9 @@
-﻿<div class="content">
+<div class="content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-          <div class="card-header card-header-warning card-header-icon">
+          <div class="card-header card-header-soft-warning card-header-icon">
             <div class="card-icon">
               <i class="material-icons">people_alt</i>
             </div>
@@ -21,7 +21,7 @@
       </div>
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-          <div class="card-header card-header-success card-header-icon">
+          <div class="card-header card-header-soft-success card-header-icon">
             <div class="card-icon">
               <i class="material-icons">person_add</i>
             </div>
@@ -37,7 +37,7 @@
       </div>
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-          <div class="card-header card-header-danger card-header-icon">
+          <div class="card-header card-header-soft-danger card-header-icon">
             <div class="card-icon">
               <i class="material-icons">gavel</i>
             </div>
@@ -53,7 +53,7 @@
       </div>
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-          <div class="card-header card-header-info card-header-icon">
+          <div class="card-header card-header-soft-info card-header-icon">
             <div class="card-icon">
               <i class="material-icons">contactless</i>
             </div>
@@ -71,13 +71,13 @@
     <div class="row">
       <div class="col-lg-12 col-md-12">
         <div class="card">
-          <div class="card-header card-header-info">
+          <div class="card-header card-header-custom-title">
             <h4 class="card-title">Status Pemohon Informasi</h4>
             <p class="card-category">Pemohon baru pada {{ date('d F, Y') }}</p>
           </div>
           <div class="card-body table-responsive">
             <div class="material-datatables">
-              <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+              <table id="datatables" class="table table-modern" cellspacing="0" width="100%" style="width:100%">
                 <thead class="text-info">
                   <th>ID</th>
                   <th>Name</th>

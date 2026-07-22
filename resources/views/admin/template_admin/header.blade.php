@@ -108,34 +108,11 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li> -->
-      <li class="nav-item">
-        <a class="nav-link" id="button-logout" href="#" role="button">
-          <i class="fas fa-power-off"></i>
-        </a>
-      </li>
+
     </ul>
   </nav>
   <!-- /.navbar -->
 
-   <script type="text/javascript">
-   $('#button-logout').on('click',function(e){
-      e.preventDefault();
-      Swal.fire({
-         title: 'Kamu Yakin?',
-         text: "Ingin keluar ?",
-         icon: 'warning',
-         showCancelButton: true,
-         confirmButtonColor: '#3085d6',
-         cancelButtonColor: '#d33',
-         confirmButtonText: 'Yes, Log Out!'
-      }).then((result) => {
-        if (result.value) {
-            window.location = '{{ url("secure/logout") }}'; 
-         }
-      })
-
-  });  
-</script>
 
 
 

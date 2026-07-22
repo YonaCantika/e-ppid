@@ -1,4 +1,30 @@
-﻿<!--Header-Upper-->
+<!--Header-Upper-->
+<style>
+    .login-card-btn {
+        margin-left: 15px;
+    }
+    .main-menu .navigation > li.login-card-btn > a {
+        background: linear-gradient(135deg, #003366 0%, #00509E 100%) !important;
+        color: #ffffff !important;
+        padding: 8px 18px !important;
+        border-radius: 20px !important;
+        font-size: 13px !important;
+        box-shadow: 0 3px 10px rgba(0, 51, 102, 0.2);
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+        border: 2px solid transparent;
+        line-height: 18px !important;
+    }
+    .main-menu .navigation > li.login-card-btn > a:hover {
+        background: linear-gradient(135deg, #002244 0%, #003366 100%) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 51, 102, 0.4);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    .main-menu .navigation > li.login-card-btn > a::before {
+        display: none !important; /* Hide default underline effect */
+    }
+</style>
 <hr style="border-bottom: 5px solid #fac800;margin-top: 0px;margin-bottom: 0px;border-top: 0px;">
     <div class="header-upper">
     	<div class="auto-container">
@@ -173,12 +199,12 @@
                                         <?php else: ?>
                                                     <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status = 1 AND status_link = 'active' AND id_menu = 6 AND link != 'static'"); 
                                                         foreach($menutentangstatic as $key1) { ?>
-                                                        <li><a href="{{ url($key1->link) }}">{{ $key1->judul }}</a></li>
+                                                        <li class="login-card-btn"><a href="{{ url($key1->link) }}"><i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i> {{ $key1->judul }}</a></li>
                                                     <?php } ?>
                                         <?php endif ?>
                                         <?php }else{ ?>
-                                            <li><a href="{{ url('permohonan') }}">Permohonan</a></li>
-                                            <li><a href="{{ url('secure/logout') }}">Logout</a></li>
+                                            <li class="login-card-btn"><a href="{{ url('permohonan') }}"><i class="fas fa-file-alt" style="margin-right: 8px;"></i> Permohonan</a></li>
+                                            <li class="login-card-btn" style="margin-left: 5px;"><a href="{{ url('secure/logout') }}" style="background: linear-gradient(135deg, #e53935 0%, #b71c1c 100%) !important; box-shadow: 0 4px 15px rgba(183, 28, 28, 0.25);"><i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout</a></li>
                                         <?php } ?>
                                         
                                         <?php 
