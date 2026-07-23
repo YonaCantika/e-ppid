@@ -1,11 +1,210 @@
+<style>
+    /* Match Dashboard Aesthetics */
+    .content-wrapper {
+        background-color: #f4f6f9 !important;
+        font-family: 'Inter', 'Source Sans Pro', sans-serif;
+        position: relative;
+    }
+    
+    /* The Blue Hero Background (Small version for list page) */
+    .hero-bg-list {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 160px;
+        background: #5a5ce2;
+        border-bottom-left-radius: 30px;
+        z-index: 0;
+    }
+
+    /* Container holding the card */
+    .content {
+        position: relative;
+        z-index: 2;
+        padding-top: 25px;
+    }
+
+    /* Main Card Styling */
+    .card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        border: none;
+        margin-top: 20px;
+    }
+    .card-header {
+        background-color: #fff;
+        border-bottom: 1px solid #f1f5f9;
+        border-radius: 16px 16px 0 0 !important;
+        padding: 20px 25px;
+    }
+
+    /* Table Styling */
+    .table {
+        margin-top: 10px;
+    }
+    .table thead th {
+        background-color: #f8fafc;
+        color: #1E293B !important;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+        border-top: none;
+        padding: 16px 20px;
+    }
+    .table tbody td {
+        padding: 16px 20px;
+        vertical-align: middle;
+        color: #475569;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.95rem;
+    }
+    .table-bordered {
+        border: none;
+    }
+    .table-bordered td, .table-bordered th {
+        border-left: none;
+        border-right: none;
+    }
+    
+    .table.table-hover tbody tr {
+        transition: background-color 0.2s ease;
+    }
+    .table.table-hover tbody tr:hover {
+        background-color: #f0f9ff !important;
+    }
+
+    /* Modern Toolbar */
+    .filter-btn-modern {
+        background: #5a5ce2;
+        color: white;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-weight: 600;
+        transition: all 0.2s;
+        border: none;
+    }
+    .filter-btn-modern:hover {
+        background: #4338ca;
+        color: white;
+    }
+
+    /* Action Buttons */
+    .btn-action-purple {
+        background-color: #f3e8ff;
+        color: #9333ea;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 10px;
+        transition: all 0.2s;
+    }
+    .btn-action-purple:hover:not(.disabled) {
+        background-color: #9333ea;
+        color: white;
+    }
+    .btn-action-blue {
+        background-color: #dbeafe;
+        color: #2563eb;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 10px;
+        transition: all 0.2s;
+    }
+    .btn-action-blue:hover {
+        background-color: #2563eb;
+        color: white;
+    }
+    .btn-action-red {
+        background-color: #fee2e2;
+        color: #ef4444;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 10px;
+        transition: all 0.2s;
+    }
+    .btn-action-red:hover:not(:disabled) {
+        background-color: #ef4444;
+        color: white;
+    }
+    .btn-action-gray {
+        background-color: #f1f5f9;
+        color: #94a3b8;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 10px;
+        transition: all 0.2s;
+    }
+    .btn-action-green {
+        background-color: #dcfce7;
+        color: #16a34a;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 10px;
+        transition: all 0.2s;
+    }
+    .btn-action-green:hover:not(.disabled) {
+        background-color: #16a34a;
+        color: white;
+    }
+    .btn-action-orange {
+        background-color: #ffedd5;
+        color: #ea580c;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 10px;
+        transition: all 0.2s;
+    }
+    .btn-action-orange:hover:not(.disabled) {
+        background-color: #ea580c;
+        color: white;
+    }
+    
+    /* Pagination */
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: #5a5ce2 !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 6px;
+    }
+    
+    /* Enhanced Table UI */
+    .dataTables_wrapper .dataTables_filter input {
+        border-radius: 8px;
+        border: 1px solid #cbd5e1;
+        padding: 5px 10px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+    .dataTables_wrapper .dataTables_filter input:focus {
+        border-color: #5a5ce2;
+        box-shadow: 0 0 0 2px rgba(90,92,226,0.2);
+    }
+    .dataTables_wrapper .dataTables_length select {
+        border-radius: 6px;
+        border: 1px solid #cbd5e1;
+        padding: 4px;
+        outline: none;
+    }
+    
+    /* Breadcrumb colors for hero background */
+    .content-header h1 { color: white !important; font-weight: 700 !important; }
+    .breadcrumb-item a, .breadcrumb-item.active { color: rgba(255, 255, 255, 0.8) !important; }
+</style>
+
 <!-- Content Wrapper -->
 <div class="content-wrapper">
-    <div class="content-header">
+    <!-- The Blue Hero Background -->
+    <div class="hero-bg-list"></div>
+
+    <div class="content-header" style="position: relative; z-index: 2;">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="row mb-2 mt-3">
                 <div class="col-sm-6">
-                    <h1 class="m-0" style="color: #312e81; font-weight: 700;">
-                        <i class="fas fa-user-shield mr-2" style="color: #f59e0b;"></i>Manajemen User Admin
+                    <h1 class="m-0">
+                        Manajemen User Admin
                     </h1>
                 </div>
                 <div class="col-sm-6">
@@ -20,15 +219,13 @@
 
     <section class="content">
         <div class="container-fluid">
-            <div class="card" style="border-radius: 14px; border: none;
-                                     box-shadow: 0 4px 20px rgba(0,0,0,0.07); overflow: hidden;">
+            <div class="card">
                 <!-- Card Header -->
-                <div class="card-header d-flex justify-content-between align-items-center py-3"
-                     style="background: linear-gradient(135deg, #312e81, #4338ca); border:none;">
-                    <h5 class="m-0 text-white font-weight-bold">
-                        <i class="fas fa-list mr-2"></i>Daftar User Admin
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 font-weight-bold" style="color: #1E293B;">
+                        <i class="fas fa-list mr-2" style="color: #5a5ce2;"></i> Daftar User Admin
                     </h5>
-                    <button id="btn-add-admin" class="btn btn-super-add btn-sm" onclick="openModalAddAdmin()">
+                    <button id="btn-add-admin" class="btn filter-btn-modern" onclick="openModalAddAdmin()">
                         <i class="fas fa-plus mr-1"></i> Tambah Admin Baru
                     </button>
                 </div>
@@ -36,11 +233,11 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     <!-- Legend -->
-                    <div class="alert" style="background: #eef2ff; border:none; border-left: 4px solid #4338ca;
-                                              border-radius: 8px; padding: 12px 16px;" role="alert">
-                        <i class="fas fa-info-circle mr-2" style="color:#4338ca;"></i>
+                    <div class="alert" style="background: #eef2ff; border:none; border-left: 4px solid #5a5ce2;
+                                              border-radius: 8px; padding: 12px 16px; color: #1e293b;" role="alert">
+                        <i class="fas fa-info-circle mr-2" style="color:#5a5ce2;"></i>
                         <strong>Keterangan:</strong>
-                        Admin yang berstatus <span class="badge badge-warning text-dark">Pernah Menjawab</span>
+                        Admin yang berstatus <span class="badge" style="background: #fef3c7; color: #d97706; padding: 5px 8px; border-radius: 6px;">Pernah Menjawab</span>
                         <strong>tidak dapat dihapus</strong> demi menjaga integritas data permohonan.
                         Anda tetap dapat menonaktifkan akunnya.
                     </div>
@@ -54,7 +251,7 @@
                                     <th>Email</th>
                                     <th width="120">Status</th>
                                     <th width="180">Riwayat</th>
-                                    <th width="200" class="text-center">Aksi</th>
+                                    <th width="160" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -113,20 +310,20 @@ $(document).ready(function () {
 
                     // Toggle button
                     var toggleBtn = isActive
-                        ? '<button class="btn btn-warning btn-xs mr-1 mb-1" onclick="toggleStatusAdmin(' + id + ', this)" title="Nonaktifkan">'
+                        ? '<button class="btn btn-sm btn-action-orange mr-1 mb-1" onclick="toggleStatusAdmin(' + id + ', this)" title="Nonaktifkan">'
                           + '<i class="fas fa-toggle-on"></i></button>'
-                        : '<button class="btn btn-success btn-xs mr-1 mb-1" onclick="toggleStatusAdmin(' + id + ', this)" title="Aktifkan">'
+                        : '<button class="btn btn-sm btn-action-green mr-1 mb-1" onclick="toggleStatusAdmin(' + id + ', this)" title="Aktifkan">'
                           + '<i class="fas fa-toggle-off"></i></button>';
 
                     // Atur Akses Menu button
-                    var aksesBtn = '<button class="btn btn-info btn-xs mr-1 mb-1" onclick="openModalAksesAdmin(' + id + ')" title="Atur Akses Menu">'
+                    var aksesBtn = '<button class="btn btn-sm btn-action-blue mr-1 mb-1" onclick="openModalAksesAdmin(' + id + ')" title="Atur Akses Menu">'
                                  + '<i class="fas fa-key"></i></button>';
 
                     // Hapus button — disabled jika sudah jawab permohonan
                     var deleteBtn = sudahJawab
-                        ? '<button class="btn btn-secondary btn-xs mb-1" disabled title="Tidak dapat dihapus (pernah menjawab permohonan)">'
+                        ? '<button class="btn btn-sm btn-action-gray mb-1" disabled title="Tidak dapat dihapus (pernah menjawab permohonan)">'
                           + '<i class="fas fa-lock"></i></button>'
-                        : '<button class="btn btn-danger btn-xs mb-1" onclick="deleteAdmin(' + id + ')" title="Hapus">'
+                        : '<button class="btn btn-sm btn-action-red mb-1" onclick="deleteAdmin(' + id + ')" title="Hapus">'
                           + '<i class="fas fa-trash"></i></button>';
 
                     return '<div class="d-flex flex-wrap justify-content-center">' + toggleBtn + aksesBtn + deleteBtn + '</div>';
