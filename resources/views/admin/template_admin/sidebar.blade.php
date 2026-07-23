@@ -83,14 +83,30 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                
+
+                @php
+                    use App\Helpers\MenuHelper;
+                    use Illuminate\Support\Facades\Auth;
+                    $currentUserId   = Auth::guard('web')->id();
+                    $currentUserRole = Auth::guard('web')->user()->role ?? 'admin';
+                    // Super Admin selalu bisa lihat semua menu
+                    $blockedMenus = $currentUserRole === 'super_admin'
+                        ? []
+                        : MenuHelper::getBlockedAdminMenus($currentUserId);
+                @endphp
+
+                {{-- My Task --}}
+                @if(!in_array('mytask', $blockedMenus))
                 <li class="nav-item">
                     <a href="{{ url('/') }}/admin" class="nav-link {{ Request::is('admin') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>My Task</p>
                     </a>
                 </li>
-                
+                @endif
+
+                {{-- Daftar Permohonan --}}
+                @if(!in_array('permohonan', $blockedMenus))
                 <li class="nav-item has-treeview {{ Request::is('admin/view_permohonan') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ Request::is('admin/view_permohonan') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-envelope-open-text"></i>
@@ -108,15 +124,42 @@
                         </li>
                     </ul>
                 </li>
-                
+                @endif
+
+                {{-- Daftar Pemohon --}}
+                @if(!in_array('pemohon_list', $blockedMenus))
                 <li class="nav-item">
                     <a href="{{ url('/') }}/admin/view_pemohon" class="nav-link {{ Request::is('admin/view_pemohon') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Pemohon</p>
                     </a>
                 </li>
-                
+                @endif
+
+                {{-- Manajemen Menu Website --}}
+                @if(!in_array('view_menu', $blockedMenus))
+                <li class="nav-item">
+                    <a href="{{ url('/') }}/admin/view_menu" class="nav-link {{ Request::is('admin/view_menu') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>Manajemen Menu</p>
+                    </a>
+                </li>
+                @endif
+
                 <li class="nav-header">AKUN</li>
+
+                @if(Auth::guard('web')->user() && Auth::guard('web')->user()->role === 'super_admin')
+                <li class="nav-item">
+                    <a href="{{ route('super_admin.dashboard') }}"
+                       class="nav-link"
+                       style="background: linear-gradient(135deg, rgba(245,158,11,0.18), rgba(245,158,11,0.08));
+                              border: 1px solid rgba(245,158,11,0.35); color: #92400e !important;">
+                        <i class="nav-icon fas fa-crown" style="color: #f59e0b;"></i>
+                        <p style="font-weight: 700;">Super Admin Panel</p>
+                    </a>
+                </li>
+                @endif
+
                 <li class="nav-item">
                     <a href="{{ url('secure/logout') }}" class="nav-link text-danger">
                         <i class="nav-icon fas fa-sign-out-alt"></i>

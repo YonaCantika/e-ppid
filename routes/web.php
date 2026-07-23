@@ -5,6 +5,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SuperAdminController;
 
 // Halaman Publik (WelcomeController)
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
@@ -105,4 +106,33 @@ Route::middleware(['auth:web'])->prefix('admin')->name('admin.')->group(function
 
     Route::post('/form_editView_prosedur', [AdminController::class, 'form_editView_prosedur']);
     Route::post('/edit_prosedur', [AdminController::class, 'edit_prosedur']);
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Area Super Admin (SuperAdminController)
+// ─────────────────────────────────────────────────────────────────────────────
+Route::middleware(['auth:web', 'super_admin'])->prefix('super-admin')->name('super_admin.')->group(function () {
+    // Dashboard
+    Route::get('/', [SuperAdminController::class, 'index'])->name('dashboard');
+
+    // Manajemen User Admin
+    Route::get('/view_admin', [SuperAdminController::class, 'view_admin'])->name('view_admin');
+    Route::get('/list_admin', [SuperAdminController::class, 'list_admin'])->name('list_admin');
+    Route::post('/getModalAddAdmin', [SuperAdminController::class, 'getModalAddAdmin'])->name('getModalAddAdmin');
+    Route::post('/add_admin', [SuperAdminController::class, 'add_admin'])->name('add_admin');
+    Route::post('/delete_admin', [SuperAdminController::class, 'delete_admin'])->name('delete_admin');
+    Route::post('/toggle_status_admin', [SuperAdminController::class, 'toggle_status_admin'])->name('toggle_status_admin');
+
+    // Manajemen Pemohon
+    Route::get('/view_pemohon', [SuperAdminController::class, 'view_pemohon'])->name('view_pemohon');
+    Route::get('/list_pemohon', [SuperAdminController::class, 'list_pemohon'])->name('list_pemohon');
+    Route::post('/toggle_status_pemohon', [SuperAdminController::class, 'toggle_status_pemohon'])->name('toggle_status_pemohon');
+
+    // Manajemen Akses Menu — Admin
+    Route::post('/getModalAksesAdmin', [SuperAdminController::class, 'getModalAksesAdmin'])->name('getModalAksesAdmin');
+    Route::post('/save_akses_admin', [SuperAdminController::class, 'save_akses_admin'])->name('save_akses_admin');
+
+    // Manajemen Akses Menu — Pemohon
+    Route::post('/getModalAksesPemohon', [SuperAdminController::class, 'getModalAksesPemohon'])->name('getModalAksesPemohon');
+    Route::post('/save_akses_pemohon', [SuperAdminController::class, 'save_akses_pemohon'])->name('save_akses_pemohon');
 });

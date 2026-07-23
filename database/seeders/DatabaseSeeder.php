@@ -104,15 +104,26 @@ class DatabaseSeeder extends Seeder
         }
 
         // 8. Users (Admin + Pemohon)
+        // Super Admin
+        User::create([
+            'id'       => 1,
+            'name'     => 'Super Admin',
+            'email'    => 'superadmin@gmail.com',
+            'password' => Hash::make('superadmin123'),
+            'role'     => 'super_admin',
+            'id_emp'   => null,
+            'status'   => 1,
+        ]);
+
         // Admin
         User::create([
-            'id' => 1,
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
+            'id'       => 2,
+            'name'     => 'Admin',
+            'email'    => 'admin@gmail.com',
             'password' => Hash::make('12345'), // Dari CI3 plaintext
-            'role' => 'admin',
-            'id_emp' => 1,
-            'status' => 1
+            'role'     => 'admin',
+            'id_emp'   => 1,
+            'status'   => 1
         ]);
         
         // Pemohon Dummy 1

@@ -94,14 +94,25 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                
+
+                @php
+                    use App\Helpers\MenuHelper;
+                    $pemohonId    = Auth::guard('pemohon')->id();
+                    $blockedMenus = MenuHelper::getBlockedPemohonMenus($pemohonId);
+                @endphp
+
+                {{-- My Task --}}
+                @if(!in_array('mytask_user', $blockedMenus))
                 <li class="nav-item">
                     <a href="{{ url('/') }}/user" class="nav-link {{ Request::is('user') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>My Task</p>
                     </a>
                 </li>
-                
+                @endif
+
+                {{-- Create Permohonan --}}
+                @if(!in_array('permohonan_user', $blockedMenus))
                 <li class="nav-item has-treeview {{ Request::is('user/view_permohonan') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ Request::is('user/view_permohonan') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-edit"></i>
@@ -119,7 +130,8 @@
                         </li>
                     </ul>
                 </li>
-                
+                @endif
+
                 <li class="nav-header">AKUN</li>
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link text-danger">

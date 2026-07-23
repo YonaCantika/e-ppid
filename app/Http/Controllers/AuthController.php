@@ -47,6 +47,11 @@ class AuthController extends Controller
         // Coba login sebagai Admin (tabel users)
         if (Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();
+            $user = Auth::guard('web')->user();
+            // Super Admin diarahkan ke panel khusus
+            if ($user->role === 'super_admin') {
+                return redirect()->route('super_admin.dashboard');
+            }
             return redirect()->route('admin.dashboard');
         }
 
