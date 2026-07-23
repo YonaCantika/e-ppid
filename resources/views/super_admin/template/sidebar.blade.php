@@ -2,28 +2,28 @@
 <aside class="main-sidebar sa-sidebar elevation-0">
     <!-- Brand Logo -->
     <a href="{{ route('super_admin.dashboard') }}" class="brand-link">
-        <i class="fas fa-shield-alt mr-2" style="color: #f59e0b; font-size:1.3rem;"></i>
-        <span class="brand-text font-weight-bold" style="color:#fff;">
+        <i class="fas fa-shield-alt nav-icon"></i>
+        <span class="brand-text">
             E-PPID
-            <span class="brand-badge">SUPER ADMIN</span>
+            <span class="brand-badge" style="background:#4338ca; color:#fff;">SUPER ADMIN</span>
         </span>
     </a>
 
     <!-- Sidebar content -->
     <div class="sidebar">
         <!-- User panel -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="border-bottom: 1px solid #f1f5f9;">
             <div class="image">
-                <div style="width:34px; height:34px; border-radius:50%; background:rgba(245,158,11,0.25);
+                <div style="width:34px; height:34px; border-radius:50%; background:#eef2ff;
                             display:flex; align-items:center; justify-content:center;">
-                    <i class="fas fa-crown" style="color:#f59e0b; font-size:1rem;"></i>
+                    <i class="fas fa-crown" style="color:#4338ca; font-size:1rem;"></i>
                 </div>
             </div>
             <div class="info">
-                <a href="#" class="d-block" style="color: #e0e7ff; font-weight:600; font-size:0.9rem;">
+                <a href="#" class="d-block" style="color: #1e293b; font-weight:600; font-size:0.9rem;">
                     {{ Auth::guard('web')->user()->name ?? 'Super Admin' }}
                 </a>
-                <small style="color: rgba(255,255,255,0.45); font-size:0.75rem;">Full Access</small>
+                <small style="color: #64748b; font-size:0.75rem;">Full Access</small>
             </div>
         </div>
 
