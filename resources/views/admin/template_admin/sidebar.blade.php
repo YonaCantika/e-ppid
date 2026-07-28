@@ -136,15 +136,6 @@
                 </li>
                 @endif
 
-                {{-- Manajemen Menu Website --}}
-                @if(!in_array('view_menu', $blockedMenus))
-                <li class="nav-item">
-                    <a href="{{ url('/') }}/admin/view_menu" class="nav-link {{ Request::is('admin/view_menu') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-list"></i>
-                        <p>Manajemen Menu</p>
-                    </a>
-                </li>
-                @endif
 
                 <li class="nav-header">AKUN</li>
 

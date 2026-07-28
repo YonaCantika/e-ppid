@@ -96,11 +96,11 @@
 
     /* Chart Cards */
     .chart-card {
-        background: #dbeafe; /* More prominent solid pastel blue so it is clearly colored */
+        background: #ffffff; /* Clean white background */
         border-radius: 16px;
         padding: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        border: 1px solid #bfdbfe;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Subtle shadow */
+        border: 1px solid #e2e8f0;
         margin-bottom: 20px;
     }
     .chart-header {
@@ -158,29 +158,7 @@
         z-index: 10;
     }
 
-    /* Fallback CSS Charts */
-    .dummy-chart-donut, .dummy-chart-pie {
-        position: absolute;
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 5;
-    }
-    
-    .dummy-chart-donut {
-        border: 15px solid #60a5fa; /* Selesai */
-        border-top-color: #a855f7; /* Proses */
-        border-left-color: #ec4899; /* Ditolak */
-    }
-    
-    .dummy-chart-pie {
-        border: 45px solid #60a5fa; /* Online */
-        border-top-color: #a855f7; /* Offline */
-        border-right-color: #a855f7; /* Offline */
-    }
+    /* Dummy charts removed */
 </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -257,13 +235,10 @@
                   </div>
                   <div class="chart-body">
                      <div class="chart-container">
-                        <div class="dummy-chart-donut"></div>
                         <canvas id="donutChart" style="min-height: 120px; height: 120px; max-height: 120px; max-width: 100%;"></canvas>
                      </div>
-                     <div class="chart-legend">
-                        <div class="legend-item"><div class="legend-color" style="background-color: #60a5fa;"></div>Selesai</div>
-                        <div class="legend-item"><div class="legend-color" style="background-color: #a855f7;"></div>Proses</div>
-                        <div class="legend-item"><div class="legend-color" style="background-color: #ec4899;"></div>Ditolak</div>
+                     <div class="chart-legend" id="donutLegend">
+                        <!-- Legend dynamically populated -->
                      </div>
                   </div>
                </div>
@@ -277,12 +252,10 @@
                   </div>
                   <div class="chart-body">
                      <div class="chart-container">
-                        <div class="dummy-chart-pie"></div>
                         <canvas id="pieChart" style="min-height: 120px; height: 120px; max-height: 120px; max-width: 100%;"></canvas>
                      </div>
-                     <div class="chart-legend">
-                        <div class="legend-item"><div class="legend-color" style="background-color: #60a5fa;"></div>Online</div>
-                        <div class="legend-item"><div class="legend-color" style="background-color: #a855f7;"></div>Offline</div>
+                     <div class="chart-legend" id="pieLegend">
+                        <!-- Legend dynamically populated -->
                      </div>
                   </div>
                </div>
@@ -295,84 +268,159 @@
 </div>
 <!-- /.content-wrapper -->
 
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 <script>
    $(function () {
-       //- DONUT CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
+      // Global DataLabels configuration for both charts
+      Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {
+         color: '#fff',
+         font: {
+            weight: 'bold',
+            size: 11
+         },
+         formatter: function(value, context) {
+            if (value === 0) return null;
+            var sum = 0;
+            var dataArr = context.chart.data.datasets[0].data;
+            dataArr.forEach(function(data) { sum += data; });
+            var percentage = (value * 100 / sum).toFixed(0) + "%";
+            // Return array to display on two lines
+            return [value, "(" + percentage + ")"];
+         }
+      });
+
+      // Plugin for center text in Donut Chart
+      Chart.pluginService.register({
+         beforeDraw: function(chart) {
+            if (chart.canvas.id === 'donutChart' && chart.config.type === 'doughnut') {
+               var width = chart.chart.width,
+                   height = chart.chart.height,
+                   ctx = chart.chart.ctx;
+
+               ctx.restore();
+               var fontSize = (height / 100).toFixed(2);
+               ctx.font = "bold " + fontSize + "em sans-serif";
+               ctx.textBaseline = "middle";
+               ctx.fillStyle = "#1e293b";
+
+               var total = 0;
+               chart.data.datasets[0].data.forEach(function(val) { total += val; });
+               var text = total + " Total",
+                   textX = Math.round((width - ctx.measureText(text).width) / 2),
+                   textY = height / 2;
+
+               ctx.fillText(text, textX, textY);
+               ctx.save();
+            }
+         }
+      });
+
+      //- DONUT CHART -
       $.getJSON("{{ url('/') }}/Admin/chart_donat_status?", function(json) {
          var isi_labels = [];
-         var isi_data=[];
+         var isi_data = [];
+         var colors = ['#60a5fa', '#a855f7', '#ec4899', '#f59e0b', '#10b981', '#64748b'];
+         var bgColors = [];
          
+         var total = 0;
          $(json).each(function(i){         
-            isi_labels.push(json[i].name); 
-            isi_data.push(json[i].y);
-            // console.log(json[0]["name"]);
+            total += json[i].y;
          });
 
-          var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
-          var donutData        = {
+         var legendHtml = '';
+         $(json).each(function(i){
+            // AdminController.php returns name format like "BELUM DITANGGAPI : 5"
+            var parts = json[i].name.split(" : ");
+            var labelName = parts[0] || json[i].name;
+            var val = json[i].y;
+            var pct = total > 0 ? Math.round((val / total) * 100) : 0;
+            
+            var color = colors[i % colors.length];
+            bgColors.push(color);
+            isi_labels.push(labelName); 
+            isi_data.push(val);
+            
+            var pctText = val > 0 ? " (" + pct + "%)" : "";
+            legendHtml += '<div class="legend-item"><div class="legend-color" style="background-color: '+color+';"></div>' + labelName + ': ' + val + pctText + '</div>';
+         });
+         
+         $('#donutLegend').html(legendHtml);
+
+         var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+         var donutData = {
             labels: isi_labels,
             datasets: [
-              {
-                data: isi_data,
-                backgroundColor : ['#60a5fa', '#a855f7', '#ec4899', '#f59e0b', '#10b981', '#64748b'],
-              }
+               {
+                  data: isi_data,
+                  backgroundColor : bgColors,
+               }
             ]
-          }
-          var donutOptions     = {
+         }
+         var donutOptions = {
             maintainAspectRatio : false,
             responsive : true,
-            legend: {
-                display: false
-            }
-          }
-          //Create pie or douhnut chart
-          // You can switch between pie and douhnut using the method below.
-          var donutChart = new Chart(donutChartCanvas, {
+            legend: { display: false },
+            cutoutPercentage: 65 // Make hole slightly bigger for text
+         }
+         
+         new Chart(donutChartCanvas, {
             type: 'doughnut',
             data: donutData,
             options: donutOptions      
-          })
-      })
+         })
+      });
+
       //- PIE CHART -
-      //-------------
-      // Get context with jQuery - using jQuery's .get() method.
       $.getJSON("{{ url('/') }}/Admin/chart_pie_tipe?", function(json) {
          var isi_labels = [];
-         var isi_data=[];
+         var isi_data = [];
+         var colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#64748b'];
+         var bgColors = [];
          
+         var total = 0;
          $(json).each(function(i){         
-            isi_labels.push(json[i].name); 
-            isi_data.push(json[i].y);
-            // console.log(json[0]["name"]);
+            total += json[i].y;
          });
 
+         var legendHtml = '';
+         $(json).each(function(i){
+            var parts = json[i].name.split(" : ");
+            var labelName = parts[0] || json[i].name;
+            var val = json[i].y;
+            var pct = total > 0 ? Math.round((val / total) * 100) : 0;
+            
+            var color = colors[i % colors.length];
+            bgColors.push(color);
+            isi_labels.push(labelName); 
+            isi_data.push(val);
+            
+            var pctText = val > 0 ? " (" + pct + "%)" : "";
+            legendHtml += '<div class="legend-item"><div class="legend-color" style="background-color: '+color+';"></div>' + labelName + ': ' + val + pctText + '</div>';
+         });
+
+         $('#pieLegend').html(legendHtml);
+
          var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-         var donutData        = {
+         var pieData = {
             labels: isi_labels,
             datasets: [
-              {
-                data: isi_data,
-                backgroundColor : ['#60a5fa', '#a855f7', '#ec4899', '#f59e0b', '#10b981', '#64748b'],
-              }
+               {
+                  data: isi_data,
+                  backgroundColor : bgColors,
+               }
             ]
          }
-         var pieData        = donutData;
-         var pieOptions     = {
+         var pieOptions = {
             maintainAspectRatio : false,
             responsive : true,
-            legend: {
-                display: false
-            }
+            legend: { display: false }
          }
-         //Create pie or douhnut chart
-         // You can switch between pie and douhnut using the method below.
-         var pieChart = new Chart(pieChartCanvas, {
+         
+         new Chart(pieChartCanvas, {
             type: 'pie',
             data: pieData,
             options: pieOptions      
          })
-      })
-   })
+      });
+   });
 </script>

@@ -1,4 +1,4 @@
-﻿<style type="text/css">
+<style type="text/css">
 .transparent{
   background:rgba(0, 0, 0, 0.5);
   width: 60%;
@@ -82,7 +82,7 @@ switch ($data_permohonan->status) {
                <div class="form-group">
                   <label for="exampleInputEmail1">Status</label>
                   <select class="custom-select" name="status" id="status" {{ $disabel }}>
-                    <?php if($status == 'view'){?><option value="{{ $data_permohonan->status }}" selected> {{ $st;} }}</option>
+                    <?php if($status == 'view'){?><option value="{{ $data_permohonan->status }}" selected> {{ $st }}</option><?php } ?>
                     <option value="APPROVE">SUDAH DITANGGAPI</option>
                     <option value="APPROVE_HALF">DITANGGAPI SEBAGIAN</option>
                     <option value="REJECT">DITOLAK</option>
