@@ -73,9 +73,30 @@ class AuthController extends Controller
     public function submit_daftar(Request $request)
     {
         $request->validate([
-            'nama-lengkap-register' => 'required|string',
-            'email-register' => 'required|email|unique:pemohon,email', // Cek unik di tabel pemohon
-            'password-register' => 'required|min:4'
+            'jenis-permohonan-register' => 'required',
+            'jenis-identitas-register'  => 'required',
+            'nomor-identitas-register'  => 'required|string',
+            'nama-lengkap-register'     => 'required|string',
+            'npwp-register'             => 'nullable|string',
+            'email-register'            => 'required|email|unique:pemohon,email|unique:users,email',
+            'pekerjaan-register'        => 'required|string',
+            'alamat-register'           => 'required|string',
+            'telp-register'             => 'required|string',
+            'fax-register'              => 'nullable|string',
+            'password-register'         => 'required|min:4'
+        ], [
+            'jenis-permohonan-register.required' => 'Jenis permohonan wajib dipilih.',
+            'jenis-identitas-register.required'  => 'Jenis identitas wajib dipilih.',
+            'nomor-identitas-register.required'  => 'Nomor identitas wajib diisi.',
+            'nama-lengkap-register.required'     => 'Nama lengkap wajib diisi.',
+            'email-register.required'            => 'Email wajib diisi.',
+            'email-register.email'               => 'Format email tidak valid.',
+            'email-register.unique'              => 'Email ini sudah terdaftar! Silakan gunakan email lain atau login.',
+            'pekerjaan-register.required'        => 'Pekerjaan wajib diisi.',
+            'alamat-register.required'           => 'Alamat wajib diisi.',
+            'telp-register.required'             => 'No HP/WA wajib diisi.',
+            'password-register.required'         => 'Password wajib diisi.',
+            'password-register.min'              => 'Password minimal 4 karakter.'
         ]);
 
         $generate_kode = date('yHdims') . substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, 10);

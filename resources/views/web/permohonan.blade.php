@@ -1,4 +1,4 @@
-﻿<section class="contact-section" style="padding: 30px 0px 30px;">
+<section class="contact-section" style="padding: 30px 0px 30px;">
 
  <div class="auto-container">
 
@@ -24,13 +24,13 @@
 
                                 <div class="col-sm-4" align="right">
 
-                                    <label class="control-label">Jenis Permohonan</label>
+                                    <label class="control-label">Jenis Permohonan <span style="color: red;">*</span></label>
 
                                 </div>
 
                                 <div class="col-sm-8">
 
-                                    <select class="form-control" id="jenis-permohonan-register" name="jenis-permohonan-register" style="height: 38px; padding-top: 0px; padding-bottom: 0px;">
+                                    <select class="form-control" id="jenis-permohonan-register" name="jenis-permohonan-register" style="height: 38px; padding-top: 0px; padding-bottom: 0px;" required>
 
                                         <option value="1" selected>Perorangan</option>
 
@@ -48,13 +48,13 @@
 
                                 <div class="col-sm-4" align="right">
 
-                                    <label class="control-label" >Jenis Identitas</label>
+                                    <label class="control-label" >Jenis Identitas <span style="color: red;">*</span></label>
 
                                 </div>
 
                                 <div class="col-sm-8">
 
-                                    <select class="form-control" id="jenis-identitas-register" name="jenis-identitas-register" style="height: 38px; padding-top: 0px; padding-bottom: 0px;">
+                                    <select class="form-control" id="jenis-identitas-register" name="jenis-identitas-register" style="height: 38px; padding-top: 0px; padding-bottom: 0px;" required>
 
                                         <option value="1" selected>KTP</option>
 
@@ -80,9 +80,7 @@
 
                                 <div class="col-sm-8" style="text-align: left;">
 
-                                    <input type="text" class="form-control" id="nomor-identitas-register" name="nomor-identitas-register" placeholder="Nomor Identitas" style="height: 38px">
-
-                                    <i style="color: red;" id="nomor-identitas-alert" hidden="">Tidak Boleh Kosong.</i>
+                                    <input type="text" class="form-control" id="nomor-identitas-register" name="nomor-identitas-register" placeholder="Nomor Identitas" style="height: 38px" required>
 
                                 </div>
 
@@ -98,9 +96,7 @@
 
                                 <div class="col-sm-8" style="text-align: left;">
 
-                                    <input type="text" class="form-control" id="nama-lengkap-register" name="nama-lengkap-register" placeholder="Nama Lengkap" style="height: 38px">
-
-                                    <i style="color: red;" id="nama-lengkap-alert" hidden="">Tidak Boleh Kosong.</i>
+                                    <input type="text" class="form-control" id="nama-lengkap-register" name="nama-lengkap-register" placeholder="Nama Lengkap" style="height: 38px" required>
 
                                 </div>
 
@@ -116,7 +112,7 @@
 
                                 <div class="col-sm-8">
 
-                                    <input type="text" class="form-control" id="npwp-register" name="npwp-register" placeholder="NPWP" style="height: 38px">
+                                    <input type="text" class="form-control" id="npwp-register" name="npwp-register" placeholder="NPWP (Opsional)" style="height: 38px">
 
                                 </div>
 
@@ -132,9 +128,7 @@
 
                                 <div class="col-sm-8" style="text-align: left;">
 
-                                    <input type="text" class="form-control" id="email-register" name="email-register" placeholder="Email" style="height: 38px">
-
-                                    <i style="color: red;" id="email-alert" hidden="">Tidak Boleh Kosong.</i>
+                                    <input type="email" class="form-control" id="email-register" name="email-register" placeholder="Email" style="height: 38px" required>
 
                                 </div>
 
@@ -144,13 +138,13 @@
 
                                 <div class="col-sm-4" align="right">
 
-                                    <label class="control-label" >Pekerjaan </label>
+                                    <label class="control-label" >Pekerjaan <span style="color: red;">*</span></label>
 
                                 </div>
 
                                 <div class="col-sm-8">
 
-                                    <input type="text" class="form-control" id="pekerjaan-register" name="pekerjaan-register" placeholder="Pekerjaan" style="height: 38px">
+                                    <input type="text" class="form-control" id="pekerjaan-register" name="pekerjaan-register" placeholder="Pekerjaan" style="height: 38px" required>
 
                                 </div>
 
@@ -160,13 +154,13 @@
 
                                 <div class="col-sm-4" align="right">
 
-                                    <label class="control-label" >Alamat</label>
+                                    <label class="control-label" >Alamat <span style="color: red;">*</span></label>
 
                                 </div>
 
                                 <div class="col-sm-8">
 
-                                    <textarea class="form-control" id="alamat-register" name="alamat-register" placeholder="Tulis Alamat!" style="height: 100px;"></textarea>
+                                    <textarea class="form-control" id="alamat-register" name="alamat-register" placeholder="Tulis Alamat!" style="height: 100px;" required></textarea>
 
                                 </div>
 
@@ -176,13 +170,13 @@
 
                                 <div class="col-sm-4" align="right">
 
-                                    <label class="control-label" >No Telp </label>
+                                    <label class="control-label" >No Telp/WA <span style="color: red;">*</span></label>
 
                                 </div>
 
                                 <div class="col-sm-8">
 
-                                    <input type="text" class="form-control" id="telp-register" name="telp-register" placeholder="No Telp" style="height: 38px">
+                                    <input type="text" class="form-control" id="telp-register" name="telp-register" placeholder="No Telp/WA" style="height: 38px" required>
 
                                 </div>
 
@@ -198,7 +192,7 @@
 
                                 <div class="col-sm-8">
 
-                                    <input type="text" class="form-control" id="fax-register" name="fax-register" placeholder="No Fax" style="height: 38px">
+                                    <input type="text" class="form-control" id="fax-register" name="fax-register" placeholder="No Fax (Opsional)" style="height: 38px">
 
                                 </div>
 
@@ -208,13 +202,13 @@
 
                                 <div class="col-sm-4" align="right">
 
-                                    <label class="control-label" >Password </label>
+                                    <label class="control-label" >Password <span style="color: red;">*</span></label>
 
                                 </div>
 
                                 <div class="col-sm-8">
 
-                                    <input type="password" class="form-control" id="password-register" name="password-register" style="height: 38px">
+                                    <input type="password" class="form-control" id="password-register" name="password-register" style="height: 38px" required>
 
                                 </div>
 

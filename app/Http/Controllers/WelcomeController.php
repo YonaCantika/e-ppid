@@ -152,7 +152,29 @@ class WelcomeController extends Controller
      */
     public function register_visitor2(Request $request)
     {
-        // Validasi bisa ditambahkan di sini menggunakan $request->validate()
+        $request->validate([
+            'jenis-permohonan-register' => 'required',
+            'jenis-identitas-register'  => 'required',
+            'nomor-identitas-register'  => 'required|string',
+            'nama-lengkap-register'     => 'required|string',
+            'npwp-register'             => 'nullable|string',
+            'email-register'            => 'required|email|unique:pemohon,email|unique:users,email',
+            'pekerjaan-register'        => 'required|string',
+            'alamat-register'           => 'required|string',
+            'telp-register'             => 'required|string',
+            'fax-register'              => 'nullable|string',
+            'password-register'         => 'required|min:4'
+        ], [
+            'email-register.unique'      => 'Email ini sudah terdaftar! Silakan gunakan email lain atau login.',
+            'email-register.required'    => 'Email wajib diisi.',
+            'nomor-identitas-register.required' => 'Nomor identitas wajib diisi.',
+            'nama-lengkap-register.required'    => 'Nama lengkap wajib diisi.',
+            'pekerjaan-register.required'       => 'Pekerjaan wajib diisi.',
+            'alamat-register.required'          => 'Alamat wajib diisi.',
+            'telp-register.required'            => 'No HP/WA wajib diisi.',
+            'password-register.required'        => 'Password wajib diisi.'
+        ]);
+
         $generate_kode = date('yHdims') . strtoupper(substr(md5(uniqid()), 0, 10));
 
         $data = [
