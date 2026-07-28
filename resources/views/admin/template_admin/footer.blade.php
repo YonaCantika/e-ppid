@@ -1,4 +1,4 @@
-﻿  <footer class="main-footer">
+  <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.0.5
     </div>
@@ -14,8 +14,8 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="{{ url('/') }}/assets_user/plugins/jquery/jquery.min.js"></script>
+<!-- jQuery (sudah di-load di header) -->
+{{-- <script src="{{ url('/') }}/assets_user/plugins/jquery/jquery.min.js"></script> --}}
 <!-- Bootstrap 4 -->
 <script src="{{ url('/') }}/assets_user/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- DataTables -->

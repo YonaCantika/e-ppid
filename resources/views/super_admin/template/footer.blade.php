@@ -14,8 +14,8 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="{{ url('/') }}/assets_user/plugins/jquery/jquery.min.js"></script>
+<!-- jQuery (sudah di-load di header) -->
+{{-- <script src="{{ url('/') }}/assets_user/plugins/jquery/jquery.min.js"></script> --}}
 <!-- Bootstrap 4 -->
 <script src="{{ url('/') }}/assets_user/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- DataTables -->
