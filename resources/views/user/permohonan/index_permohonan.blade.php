@@ -5,47 +5,90 @@
        font-family: 'Inter', 'Source Sans Pro', sans-serif;
    }
    
-   .card {
-       border-radius: 12px;
-       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-       border: none;
-       margin-top: 15px;
-   }
-   
-   .card-body {
-       padding: 20px 25px;
-       position: relative;
-   }
-   
-   /* Move add button to align with datatable search/length */
-   .btn-add-modern {
-       background-color: #3b82f6;
-       color: white;
-       font-weight: 600;
-       border: none;
-       border-radius: 8px;
-       padding: 6px 16px;
-       box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
-       transition: all 0.2s;
-       position: absolute;
-       right: 25px;
-       top: 20px;
-       z-index: 10;
-       height: 31px;
-       display: flex;
-       align-items: center;
-       gap: 6px;
-       font-size: 0.9rem;
-   }
-   .btn-add-modern:hover {
-       background-color: #2563eb;
-       color: white;
-       transform: translateY(-2px);
-   }
+    /* The Blue Hero Background (Small version for list page) */
+    .hero-bg-list {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 160px;
+        background: #5a5ce2;
+        border-bottom-left-radius: 30px;
+        z-index: 0;
+    }
+
+    /* Container holding the card */
+    .content {
+        position: relative;
+        z-index: 2;
+        padding-top: 25px;
+    }
+
+    .card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        border: none;
+        margin-top: 55px;
+    }
+    .card-header {
+        background-color: #fff;
+        border-bottom: 1px solid #f1f5f9;
+        border-radius: 16px 16px 0 0 !important;
+        padding: 20px 25px;
+    }
+    
+    .card-body {
+        padding: 20px 25px;
+        position: relative;
+    }
+    
+    /* Move add button to static flex layout */
+    .btn-add-modern {
+        background-color: #3b82f6;
+        color: white;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 16px;
+        box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.9rem;
+    }
+    .btn-add-modern:hover {
+        background-color: #2563eb;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Filter Inputs */
+    .form-control {
+        border-radius: 8px !important;
+        border: 1px solid #e2e8f0;
+        box-shadow: none;
+    }
+    
+    .filter-btn-modern {
+        background: #5a5ce2;
+        color: white;
+        border-radius: 8px;
+        padding: 6px 16px;
+        font-weight: 600;
+        transition: all 0.2s;
+        border: none;
+        height: calc(1.5em + .5rem + 2px); /* Match input-sm height */
+    }
+    .filter-btn-modern:hover {
+        background: #4338ca;
+        color: white;
+    }
 
    /* Datatables alignment overrides */
    .dataTables_wrapper .dataTables_filter {
-       margin-right: 220px; /* Space for add button with a gap */
+       /* Removed right margin since button moved to header */
    }
    
    /* Table Header */
@@ -122,20 +165,45 @@
    }
 </style>
 
-<div class="content-wrapper">
+<div class="content-wrapper" style="position: relative;">
+   <!-- The Blue Hero Background -->
+   <div class="hero-bg-list"></div>
+
   <!-- Content Header (Page header) -->
    <!-- Main content -->
-   <section class="content" style="padding-top: 25px;">
+   <section class="content">
       <div class="container-fluid">
          <div class="row">
          <!-- left column -->
             <div class="col-md-12">
                <!-- Application buttons -->
                <div class="card">
-                  <div class="card-body">
+                  <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                     <div class="d-flex align-items-center gap-2 mb-2 mb-md-0">
+                        <!-- Filters -->
+                        <div class="input-group input-group-sm mr-2" style="width: 200px;">
+                           <select name="status" id="status" class="form-control">
+                              <option value="ALL">ALL STATUS</option>
+                              <option value="BELUM DITANGGAPI">BELUM DITANGGAPI</option>
+                              <option value="SUDAH DITANGGAPI">SUDAH DITANGGAPI</option>
+                           </select>
+                        </div>
+                        <div class="input-group input-group-sm mr-2" style="width: 150px;">
+                           <select name="tahun" id="tahun" class="form-control">
+                              <option value="ALL">ALL TAHUN</option>
+                              <option value="2026">2026</option>
+                              <option value="2025">2025</option>
+                           </select>
+                        </div>
+                        <button class="filter-btn-modern" id="filterBtn">
+                           <i class="fas fa-filter mr-1"></i> Filter
+                        </button>
+                     </div>
                      <button class="btn-add-modern" id="buttonAdd">
                          <i class="fas fa-plus"></i> Tambah Permohonan
                      </button>
+                  </div>
+                  <div class="card-body">
                      <div class="table-responsive">
                         <table id="example1" class="table table-bordered table-hover">
                            <thead>
@@ -180,7 +248,17 @@
 <script>
 
    $(document).ready(function() {
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': '{{ csrf_token() }}'
+          }
+      });
+      
       render_table();
+      
+      $('#filterBtn').click(function() {
+         $('#example1').DataTable().ajax.reload();
+      });
    }); 
 
    function render_table(){
@@ -189,7 +267,14 @@
          "serverSide": false,  
          "ordering": true,
          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Semua"]],   
-         "ajax": "{{ url('/') }}/user/listdatapemohon",         
+         "ajax": {
+             "url": "{{ url('/') }}/user/listdatapemohon",
+             "type": "GET",
+             "data": function (d) {
+                 d.status = $('#status').val();
+                 d.tahun = $('#tahun').val();
+             }
+         },         
          "paging": true,
          "displayLength": 10,
          "columnDefs": [
@@ -263,9 +348,9 @@
                 url:"{{ url('/') }}/user/delete_permohonan",
                 data:{id:id},
                 success:function(out){
-                   var obj = jQuery.parseJSON(out);
-                   if(obj.status == 0){
-                      Swal.fire('Terhapus!','Data telah dihapus.','success');
+                   var obj = typeof out === 'string' ? jQuery.parseJSON(out) : out;
+                   if(obj.status === false || obj.status == 0){
+                      Swal.fire('Gagal!','Data gagal dihapus.','error');
                    }else{                              
                       Swal.fire({
                          text: 'Data Berhasil dihapus',

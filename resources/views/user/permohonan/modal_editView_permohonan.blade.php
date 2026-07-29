@@ -1,4 +1,4 @@
-﻿<?php  
+<?php  
 
 if ($status == 'view') {
 
@@ -233,14 +233,10 @@ if ($status == 'view') {
          data: $("#ajaxform").serialize(),
 
          success: function(balikan) {
-
-            var obj = jQuery.parseJSON(balikan);
-
-            if(obj.status == 0)
-
+            var obj = typeof balikan === 'string' ? jQuery.parseJSON(balikan) : balikan;
+            if(obj.status === false || obj.status == 0)
             {
-
-               Swal.fire('Gagal!',obj.msg,'error');
+               Swal.fire('Gagal!',obj.msg || 'Terjadi kesalahan','error');
 
             }else{
 
