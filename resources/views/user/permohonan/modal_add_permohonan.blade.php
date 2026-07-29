@@ -1,4 +1,4 @@
-﻿<div class="modal-header">
+<div class="modal-header">
    <h4 class="modal-title">Form Tambah</h4>
    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -65,10 +65,10 @@
          url: "{{ asset('user/add_permohonan') }}",
          data: $("#ajaxform").serialize(),
          success: function(balikan) {
-            var obj = jQuery.parseJSON(balikan);
-            if(obj.status == 0)
+            var obj = typeof balikan === 'string' ? jQuery.parseJSON(balikan) : balikan;
+            if(obj.status === false || obj.status == 0)
             {
-               Swal.fire('Gagal!',obj.msg,'error');
+               Swal.fire('Gagal!',obj.msg || 'Terjadi kesalahan','error');
             }else{
                $('#modal-lg').modal('hide');
                   Swal.fire({

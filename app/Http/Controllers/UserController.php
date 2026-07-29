@@ -39,10 +39,30 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function listdatapemohon()
+    public function listdatapemohon(Request $request)
     {
         $id_pemohon = Auth::guard('pemohon')->id();
-        $query = DB::select("SELECT * from informasi_permohonan WHERE id_pemohon = ?", [$id_pemohon]);
+        
+        $status = $request->input('status', 'ALL');
+        $tahun = $request->input('tahun', 'ALL');
+
+        $sql = "SELECT * from informasi_permohonan WHERE id_pemohon = ?";
+        $bindings = [$id_pemohon];
+
+        if ($status !== 'ALL') {
+            if ($status === 'BELUM DITANGGAPI') {
+                $sql .= " AND status = 'OPEN'";
+            } else if ($status === 'SUDAH DITANGGAPI') {
+                $sql .= " AND status IN ('APPROVE', 'APPROVE_HALF', 'REJECT')";
+            }
+        }
+
+        if ($tahun !== 'ALL') {
+            $sql .= " AND YEAR(created_at) = ?";
+            $bindings[] = $tahun;
+        }
+
+        $query = DB::select($sql, $bindings);
 
         $data = array();
         $i=1;

@@ -96,11 +96,12 @@
 
     /* Chart Cards */
     .chart-card {
-        background: #ffffff; /* Clean white background */
+        background: #F8FAFC;
         border-radius: 16px;
         padding: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Subtle shadow */
+        box-shadow: 0 6px 16px rgba(0,0,0,0.06);
         border: 1px solid #e2e8f0;
+        border-top: 3px solid #3b82f6;
         margin-bottom: 20px;
     }
     .chart-header {
@@ -234,8 +235,9 @@
                      <div class="chart-title">Jumlah Status Pengajuan</div>
                   </div>
                   <div class="chart-body">
-                     <div class="chart-container">
+                     <div class="chart-container" style="position: relative;">
                         <canvas id="donutChart" style="min-height: 120px; height: 120px; max-height: 120px; max-width: 100%;"></canvas>
+                        <div id="donutCenterText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; line-height: 1.1;"></div>
                      </div>
                      <div class="chart-legend" id="donutLegend">
                         <!-- Legend dynamically populated -->
@@ -268,159 +270,99 @@
 </div>
 <!-- /.content-wrapper -->
 
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 <script>
    $(function () {
-      // Global DataLabels configuration for both charts
-      Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {
-         color: '#fff',
-         font: {
-            weight: 'bold',
-            size: 11
-         },
-         formatter: function(value, context) {
-            if (value === 0) return null;
-            var sum = 0;
-            var dataArr = context.chart.data.datasets[0].data;
-            dataArr.forEach(function(data) { sum += data; });
-            var percentage = (value * 100 / sum).toFixed(0) + "%";
-            // Return array to display on two lines
-            return [value, "(" + percentage + ")"];
-         }
-      });
-
-      // Plugin for center text in Donut Chart
-      Chart.pluginService.register({
-         beforeDraw: function(chart) {
-            if (chart.canvas.id === 'donutChart' && chart.config.type === 'doughnut') {
-               var width = chart.chart.width,
-                   height = chart.chart.height,
-                   ctx = chart.chart.ctx;
-
-               ctx.restore();
-               var fontSize = (height / 100).toFixed(2);
-               ctx.font = "bold " + fontSize + "em sans-serif";
-               ctx.textBaseline = "middle";
-               ctx.fillStyle = "#1e293b";
-
-               var total = 0;
-               chart.data.datasets[0].data.forEach(function(val) { total += val; });
-               var text = total + " Total",
-                   textX = Math.round((width - ctx.measureText(text).width) / 2),
-                   textY = height / 2;
-
-               ctx.fillText(text, textX, textY);
-               ctx.save();
-            }
-         }
-      });
-
-      //- DONUT CHART -
-      $.getJSON("{{ url('/') }}/Admin/chart_donat_status?", function(json) {
-         var isi_labels = [];
-         var isi_data = [];
-         var colors = ['#60a5fa', '#a855f7', '#ec4899', '#f59e0b', '#10b981', '#64748b'];
-         var bgColors = [];
+      //- DONUT CHART (Status Pengajuan) -
+      $.getJSON("{{ url('/') }}/admin/chart_donat_status", function(json) {
+         var labels = [];
+         var data = [];
+         var bgColors = ['#60a5fa', '#a855f7', '#ec4899', '#f59e0b', '#10b981', '#64748b'];
+         var colorsToUse = [];
          
          var total = 0;
-         $(json).each(function(i){         
-            total += json[i].y;
-         });
+         $(json).each(function(i){ total += json[i].y; });
+         
+         // Inject Center HTML for Doughnut
+         $('#donutCenterText').html('<div style="font-size: 1.5rem; font-weight: 800; color: #1e293b; margin-bottom: -4px;">' + total + '</div><div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">Total</div>');
 
          var legendHtml = '';
          $(json).each(function(i){
-            // AdminController.php returns name format like "BELUM DITANGGAPI : 5"
+            // Data nama dari server memiliki format "LABEL : JUMLAH"
             var parts = json[i].name.split(" : ");
-            var labelName = parts[0] || json[i].name;
+            var labelName = parts[0] ? parts[0].trim() : json[i].name;
             var val = json[i].y;
             var pct = total > 0 ? Math.round((val / total) * 100) : 0;
             
-            var color = colors[i % colors.length];
-            bgColors.push(color);
-            isi_labels.push(labelName); 
-            isi_data.push(val);
+            var color = bgColors[i % bgColors.length];
+            colorsToUse.push(color);
+            labels.push(labelName); 
+            data.push(val);
             
-            var pctText = val > 0 ? " (" + pct + "%)" : "";
-            legendHtml += '<div class="legend-item"><div class="legend-color" style="background-color: '+color+';"></div>' + labelName + ': ' + val + pctText + '</div>';
+            legendHtml += '<div class="legend-item"><div class="legend-color" style="background-color: '+color+';"></div><span style="font-weight: 700; color: #1e293b; margin-right: 6px;">' + pct + '%</span> ' + labelName + '</div>';
          });
          
          $('#donutLegend').html(legendHtml);
 
-         var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
-         var donutData = {
-            labels: isi_labels,
-            datasets: [
-               {
-                  data: isi_data,
-                  backgroundColor : bgColors,
-               }
-            ]
-         }
-         var donutOptions = {
-            maintainAspectRatio : false,
-            responsive : true,
-            legend: { display: false },
-            cutoutPercentage: 65 // Make hole slightly bigger for text
-         }
-         
-         new Chart(donutChartCanvas, {
+         new Chart($('#donutChart').get(0).getContext('2d'), {
             type: 'doughnut',
-            data: donutData,
-            options: donutOptions      
-         })
+            data: {
+               labels: labels,
+               datasets: [{
+                  data: data,
+                  backgroundColor: colorsToUse
+               }]
+            },
+            options: {
+               maintainAspectRatio: false,
+               responsive: true,
+               legend: { display: false }
+            }
+         });
       });
 
-      //- PIE CHART -
-      $.getJSON("{{ url('/') }}/Admin/chart_pie_tipe?", function(json) {
-         var isi_labels = [];
-         var isi_data = [];
-         var colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#64748b'];
-         var bgColors = [];
+      //- PIE CHART (Tipe Pengajuan) -
+      $.getJSON("{{ url('/') }}/admin/chart_pie_tipe", function(json) {
+         var labels = [];
+         var data = [];
+         var bgColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#64748b'];
+         var colorsToUse = [];
          
          var total = 0;
-         $(json).each(function(i){         
-            total += json[i].y;
-         });
+         $(json).each(function(i){ total += json[i].y; });
 
          var legendHtml = '';
          $(json).each(function(i){
+            // Data nama dari server memiliki format "LABEL : JUMLAH"
             var parts = json[i].name.split(" : ");
-            var labelName = parts[0] || json[i].name;
+            var labelName = parts[0] ? parts[0].trim() : json[i].name;
             var val = json[i].y;
             var pct = total > 0 ? Math.round((val / total) * 100) : 0;
             
-            var color = colors[i % colors.length];
-            bgColors.push(color);
-            isi_labels.push(labelName); 
-            isi_data.push(val);
+            var color = bgColors[i % bgColors.length];
+            colorsToUse.push(color);
+            labels.push(labelName); 
+            data.push(val);
             
-            var pctText = val > 0 ? " (" + pct + "%)" : "";
-            legendHtml += '<div class="legend-item"><div class="legend-color" style="background-color: '+color+';"></div>' + labelName + ': ' + val + pctText + '</div>';
+            legendHtml += '<div class="legend-item"><div class="legend-color" style="background-color: '+color+';"></div><span style="font-weight: 700; color: #1e293b; margin-right: 6px;">' + pct + '%</span> ' + labelName + '</div>';
          });
 
          $('#pieLegend').html(legendHtml);
 
-         var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-         var pieData = {
-            labels: isi_labels,
-            datasets: [
-               {
-                  data: isi_data,
-                  backgroundColor : bgColors,
-               }
-            ]
-         }
-         var pieOptions = {
-            maintainAspectRatio : false,
-            responsive : true,
-            legend: { display: false }
-         }
-         
-         new Chart(pieChartCanvas, {
+         new Chart($('#pieChart').get(0).getContext('2d'), {
             type: 'pie',
-            data: pieData,
-            options: pieOptions      
-         })
+            data: {
+               labels: labels,
+               datasets: [{
+                  data: data,
+                  backgroundColor: colorsToUse
+               }]
+            },
+            options: {
+               maintainAspectRatio: false,
+               responsive: true,
+               legend: { display: false }
+            }
+         });
       });
    });
 </script>
