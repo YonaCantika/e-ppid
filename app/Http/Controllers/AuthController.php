@@ -58,10 +58,17 @@ class AuthController extends Controller
         // Jika gagal, coba login sebagai Pemohon (tabel pemohon)
         if (Auth::guard('pemohon')->attempt($credentials)) {
             $request->session()->regenerate();
-            // Catat last login
             $pemohon = Auth::guard('pemohon')->user();
+            
+            // Catat last login
             $pemohon->lastLogin = now();
             $pemohon->save();
+
+            // Jika belum terverifikasi, arahkan langsung ke halaman verifikasi OTP (gaya Laravel Breeze)
+            if ($pemohon->status == 0 || $pemohon->status == '0') {
+                return redirect()->route('validasi', ['id' => $pemohon->id_pemohon])
+                    ->with('warning', 'Silakan verifikasi email Anda terlebih dahulu untuk mengakses halaman pengguna.');
+            }
             
             return redirect()->route('user.dashboard');
         }
@@ -99,7 +106,7 @@ class AuthController extends Controller
             'password-register.min'              => 'Password minimal 4 karakter.'
         ]);
 
-        $generate_kode = date('yHdims') . substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, 10);
+        $generate_kode = (string) mt_rand(100000, 999999);
 
         $pemohon = Pemohon::create([
             'nama' => $request->input('nama-lengkap-register'),
@@ -117,10 +124,18 @@ class AuthController extends Controller
             'status' => 0 // Perlu verifikasi
         ]);
 
-        // Logika pengiriman email verifikasi atau WA dihapus sementara agar fokus di inti.
+        // Kirimkan kode verifikasi OTP ke alamat email pemohon yang didaftarkan
+        try {
+            \Illuminate\Support\Facades\Mail::to($pemohon->email)->send(new \App\Mail\VerifikasiOtpMail($pemohon));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Gagal mengirim email verifikasi ke {$pemohon->email}: " . $e->getMessage());
+        }
 
+        // Otomatis loginkan pemohon dan arahkan ke halaman verifikasi email (gaya Laravel Breeze)
         Auth::guard('pemohon')->login($pemohon);
-        return redirect()->route('user.dashboard');
+
+        return redirect()->route('validasi', ['id' => $pemohon->id_pemohon])
+            ->with('success', 'Pendaftaran berhasil! Silakan periksa email Anda dan ketikkan 6 digit kode verifikasi untuk melanjutkan.');
     }
 
     public function logout(Request $request)

@@ -20,11 +20,14 @@ Route::get('/permohonan', [WelcomeController::class, 'permohonan'])->name('permo
 Route::post('/permohonan', [WelcomeController::class, 'submit_permohonan'])->name('permohonan.submit');
 Route::get('/informasi/{id}', [WelcomeController::class, 'informasi_publik'])->name('informasi');
 Route::get('/validasi', [WelcomeController::class, 'validasi'])->name('validasi');
+Route::get('/verifikasi-akun/{id}/{hash}', [WelcomeController::class, 'verify_email_link'])->name('verifikasi.link');
 Route::get('/ubah_password', [WelcomeController::class, 'ubah_password'])->name('ubah_password');
 
 // AJAX Routes untuk WelcomeController
 Route::post('/register_visitor2', [WelcomeController::class, 'register_visitor2']);
 Route::post('/validasi_kode_unik', [WelcomeController::class, 'validasi_kode_unik']);
+Route::post('/resend_otp', [WelcomeController::class, 'resend_otp'])->name('resend.otp');
+Route::post('/cancel_registration', [WelcomeController::class, 'cancel_registration'])->name('cancel.registration');
 Route::post('/cek_email', [WelcomeController::class, 'cek_email']);
 Route::post('/lupa_password2', [WelcomeController::class, 'lupa_password2']);
 Route::post('/change_password', [WelcomeController::class, 'change_password']);
@@ -42,8 +45,8 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/secure/logout', [AuthController::class, 'logout']); // Fallback untuk link lama
 Route::get('/lupa_password', [AuthController::class, 'lupa_password'])->name('lupa_password');
 
-// Area Pengguna Biasa / Pemohon (UserController)
-Route::middleware(['auth:pemohon'])->prefix('user')->name('user.')->group(function () {
+// Area Pengguna Biasa / Pemohon (UserController) - Diproteksi auth & verified email OTP
+Route::middleware(['auth:pemohon', 'verified.pemohon'])->prefix('user')->name('user.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('dashboard');
     Route::get('/view_permohonan', [UserController::class, 'view_permohonan'])->name('view_permohonan');
     Route::get('/listdatapemohon', [UserController::class, 'listdatapemohon']);

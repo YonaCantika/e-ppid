@@ -120,22 +120,29 @@ class WelcomeController extends Controller
 
     public function validasi(Request $request)
     {
-        $cek = DB::table('beranda')->where('id_beranda', 2)->first();
-        $datacek = $cek ? $cek->gambar : '';
-        $data['title'] = $datacek;
-        $data['kontak'] = DB::table('beranda')->where('id_beranda', 1)->first();
+        $id = $request->input('id');
+        $pemohon = null;
+        if ($id) {
+            $pemohon = \App\Models\Pemohon::where('id_pemohon', $id)->first();
+        }
+
+        // Fallback untuk user yang diarahkan otomatis oleh middleware verified.pemohon
+        if (!$pemohon && \Illuminate\Support\Facades\Auth::guard('pemohon')->check()) {
+            $pemohon = \Illuminate\Support\Facades\Auth::guard('pemohon')->user();
+            $id = $pemohon->id_pemohon;
+        }
+
+        $data = $this->getCommonData();
         $data['content'] = 'web.validasiEmail';
-        $data['id'] = $request->input('id');
+        $data['id'] = $id;
+        $data['pemohon'] = $pemohon;
 
         return view('welcome_message', $data);
     }
 
     public function ubah_password(Request $request)
     {
-        $cek = DB::table('beranda')->where('id_beranda', 2)->first();
-        $datacek = $cek ? $cek->gambar : '';
-        $data['title'] = $datacek;
-        $data['kontak'] = DB::table('beranda')->where('id_beranda', 1)->first();
+        $data = $this->getCommonData();
         $data['content'] = 'web.ubah_password';
         $data['email'] = $request->input('email');
         $data['wa'] = $request->input('wa');
@@ -175,7 +182,7 @@ class WelcomeController extends Controller
             'password-register.required'        => 'Password wajib diisi.'
         ]);
 
-        $generate_kode = date('yHdims') . strtoupper(substr(md5(uniqid()), 0, 10));
+        $generate_kode = (string) mt_rand(100000, 999999);
 
         $data = [
             'id_jenis'          => $request->input('jenis-permohonan-register'),
@@ -214,13 +221,167 @@ class WelcomeController extends Controller
         $id = $request->input('id');
         $kode = $request->input('kde');
 
-        $cek = DB::table('pemohon')->where('id_pemohon', $id)->first();
-        if ($cek && $cek->kode_unik == $kode) {
-            DB::table('pemohon')->where('id_pemohon', $id)->update(['status' => 1]);
-            return response()->json(['status' => true]);
+        $pemohon = \App\Models\Pemohon::where('id_pemohon', $id)->first();
+        if ($pemohon && $pemohon->kode_unik == $kode) {
+            $pemohon->status = 1;
+            $pemohon->save();
+
+            // Otomatis login dan arahkan ke halaman users setelah verifikasi berhasil
+            \Illuminate\Support\Facades\Auth::guard('pemohon')->login($pemohon);
+            $request->session()->regenerate();
+
+            // Bersihkan session resend OTP
+            $request->session()->forget(['otp_resend_count', 'otp_resend_last']);
+
+            return response()->json([
+                'status' => true,
+                'msg' => 'Verifikasi berhasil! Mengalihkan ke Halaman Pengguna...',
+                'redirect_url' => route('user.dashboard')
+            ]);
         } else {
-            return response()->json(['status' => false, 'msg' => 'Kode unik tidak cocok!']);
+            return response()->json(['status' => false, 'msg' => 'Kode verifikasi tidak cocok!']);
         }
+    }
+
+    /**
+     * Kirim ulang kode OTP verifikasi email.
+     * Maksimal 3x pengiriman ulang, cooldown bertambah 30 detik setiap percobaan.
+     */
+    public function resend_otp(Request $request)
+    {
+        $id = $request->input('id');
+        $pemohon = \App\Models\Pemohon::where('id_pemohon', $id)->first();
+
+        if (!$pemohon) {
+            return response()->json(['status' => false, 'msg' => 'Data pemohon tidak ditemukan.']);
+        }
+
+        if ($pemohon->status == 1) {
+            return response()->json(['status' => false, 'msg' => 'Akun sudah terverifikasi.']);
+        }
+
+        // Cek jumlah percobaan resend (max 3)
+        $resendCount = $request->session()->get('otp_resend_count', 0);
+        $lastResend = $request->session()->get('otp_resend_last', 0);
+
+        if ($resendCount >= 3) {
+            return response()->json([
+                'status' => false,
+                'msg' => 'Batas pengiriman ulang telah tercapai (maksimal 3 kali). Silakan hubungi admin untuk bantuan.'
+            ]);
+        }
+
+        // Hitung cooldown: 30 detik * (percobaan ke-n)
+        // Percobaan 1 = 30s, Percobaan 2 = 60s, Percobaan 3 = 90s
+        $cooldown = 30 * ($resendCount + 1);
+        $elapsed = time() - $lastResend;
+
+        if ($lastResend > 0 && $elapsed < $cooldown) {
+            $sisaWaktu = $cooldown - $elapsed;
+            return response()->json([
+                'status' => false,
+                'msg' => "Harap tunggu {$sisaWaktu} detik lagi sebelum mengirim ulang."
+            ]);
+        }
+
+        // Generate kode OTP baru
+        $kode_baru = (string) mt_rand(100000, 999999);
+        $pemohon->kode_unik = $kode_baru;
+        $pemohon->save();
+
+        // Kirim email verifikasi
+        try {
+            \Illuminate\Support\Facades\Mail::to($pemohon->email)->send(new \App\Mail\VerifikasiOtpMail($pemohon));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Gagal mengirim ulang email verifikasi ke {$pemohon->email}: " . $e->getMessage());
+            return response()->json([
+                'status' => false,
+                'msg' => 'Gagal mengirim email. Silakan coba lagi nanti.'
+            ]);
+        }
+
+        // Update session counter
+        $newCount = $resendCount + 1;
+        $request->session()->put('otp_resend_count', $newCount);
+        $request->session()->put('otp_resend_last', time());
+
+        // Hitung cooldown untuk percobaan berikutnya
+        $sisaKesempatan = 3 - $newCount;
+        $nextCooldown = $newCount < 3 ? 30 * ($newCount + 1) : 0;
+
+        return response()->json([
+            'status' => true,
+            'msg' => "Kode OTP baru telah dikirim ke {$pemohon->email}. Sisa kesempatan kirim ulang: {$sisaKesempatan}x.",
+            'resend_count' => $newCount,
+            'sisa_kesempatan' => $sisaKesempatan,
+            'next_cooldown' => $nextCooldown
+        ]);
+    }
+
+    /**
+     * Batalkan pendaftaran pemohon (hapus data dari database).
+     * Hanya bisa dilakukan jika status pemohon masih 0 (belum terverifikasi).
+     */
+    public function cancel_registration(Request $request)
+    {
+        $id = $request->input('id');
+        $pemohon = \App\Models\Pemohon::where('id_pemohon', $id)->first();
+
+        if (!$pemohon) {
+            return response()->json(['status' => false, 'msg' => 'Data pemohon tidak ditemukan.']);
+        }
+
+        // Hanya boleh dibatalkan jika status masih 0 (belum terverifikasi)
+        if ($pemohon->status != 0 && $pemohon->status != '0') {
+            return response()->json(['status' => false, 'msg' => 'Akun sudah terverifikasi dan tidak dapat dibatalkan.']);
+        }
+
+        // Logout pemohon jika sedang login
+        if (\Illuminate\Support\Facades\Auth::guard('pemohon')->check() &&
+            \Illuminate\Support\Facades\Auth::guard('pemohon')->id() == $pemohon->id_pemohon) {
+            \Illuminate\Support\Facades\Auth::guard('pemohon')->logout();
+        }
+
+        // Bersihkan session terkait OTP
+        $request->session()->forget(['otp_resend_count', 'otp_resend_last']);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Hapus data pemohon dari database
+        $pemohon->delete();
+
+        return response()->json([
+            'status' => true,
+            'msg' => 'Pendaftaran berhasil dibatalkan. Data akun Anda telah dihapus.'
+        ]);
+    }
+
+    /**
+     * Memverifikasi akun pemohon via Tautan Unik (Signed URL) dari email (Konsep Klik Link).
+     */
+    public function verify_email_link(Request $request, $id, $hash)
+    {
+        // Periksa validitas signature (token dari tautan unik Laravel)
+        if (!$request->hasValidSignature()) {
+            return redirect()->route('login')->with('error', 'Tautan verifikasi telah kedaluwarsa atau tidak valid!');
+        }
+
+        $pemohon = \App\Models\Pemohon::where('id_pemohon', $id)->first();
+        if (!$pemohon || sha1($pemohon->email) !== $hash) {
+            return redirect()->route('login')->with('error', 'Data pemohon tidak cocok atau tidak ditemukan!');
+        }
+
+        // Ubah status menjadi aktif (1)
+        if ($pemohon->status == 0 || $pemohon->status == '0') {
+            $pemohon->status = 1;
+            $pemohon->save();
+        }
+
+        // Otomatis login dan arahkan ke dashboard pengguna
+        \Illuminate\Support\Facades\Auth::guard('pemohon')->login($pemohon);
+        $request->session()->regenerate();
+
+        return redirect()->route('user.dashboard')->with('success', 'Email berhasil diverifikasi! Akun Anda kini telah aktif.');
     }
 
     public function cek_email(Request $request)
