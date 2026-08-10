@@ -1,24 +1,72 @@
-﻿<section class="contact-section" style="padding: 30px 0px 30px;">
-	<div class="auto-container">
-		<div class="row clearfix" style="padding:5px;">
-			<div class="contact-info col-sm-10 col-sm-offset-1">
-				<div class="inner" style="padding: 15px 10px 10px 15px;">
-					<h4 align="left">Prosedur Permohonan Pengajuan 111</h4><hr/>
-					<div class="inner-box">
-						<div class="image-box">
-							<figure class="image"><img style="width: 100%;" src="upload/pengajuan.jpg"></figure>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-	</div>
+<section class="prosedur-section" style="padding: 60px 0px; background-color: #f1f5f9;">
+    <div class="auto-container">
+        <div class="row clearfix">
+            <div class="col-md-12 col-sm-12">
+                <div class="prosedur-container">
+                    <h2 class="prosedur-title">Prosedur & Alur Pengajuan Informasi Publik</h2>
+                    <hr class="prosedur-divider" />
+                    
+                    <div class="row steps-row">
+                        <!-- Step 1 -->
+                        <div class="col-md-4 col-sm-12 step-col">
+                            <div class="step-card">
+                                <div class="step-header">
+                                    <div class="step-badge">1</div>
+                                    <h3 class="step-name">Pengajuan<br>Permohonan</h3>
+                                </div>
+                                <ul class="step-list">
+                                    <li><i class="fas fa-check-circle"></i> Bertemu PPID PT Garam</li>
+                                    <li><i class="fas fa-check-circle"></i> Email ke sekretariat@ptgaram.com</li>
+                                    <li><i class="fas fa-check-circle"></i> Hubungi (0328) 662416</li>
+                                    <li><i class="fas fa-check-circle"></i> Form online di e-ppid.ptgaram.com</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="col-md-4 col-sm-12 step-col">
+                            <div class="step-card">
+                                <div class="step-header">
+                                    <div class="step-badge">2</div>
+                                    <h3 class="step-name">Melengkapi<br>Formulir</h3>
+                                </div>
+                                <ul class="step-list">
+                                    <li><i class="fas fa-check-circle"></i> Lengkapi di Kantor PPID</li>
+                                    <li><i class="fas fa-check-circle"></i> Email PPID sekretariat@ptgaram.com</li>
+                                    <li><i class="fas fa-check-circle"></i> Aplikasi/Website PPID e-ppid.ptgaram.com</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="col-md-4 col-sm-12 step-col">
+                            <div class="step-card">
+                                <div class="step-header">
+                                    <div class="step-badge">3</div>
+                                    <h3 class="step-name">Tanda Terima &<br>Tanggapan</h3>
+                                </div>
+                                <ul class="step-list">
+                                    <li><i class="fas fa-check-circle"></i> Atasan PPID menindaklanjuti permohonan (maks. 30 hari)</li>
+                                    <li><i class="fas fa-check-circle"></i> Berkoordinasi dengan unit kerja terkait</li>
+                                    <li><i class="fas fa-check-circle"></i> Pengiriman tanggapan oleh Atasan PPID kepada Pemohon</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="prosedur-footer text-center" style="margin-top: 40px;">
+                        <a href="{{ asset('upload/pengajuan.jpg') }}" class="btn-subtle-view fancybox-trigger" title="Infografis Prosedur Permohonan Informasi">
+                            <i class="fas fa-eye"></i> Lihat Infografis Resmi
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <script>
     $(document).ready(function() {
-        // Inisialisasi Fancybox untuk pratinjau gambar dengan aman
         if($.fn.fancybox){
             $('.fancybox-trigger').fancybox({
                 openEffect  : 'elastic',
@@ -174,5 +222,3 @@
         }
     }
 </style>
-
-
