@@ -107,6 +107,22 @@
                     <p class="auth-desc text-center" style="margin-bottom: 25px;">Sudah punya akun? Silakan masuk.</p>
                     <hr class="auth-divider" style="margin-left: auto; margin-right: auto;" />
                     
+                    @if (session('error_login'))
+                        <div class="alert alert-danger" style="border-radius: 8px; margin-bottom: 20px; background: #fef2f2; border: 1px solid #f87171; color: #991b1b; padding: 12px 16px;">
+                            <strong><i class="fa fa-exclamation-triangle mr-2"></i> Kesalahan!</strong><br>
+                            {{ session('error_login') }}
+                        </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                if(typeof swal !== 'undefined') {
+                                    swal("Login Gagal!", "{{ session('error_login') }}", "error");
+                                } else {
+                                    alert("Login Gagal!\n" + "{{ session('error_login') }}");
+                                }
+                            });
+                        </script>
+                    @endif
+                    
                     <form method="post" id="form-login" action="{{ route('login.submit') }}">
                         @csrf
                         <div class="form-group top-aligned-group">

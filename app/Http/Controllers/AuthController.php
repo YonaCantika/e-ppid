@@ -73,8 +73,8 @@ class AuthController extends Controller
             return redirect()->route('user.dashboard');
         }
 
-        // Jika keduanya gagal, kembalikan pesan error eksplisit (bukan redirect back) agar terlihat jelas
-        return response("Login Gagal! Kombinasi email dan password tidak ditemukan di tabel Admin maupun Pemohon. Email yang dimasukkan: " . $credentials['email'], 401);
+        // Jika keduanya gagal, kembalikan dengan pesan error (kembali ke halaman login)
+        return back()->with('error_login', 'Login Gagal! Kombinasi email dan password tidak valid.')->withInput($request->except('password'));
     }
 
     public function submit_daftar(Request $request)
