@@ -145,7 +145,6 @@ class WelcomeController extends Controller
         $data = $this->getCommonData();
         $data['content'] = 'web.ubah_password';
         $data['email'] = $request->input('email');
-        $data['wa'] = $request->input('wa');
 
         return view('welcome_message', $data);
     }
@@ -386,54 +385,81 @@ class WelcomeController extends Controller
 
     public function cek_email(Request $request)
     {
-        $count = DB::table('pemohon')
-            ->where('email', $request->input('email'))
-            ->where('notelp', $request->input('wa'))
-            ->count();
-        return response($count);
+        $email = $request->input('email');
+
+        $countPemohon = DB::table('pemohon')->where('email', $email)->count();
+        $countUser = DB::table('users')->where('email', $email)->count();
+
+        return response()->json(['count' => $countPemohon + $countUser]);
     }
 
     public function lupa_password2(Request $request)
     {
         $email = $request->input('email');
-        $wa = $request->input('wa');
 
-        $generate_kode = date('yHdims') . strtoupper(substr(md5(uniqid()), 0, 10));
+        // Generate 6 digit kode OTP
+        $generate_kode = (string) mt_rand(100000, 999999);
 
-        $affected = DB::table('pemohon')
-            ->where('email', $email)
-            ->where('notelp', $wa)
-            ->update(['kode_unik' => $generate_kode]);
-
-        if ($affected) {
-            // Notifikasi WA dimatikan sesuai request user
-            return response()->json([
-                'status' => 1,
-                'email' => $email,
-                'wa' => $wa
-            ]);
+        // Cari di tabel pemohon dulu
+        $pemohon = \App\Models\Pemohon::where('email', $email)->first();
+        if ($pemohon) {
+            $pemohon->kode_unik = $generate_kode;
+            $pemohon->save();
+            $nama = $pemohon->nama;
         } else {
-            return response()->json(['status' => false, 'msg' => 'GAGAL SIMPAN FILE !']);
+            // Cari di tabel users (admin)
+            $user = \App\Models\User::where('email', $email)->first();
+            if (!$user) {
+                return response()->json(['status' => false, 'msg' => 'Email tidak ditemukan di database!']);
+            }
+            $user->kode_unik = $generate_kode;
+            $user->save();
+            $nama = $user->name;
         }
+
+        // Kirim kode verifikasi ke email
+        try {
+            \Illuminate\Support\Facades\Mail::to($email)->send(
+                new \App\Mail\ResetPasswordMail($nama, $email, $generate_kode)
+            );
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Gagal mengirim email reset password ke {$email}: " . $e->getMessage());
+            return response()->json([
+                'status' => false,
+                'msg' => 'Gagal mengirim email verifikasi. Silakan coba lagi nanti.'
+            ]);
+        }
+
+        return response()->json([
+            'status' => 1,
+            'email' => $email,
+            'msg' => 'Kode verifikasi telah dikirim ke email ' . $email
+        ]);
     }
 
     public function change_password(Request $request)
     {
         $email = $request->input('email');
-        $wa = $request->input('wa');
         $kode = $request->input('kde');
-        $password = md5($request->input('password-baru')); // Sesuai CI3
+        $password = $request->input('password-baru');
 
-        $cek = DB::table('pemohon')->where('email', $email)->where('notelp', $wa)->first();
-        
-        if ($cek && $cek->kode_unik == $kode) {
-            DB::table('pemohon')
-                ->where('email', $email)
-                ->where('notelp', $wa)
-                ->update(['status' => 1, 'password' => $password]);
-            return response()->json(['status' => true]);
-        } else {
-            return response()->json(['status' => false, 'msg' => 'Kode unik tidak cocok!']);
+        // Cari di tabel pemohon dulu
+        $pemohon = \App\Models\Pemohon::where('email', $email)->first();
+        if ($pemohon && $pemohon->kode_unik == $kode) {
+            $pemohon->password = \Illuminate\Support\Facades\Hash::make($password);
+            $pemohon->status = 1;
+            $pemohon->save();
+            return response()->json(['status' => true, 'msg' => 'Password berhasil diubah!']);
         }
+
+        // Cari di tabel users (admin)
+        $user = \App\Models\User::where('email', $email)->first();
+        if ($user && $user->kode_unik == $kode) {
+            $user->password = \Illuminate\Support\Facades\Hash::make($password);
+            $user->save();
+            return response()->json(['status' => true, 'msg' => 'Password berhasil diubah!']);
+        }
+
+        return response()->json(['status' => false, 'msg' => 'Kode verifikasi tidak cocok!']);
     }
 }

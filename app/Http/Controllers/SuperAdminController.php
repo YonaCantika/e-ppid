@@ -337,3 +337,6 @@ class SuperAdminController extends Controller
         return response()->json(['status' => true, 'msg' => "Akses menu pemohon '{$pemohon->nama}' berhasil diperbarui."]);
     }
 }
+
+
+

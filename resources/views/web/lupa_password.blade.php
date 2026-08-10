@@ -1,291 +1,245 @@
-﻿<section class="contact-section" style="padding: 30px 0px 30px;">
-
-	<div class="auto-container">
-
-		<div class="row clearfix" style="padding:5px;">
-
-			<div class="contact-info col-sm-8">
-
-				<div class="inner" style="padding: 15px 10px 10px 15px;">
-
-					<h4 align="left">Verifikasi Akun</h4><hr/>
-
-					<p style="font-style: italic; text-align: justify;" align="left">Silahkan masukkan email dan nomor WA yang Anda daftarkan.</p>
-
-					<div class="contact-form">
-
-						<form method="post" class="form form-horizontal" id="form-lupa" action="javascript:void(0)">
-
-							<div class="row clearfix">
-
-								<div class="form-group">
-
-									<div class="col-sm-4" align="right">
-
-										<label class="control-label">Email</label>
-
-									</div>
-
-									<div class="col-sm-8">
-										
-										<input type="text" class="form-control" id="email" name="email" placeholder="Email" style="height: 38px">
-										<i style="color: red;" id="email-alert" hidden="">Tidak Boleh Kosong.</i>
-
-									</div>
-
-								</div>
-
-								<div class="form-group">
-
-									<div class="col-sm-4" align="right">
-
-										<label class="control-label">Nomor WA</label>
-
-									</div>
-
-									<div class="col-sm-8">
-										
-										<input type="text" class="form-control" id="wa" name="wa" placeholder="Nomor WA" style="height: 38px">
-										<i style="color: red;" id="wa-alert" hidden="">Tidak Boleh Kosong.</i>
-
-										<div class="form-group" style="text-align: left;">
-											<p id="ResponseLupa"></p>
-										</div>
-
-									</div>
-
-								</div>								
-
-							</div>
-
-							<hr/>
-
-							<button type="submit" class="theme-btn btn-style-one" style="padding-top: 5px; padding-bottom: 5px; border-radius: 5px;"><i class="fa fa-check"></i> &nbsp; Submit </button>
-
-						</form>
-
-					</div>
-
-				</div>
-
-			</div>
-
-			<div class="contact-info col-sm-4 col-xs-12">
-
-				<div class="inner" style="padding: 15px 10px 10px 15px;">
-
-					<h4 align="left">Login Pemohon Informasi</h4><hr/>
-
-					<div class="contact-form">
-
-						<form method="post" id="form-login" action="javascript:void(0)">
-
-							<div class="row clearfix">
-
-
-
-								<div class="form-group" style="text-align: left;">
-
-									<div class="input-group">
-
-										<span class="input-group-addon"><i class="fa fa-user"></i></span>
-
-										<input type="text" name="usern" id="usern" class="form-control" placeholder="Email" style="height: 35px">
-
-									</div>
-
-									<i style="color: red;" id="usern-alert" hidden="">Tidak Boleh Kosong.</i>
-
-								</div>
-
-
-
-								<div class="form-group" style="text-align: left;">
-
-									<div class="input-group">
-
-										<span class="input-group-addon"><i class="fa fa-key"></i></span>
-
-										<input type="password" name="passw" id="passw" class="form-control" placeholder="Password" style="height: 35px">
-
-									</div>
-
-									<i style="color: red;" id="passw-alert" hidden="">Tidak Boleh Kosong.</i>
-
-								</div>
-
-								<div class="form-group" style="text-align: left;">
-
-									<p id="ResponseInput"></p>
-
-								</div>
-
-								<div class="form-group col-sm-12 text-left">
-
-									<button type="submit" class="theme-btn btn-style-one" style="padding-top: 2px; padding-bottom: 2px; border-radius: 5px;"><i class="fa fa-share"></i> &nbsp; Login</button>
-
-								</div>
-								<div class="form-group col-sm-12 text-left"><p ><a href="{{ url('/') }}/welcome/lupa_password ">Lupa Password?</a></p></div>
-							</div>
-
-						</form>
-
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-	</div>
-
+<section class="register-login-section" style="padding: 60px 0px; background-color: #f1f5f9;">
+    <div class="auto-container">
+        <div class="row clearfix" style="justify-content: center;">
+            
+            <!-- LUPA PASSWORD -->
+            <div class="col-md-6 col-sm-12">
+                <div class="auth-card" style="border-top: 4px solid #ef4444;">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: linear-gradient(135deg, #fef2f2, #fee2e2); border-radius: 50%; margin-bottom: 15px;">
+                            <i class="fa fa-lock" style="font-size: 24px; color: #dc2626;"></i>
+                        </div>
+                        <h3 class="auth-title" style="text-align: center;">Lupa Password</h3>
+                    </div>
+                    <p class="auth-desc" style="text-align: center;">Masukkan alamat email yang Anda daftarkan. Kami akan mengirimkan <strong>kode verifikasi 6 digit</strong> ke email tersebut untuk mereset password Anda.</p>
+                    <hr class="auth-divider" style="margin-left: auto; margin-right: auto; background: #ef4444;"/>
+                    
+                    <form method="post" class="form form-horizontal" id="form-lupa" action="javascript:void(0)">
+                        @csrf
+
+                        <div class="form-group top-aligned-group">
+                            <label class="top-label">Email <span class="text-danger">*</span></label>
+                            <div class="modern-input-group">
+                                <span class="input-icon"><i class="fa fa-envelope"></i></span>
+                                <input type="email" class="modern-input with-icon" id="email" name="email" placeholder="Masukkan email Anda" required>
+                            </div>
+                            <small style="color: red; display: none;" id="email-alert">Email wajib diisi.</small>
+                        </div>
+
+                        <div id="ResponseLupa" style="margin-bottom: 15px;"></div>
+
+                        <div class="form-group" style="margin-top: 20px;">
+                            <button type="submit" id="btn-submit-lupa" class="btn-modern-primary btn-block" style="background: linear-gradient(135deg, #dc2626, #ef4444); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);">
+                                <i class="fa fa-paper-plane"></i> &nbsp; KIRIM KODE VERIFIKASI
+                            </button>
+                        </div>
+
+                        <div class="form-group text-center" style="margin-top: 15px;">
+                            <a href="{{ route('login') }}" class="forgot-link" style="color: #64748b;">
+                                <i class="fa fa-arrow-left"></i> Kembali ke halaman Login
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+    </div>
 </section>
 
+<style>
+    .auth-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 40px 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        margin-bottom: 30px;
+        border: 1px solid #f1f5f9;
+    }
+    .auth-title {
+        font-size: 24px;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 15px;
+        margin-top: 0;
+    }
+    .auth-desc {
+        font-size: 14px;
+        color: #475569;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    .auth-divider {
+        width: 60px;
+        height: 4px;
+        background: #2563eb;
+        border: none;
+        margin: 0 0 30px 0;
+        border-radius: 2px;
+    }
+    .top-aligned-group {
+        margin-bottom: 20px;
+    }
+    .top-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 8px;
+    }
+    .modern-input {
+        width: 100%;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 14px;
+        color: #334155;
+        transition: all 0.3s ease;
+        background: #f8fafc;
+        box-shadow: none;
+    }
+    .modern-input:focus {
+        border-color: #ef4444;
+        background: #ffffff;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+    .modern-input-group {
+        position: relative;
+    }
+    .modern-input-group .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 16px;
+        z-index: 2;
+    }
+    .modern-input.with-icon {
+        padding-left: 45px;
+    }
+    .btn-modern-primary {
+        background: linear-gradient(135deg, #1d4ed8, #2563eb);
+        color: #ffffff;
+        border: none;
+        padding: 12px 25px;
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        cursor: pointer;
+    }
+    .btn-modern-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
+    }
+    .btn-modern-primary:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+    .btn-block {
+        display: block;
+        width: 100%;
+    }
+    .forgot-link {
+        color: #3b82f6;
+        font-size: 14px;
+        font-weight: 600;
+        transition: color 0.2s;
+    }
+    .forgot-link:hover {
+        color: #1d4ed8;
+        text-decoration: underline;
+    }
+    .alert-success-custom {
+        background: #f0fdf4;
+        border: 1px solid #22c55e;
+        color: #166534;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+    .alert-danger-custom {
+        background: #fef2f2;
+        border: 1px solid #f87171;
+        color: #991b1b;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+        .auth-card {
+            padding: 25px 20px;
+        }
+    }
+</style>
+
 <script type="text/javascript">
-
-	$( "#form-lupa" ).submit(function( event ) {
-		//event.preventDefault();
-
-		$('#email-alert').hide();
-
-		$('#wa-alert').hide();
-
-		
-
-		if ( !$( "#email" ).val()) {
-
-			$('#email-alert').show();
-
-		} else if ( !$( "#wa" ).val()) {
-
-			$('#wa-alert').show();
-
-		} else {
-
-			$.ajax({
-
-				url : "{{ url('welcome/cek_email') }}",
-				data: $(this).serialize(),
-				type: "POST",
-				dataType: "JSON",
-				success: function(data) {
-					if (data == 0) {
-						$('#ResponseLupa').text('Email/Nomor WA tidak tersedia di database!');
-					}else{
-						$.ajax({
-							url : "{{ url('welcome/lupa_password2') }}",
-							data: $('#form-lupa').serialize(),
-							type: "POST",
-							dataType: "JSON",
-							success: function(json) {
-								//var obj = jQuery.parseJSON(balikan);
-								//alert('MASUIK');
-								//alert(obj);
-								if (json.status == 1) {
-									location.replace('{{ url('/') }}/welcome/ubah_password/?email='+json.email+'&wa='+json.wa); 
-								}else{
-
-									alert('Lupa password gagal! Tidak mendapatkan kode unik');
-
-								}
-
-							},
-
-							error: function (jqXHR, textStatus, errorThrown ){
-
-								alert('Error get data from ajax');
-
-							}
-
-						});
-
-					}
-
-				},
-
-				error: function (jqXHR, textStatus, errorThrown ){
-
-					alert('Error get data from ajax');
-
-				}
-
-			});
-
-		}
-
-		event.preventDefault();
-
-	});
-
-
-
-	$( "#form-login" ).submit(function( event ) {
-
-		$('#usern-alert').hide();
-
-		$('#passw-alert').hide();
-
-		
-
-		if ( !$( "#usern" ).val()) {
-
-			$('#usern-alert').show();
-
-		} else if ( !$( "#passw" ).val()) {
-
-			$('#passw-alert').show();
-
-		} else {
-
-			$.ajax({
-
-				url: "{{ url('secure/visitor') }}",
-
-				type: "POST",
-
-				cache: false,
-
-				data: $(this).serialize(),
-
-				dataType:'json',
-
-				success: function(json){
-
-					if(json.status == 1){ window.location.href = json.url_home; }else
-
-					if(json.status == 0){ 
-
-						$('#ResponseInput').html(json.pesan); 
-
-
-
-					}else
-
-					if(json.status == 2){
-
-						$('#ResponseInput').html(json.pesan);
-
-						$('#passw').val('');
-
-					}
-
-				}
-
-			});
-
-
-
-		}
-
-		event.preventDefault();
-
-	});
-
-
-
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    });
+
+    $("#form-lupa").submit(function(event) {
+        event.preventDefault();
+
+        $('#email-alert').hide();
+        $('#ResponseLupa').html('');
+
+        var email = $('#email').val().trim();
+
+        if (!email) {
+            $('#email-alert').show();
+            return;
+        }
+
+        // Disable button & show loading
+        var $btn = $('#btn-submit-lupa');
+        var originalText = $btn.html();
+        $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> &nbsp; Mengirim...');
+
+        // Cek apakah email terdaftar
+        $.ajax({
+            url: "{{ url('cek_email') }}",
+            data: { email: email },
+            type: "POST",
+            dataType: "JSON",
+            success: function(data) {
+                if (data.count == 0) {
+                    $('#ResponseLupa').html('<div class="alert-danger-custom"><i class="fa fa-times-circle"></i> Email tidak ditemukan di database! Pastikan email yang Anda masukkan benar.</div>');
+                    $btn.prop('disabled', false).html(originalText);
+                } else {
+                    // Email ditemukan, kirim kode verifikasi
+                    $.ajax({
+                        url: "{{ url('lupa_password2') }}",
+                        data: { email: email },
+                        type: "POST",
+                        dataType: "JSON",
+                        success: function(json) {
+                            if (json.status == 1) {
+                                // Redirect ke halaman ubah password
+                                location.replace('{{ url("/ubah_password") }}?email=' + encodeURIComponent(json.email));
+                            } else {
+                                $('#ResponseLupa').html('<div class="alert-danger-custom"><i class="fa fa-times-circle"></i> ' + (json.msg || 'Gagal mengirim kode verifikasi. Silakan coba lagi.') + '</div>');
+                                $btn.prop('disabled', false).html(originalText);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            $('#ResponseLupa').html('<div class="alert-danger-custom"><i class="fa fa-times-circle"></i> Terjadi kesalahan server. Silakan coba lagi nanti.</div>');
+                            $btn.prop('disabled', false).html(originalText);
+                        }
+                    });
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#ResponseLupa').html('<div class="alert-danger-custom"><i class="fa fa-times-circle"></i> Terjadi kesalahan server. Silakan coba lagi nanti.</div>');
+                $btn.prop('disabled', false).html(originalText);
+            }
+        });
+    });
 </script>
-
-
-
-

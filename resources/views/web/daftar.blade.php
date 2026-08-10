@@ -136,7 +136,7 @@
                         </div>
                         
                         <div class="form-group text-center" style="margin-top: 15px;">
-                            <a href="{{ url('/') }}/welcome/lupa_password" class="forgot-link">Lupa Password?</a>
+                            <a href="{{ route('lupa_password') }}" class="forgot-link">Lupa Password?</a>
                         </div>
                     </form>
                 </div>
