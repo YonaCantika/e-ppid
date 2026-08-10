@@ -238,7 +238,7 @@
                     </div>
 
                     <div class="table-responsive mt-3">
-                        <table id="tbl-pemohon" class="table table-bordered table-striped table-hover">
+                        <table id="tbl-pemohon" class="table table-bordered table-striped table-hover text-nowrap" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th width="50">#</th>
@@ -309,7 +309,9 @@ $(document).ready(function () {
         language: {
             url: '//cdn.datatables.net/plug-ins/1.10.21/i18n/Indonesian.json'
         },
-        responsive: true,
+        responsive: false,
+        scrollX: true,
+        autoWidth: false,
         pageLength: 10,
     });
 
