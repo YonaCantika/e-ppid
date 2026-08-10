@@ -47,6 +47,97 @@
         }
     });
   </script>
+  <!-- Custom Modern Form Styles -->
+  <style>
+    /* Modern Form Controls */
+    .form-control, .custom-select {
+        background-color: #eef2f6 !important;
+        border: 1px solid #eef2f6 !important;
+        border-radius: 8px !important;
+        color: #334155 !important;
+        padding: 10px 15px !important;
+        height: auto !important;
+        box-shadow: none !important;
+        transition: all 0.2s ease-in-out;
+    }
+    .form-control:focus, .custom-select:focus {
+        background-color: #fff !important;
+        border: 1px solid #3b82f6 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    }
+    .form-control:disabled, .custom-select:disabled {
+        background-color: #e2e8f0 !important;
+        opacity: 0.8;
+    }
+    
+    /* Modern Labels */
+    label {
+        font-weight: 600 !important;
+        color: #1e293b !important;
+        margin-bottom: 8px !important;
+        font-size: 0.95rem;
+    }
+    
+    /* Modern Cards */
+    .card {
+        border-radius: 12px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+        border: none !important;
+    }
+    .card-header {
+        background-color: #fff !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        border-radius: 12px 12px 0 0 !important;
+    }
+    
+    /* Modern Modals */
+    .modal-content {
+        border-radius: 16px !important;
+        border: none !important;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+    }
+    .modal-header {
+        border-bottom: 1px solid #f1f5f9 !important;
+        background-color: #fff !important;
+        border-radius: 16px 16px 0 0 !important;
+        padding: 20px 24px !important;
+    }
+    .modal-footer {
+        border-top: 1px solid #f1f5f9 !important;
+        background-color: #f8fafc !important;
+        border-radius: 0 0 16px 16px !important;
+        padding: 16px 24px !important;
+    }
+    .modal-title {
+        font-weight: 700 !important;
+        color: #1e293b !important;
+    }
+    
+    /* Modern Tables inside forms */
+    .table-bordered {
+        border: 1px solid #f1f5f9 !important;
+        border-radius: 8px !important;
+        overflow: hidden;
+    }
+    .table-bordered th, .table-bordered td {
+        border: 1px solid #f1f5f9 !important;
+    }
+    .table thead th {
+        background-color: #f8fafc !important;
+        color: #475569 !important;
+        font-weight: 600 !important;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        padding: 12px 16px !important;
+        border-bottom: none !important;
+    }
+    .table tbody td {
+        padding: 12px 16px !important;
+        color: #334155 !important;
+        vertical-align: middle !important;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">

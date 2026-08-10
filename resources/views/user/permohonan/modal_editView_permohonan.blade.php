@@ -36,7 +36,7 @@ if ($status == 'view') {
 
                               <td>'.$data_permohonan->upload_file.'</td>
 
-                              <td><a href="'.base_url().'./file/'.$data_permohonan->upload_file.'" style="color:black" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> Download</a></td>
+                              <td><a href="'.url('/').'/file/'.$data_permohonan->upload_file.'" style="color:black" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> Download</a></td>
 
                               </tr>';
 
@@ -142,7 +142,7 @@ if ($status == 'view') {
 
                </div>
 
-               {{ $isi_tanggapan }}
+               {!! $isi_tanggapan !!}
 
                
 
