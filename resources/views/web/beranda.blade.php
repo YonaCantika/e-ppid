@@ -180,7 +180,7 @@
                 <li><a href="#">Informasi yang wajib disediakan dan diumumkan secara serta-merta;</a></li>
                 <li><a href="#">Informasi yang wajib sedia setiap saat;</a></li>
             </ul>
-            <a href="{{ url('permohonan') }}" class="btn-primary-action">Ajukan Permohonan</a>
+            <a href="{{ url('daftar') }}" class="btn-primary-action">Ajukan Permohonan</a>
             
             <div class="hero-contact">
                 <strong>PPID PT Garam</strong><br>
