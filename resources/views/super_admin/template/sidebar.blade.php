@@ -60,6 +60,15 @@
                     </a>
                 </li>
 
+                <!-- Manajemen Menu -->
+                <li class="nav-item">
+                    <a href="{{ route('super_admin.view_menu') }}"
+                       class="nav-link {{ Request::is('super-admin/view_menu') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>Manajemen Menu</p>
+                    </a>
+                </li>
+
                 <li class="nav-header">AKSES ADMIN</li>
 
                 <!-- Link ke panel Admin biasa -->

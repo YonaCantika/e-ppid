@@ -63,52 +63,18 @@ Route::middleware(['auth:web'])->prefix('admin')->name('admin.')->group(function
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/view_permohonan', [AdminController::class, 'view_permohonan'])->name('view_permohonan');
     Route::get('/view_pemohon', [AdminController::class, 'view_pemohon'])->name('view_pemohon');
-    Route::get('/view_menu', [AdminController::class, 'view_menu'])->name('view_menu');
-    Route::get('/menu_menu/{id}', [AdminController::class, 'menu_menu']);
     
+
     // API DataTables & Chart
     Route::get('/listdatapemohon', [AdminController::class, 'listdatapemohon']);
     Route::get('/listakunpemohon', [AdminController::class, 'listakunpemohon']);
     Route::get('/chart_donat_status', [AdminController::class, 'chart_donat_status']);
     Route::get('/chart_pie_tipe', [AdminController::class, 'chart_pie_tipe']);
-    Route::get('/listmenu', [AdminController::class, 'listmenu']);
-    Route::get('/list_informasi_publik', [AdminController::class, 'list_informasi_publik']);
-    Route::get('/list_regulasi', [AdminController::class, 'list_regulasi']);
-    Route::get('/list_maklumat', [AdminController::class, 'list_maklumat']);
-    Route::get('/list_profil', [AdminController::class, 'list_profil']);
-    Route::get('/list_prosedur', [AdminController::class, 'list_prosedur']);
-    
     // CRUD Permohonan & Tanggapan
     Route::post('/tanggapan', [AdminController::class, 'tanggapan']);
     Route::post('/form_editView_permohonan', [AdminController::class, 'form_editView_permohonan']);
 
-    // CRUD Menu
-    Route::post('/getModalAddMenu', [AdminController::class, 'getModalAddMenu']);
-    Route::post('/generate_link', [AdminController::class, 'generate_link']);
-    Route::post('/add_menu', [AdminController::class, 'add_menu']);
-    Route::post('/form_editView_menu', [AdminController::class, 'form_editView_menu']);
-    Route::post('/save_editmenu', [AdminController::class, 'save_editmenu']);
 
-    // CRUD Informasi Publik
-    Route::post('/getModalAddMenu_informasi', [AdminController::class, 'getModalAddMenu_informasi']);
-    Route::post('/add_informasi_publik', [AdminController::class, 'add_informasi_publik']);
-    Route::post('/form_editView_informasi', [AdminController::class, 'form_editView_informasi']);
-    Route::post('/save_editinformasi', [AdminController::class, 'save_editinformasi']);
-
-    // CRUD Settings (Regulasi, Maklumat, Profil, Prosedur)
-    Route::post('/getModalAddMenu_regulasi', [AdminController::class, 'getModalAddMenu_regulasi']);
-    Route::post('/add_regulasi', [AdminController::class, 'add_regulasi']);
-    Route::post('/form_editView_regulasi', [AdminController::class, 'form_editView_regulasi']);
-    Route::post('/edit_regulasi', [AdminController::class, 'edit_regulasi']);
-    
-    Route::post('/form_editView_maklumat', [AdminController::class, 'form_editView_maklumat']);
-    Route::post('/edit_maklumat', [AdminController::class, 'edit_maklumat']);
-
-    Route::post('/form_editView_profil', [AdminController::class, 'form_editView_profil']);
-    Route::post('/edit_profil', [AdminController::class, 'edit_profil']);
-
-    Route::post('/form_editView_prosedur', [AdminController::class, 'form_editView_prosedur']);
-    Route::post('/edit_prosedur', [AdminController::class, 'edit_prosedur']);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -138,4 +104,41 @@ Route::middleware(['auth:web', 'super_admin'])->prefix('super-admin')->name('sup
     // Manajemen Akses Menu — Pemohon
     Route::post('/getModalAksesPemohon', [SuperAdminController::class, 'getModalAksesPemohon'])->name('getModalAksesPemohon');
     Route::post('/save_akses_pemohon', [SuperAdminController::class, 'save_akses_pemohon'])->name('save_akses_pemohon');
+
+    // Manajemen Menu Website
+    Route::get('/view_menu', [SuperAdminController::class, 'view_menu'])->name('view_menu');
+    Route::get('/menu_menu/{id}', [SuperAdminController::class, 'menu_menu']);
+    Route::get('/listmenu', [SuperAdminController::class, 'listmenu']);
+    Route::post('/getModalAddMenu', [SuperAdminController::class, 'getModalAddMenu']);
+    Route::post('/generate_link', [SuperAdminController::class, 'generate_link']);
+    Route::post('/add_menu', [SuperAdminController::class, 'add_menu']);
+    Route::post('/form_editView_menu', [SuperAdminController::class, 'form_editView_menu']);
+    Route::post('/save_editmenu', [SuperAdminController::class, 'save_editmenu']);
+    Route::post('/delete_menu', [SuperAdminController::class, 'delete_menu']);
+    // Manajemen Konten Settings (Dipindah dari Admin)
+    Route::get('/list_informasi_publik', [SuperAdminController::class, 'list_informasi_publik']);
+    Route::get('/list_regulasi', [SuperAdminController::class, 'list_regulasi']);
+    Route::get('/list_maklumat', [SuperAdminController::class, 'list_maklumat']);
+    Route::get('/list_profil', [SuperAdminController::class, 'list_profil']);
+    Route::get('/list_prosedur', [SuperAdminController::class, 'list_prosedur']);
+    // CRUD Informasi Publik
+    Route::post('/getModalAddMenu_informasi', [SuperAdminController::class, 'getModalAddMenu_informasi']);
+    Route::post('/add_informasi_publik', [SuperAdminController::class, 'add_informasi_publik']);
+    Route::post('/form_editView_informasi', [SuperAdminController::class, 'form_editView_informasi']);
+    Route::post('/save_editinformasi', [SuperAdminController::class, 'save_editinformasi']);
+
+    // CRUD Settings (Regulasi, Maklumat, Profil, Prosedur)
+    Route::post('/getModalAddMenu_regulasi', [SuperAdminController::class, 'getModalAddMenu_regulasi']);
+    Route::post('/add_regulasi', [SuperAdminController::class, 'add_regulasi']);
+    Route::post('/form_editView_regulasi', [SuperAdminController::class, 'form_editView_regulasi']);
+    Route::post('/edit_regulasi', [SuperAdminController::class, 'edit_regulasi']);
+    
+    Route::post('/form_editView_maklumat', [SuperAdminController::class, 'form_editView_maklumat']);
+    Route::post('/edit_maklumat', [SuperAdminController::class, 'edit_maklumat']);
+
+    Route::post('/form_editView_profil', [SuperAdminController::class, 'form_editView_profil']);
+    Route::post('/edit_profil', [SuperAdminController::class, 'edit_profil']);
+
+    Route::post('/form_editView_prosedur', [SuperAdminController::class, 'form_editView_prosedur']);
+    Route::post('/edit_prosedur', [SuperAdminController::class, 'edit_prosedur']);
 });

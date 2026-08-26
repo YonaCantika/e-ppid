@@ -35,12 +35,6 @@ class MenuHelper
                 'route_pattern' => 'admin/view_pemohon',
                 'url_path'      => '/admin/view_pemohon',
             ],
-            'view_menu' => [
-                'label'         => 'Manajemen Menu Website',
-                'icon'          => 'fas fa-list',
-                'route_pattern' => 'admin/view_menu',
-                'url_path'      => '/admin/view_menu',
-            ],
         ];
     }
 
