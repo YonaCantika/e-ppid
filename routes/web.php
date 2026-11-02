@@ -38,6 +38,9 @@ Route::get('/daftar', [AuthController::class, 'daftar'])->name('login');
 Route::get('/login', function() {
     return redirect()->route('login');
 });
+Route::get('/register', function() {
+    return redirect('/daftar?mode=register#register');
+})->name('register');
 
 Route::post('/daftar', [AuthController::class, 'submit_daftar'])->name('daftar.submit');
 Route::post('/login', [AuthController::class, 'submit_login'])->name('login.submit');
