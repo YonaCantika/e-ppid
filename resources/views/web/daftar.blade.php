@@ -410,6 +410,68 @@
                 </form>
 
             </div>
+<<<<<<< HEAD
+=======
+            
+            <!-- LOGIN -->
+            <div class="col-md-4 col-sm-12">
+                <div class="auth-card login-card">
+                    <h3 class="auth-title">Login Pemohon</h3>
+                    <p class="auth-desc text-center" style="margin-bottom: 25px;">Sudah punya akun? Silakan masuk.</p>
+                    <hr class="auth-divider" style="margin-left: auto; margin-right: auto;" />
+                    
+                    @if (session('error_login'))
+                        <div class="alert alert-danger" style="border-radius: 8px; margin-bottom: 20px; background: #fef2f2; border: 1px solid #f87171; color: #991b1b; padding: 12px 16px;">
+                            <strong><i class="fa fa-exclamation-triangle mr-2"></i> Kesalahan!</strong><br>
+                            {{ session('error_login') }}
+                        </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                if(typeof swal !== 'undefined') {
+                                    swal("Login Gagal!", "{{ session('error_login') }}", "error");
+                                } else {
+                                    alert("Login Gagal!\n" + "{{ session('error_login') }}");
+                                }
+                            });
+                        </script>
+                    @endif
+                    
+                    <form method="post" id="form-login" action="{{ route('login.submit') }}">
+                        @csrf
+                        <div class="form-group top-aligned-group">
+                            <label class="top-label">Email</label>
+                            <div class="modern-input-group">
+                                <span class="input-icon"><i class="fa fa-envelope"></i></span>
+                                <input type="email" name="email" id="usern" class="modern-input with-icon" placeholder="Email Anda">
+                            </div>
+                            @error('email') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                        
+                        <div class="form-group top-aligned-group">
+                            <label class="top-label">Password</label>
+                            <div class="modern-input-group">
+                                <span class="input-icon"><i class="fa fa-lock"></i></span>
+                                <input type="password" name="password" id="passw" class="modern-input with-icon" placeholder="Password Anda">
+                            </div>
+                            @error('password') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                        
+                        <div class="form-group">
+                            <p id="ResponseInput"></p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn-modern-primary btn-block"><i class="fas fa-sign-in-alt"></i> MASUK</button>
+                        </div>
+                        
+                        <div class="form-group text-center" style="margin-top: 15px;">
+                            <a href="{{ route('lupa_password') }}" class="forgot-link">Lupa Password?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+>>>>>>> 51e80362285b4163897b31b1d3a529dd02d3d0f4
         </div>
 
     </div>

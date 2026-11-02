@@ -47,199 +47,66 @@
                                 <ul class="navigation clearfix" style="float: right;">
                                     <li><a href="{{ url('beranda') }}">Beranda</a></li>
                                         <?php 
-                                        $menutentang = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 1)->get();
-                                        if ($menutentang->count() > 1): ?>
-                                        <?php $header = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 1)->where('static',1)->first(); ?>
-                                            <li class='dropdown'><a href="#">{{ $header->judul }}</a>
-                                                <ul>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status_link = 'active' AND id_menu = 1 order by urut asc"); 
-                                                        foreach($menutentangstatic as $key) { ?>
-                                                        <?php if ($key->link != "static") { ?>
-                                                            
-                                                            <?php if($key->status == 0) { ?>
-                                                                <li><a href="{{ url('Beranda/detaildata/'.$key->slug) }}">{{ $key->judul }}</a></li>
-                                                            <?php } else { ?>
-                                                                <li><a href="{{ url($key->link) }}">{{ $key->judul }}</a></li>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    <?php } ?>
-                                                </ul>
-                                            </li>
-                                        <?php else: ?>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status = 1 AND status_link = 'active' AND id_menu = 1 AND link != 'static'"); 
-                                                        foreach($menutentangstatic as $key1) { ?>
-                                                        <li><a href="{{ url($key1->link) }}">{{ $key1->judul }}</a></li>
-                                                    <?php } ?>
-                                        <?php endif ?>
-                                        
+                                        // Ambil semua parent menu aktif (sub_menu = 0) kecuali ID 6 (Daftar/Login)
+                                        $parents = \Illuminate\Support\Facades\DB::table('menu')
+                                            ->where('sub_menu', 0)
+                                            ->where('status_link', 'active')
+                                            ->where('id', '!=', 6)
+                                            ->orderBy('urut', 'asc')
+                                            ->get();
+
+                                        foreach($parents as $parent): 
+                                            // Cek apakah parent ini memiliki children
+                                            $children = \Illuminate\Support\Facades\DB::table('menu')
+                                                ->where('id_menu', $parent->id)
+                                                ->where('sub_menu', 1)
+                                                ->where('status_link', 'active')
+                                                ->orderBy('urut', 'asc')
+                                                ->get();
+                                                
+                                            if($children->count() > 0): ?>
+                                                <li class='dropdown'><a href="#">{{ $parent->judul }}</a>
+                                                    <ul>
+                                                        <?php foreach($children as $child): ?>
+                                                            <?php if($child->link != 'static'): ?>
+                                                                <li><a href="{{ url($child->link) }}">{{ $child->judul }}</a></li>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                    </ul>
+                                                </li>
+                                            <?php else: ?>
+                                                <?php if($parent->link != 'static'): ?>
+                                                    <li><a href="{{ url($parent->link) }}">{{ $parent->judul }}</a></li>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+
                                         <?php 
-                                        $menu2 = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 2)->get();
-                                        if ($menu2->count() > 1): ?>
-                                        <?php $header = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 2)->where('static',1)->first(); ?>
-                                            <li class='dropdown'><a href="#">{{ $header->judul }}</a>
-                                                <ul>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status_link = 'active' AND id_menu = 2 order by urut asc"); 
-                                                        foreach($menutentangstatic as $key) { ?>
-                                                        <?php if ($key->link != "static") { ?>
-                                                            
-                                                            <?php if($key->status == 0) { ?>
-                                                                <li><a href="{{ url('Beranda/detaildata/'.$key->slug) }}">{{ $key->judul }}</a></li>
-                                                            <?php } else { ?>
-                                                                <li><a href="{{ url($key->link) }}">{{ $key->judul }}</a></li>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    <?php } ?>
-                                                </ul>
-                                            </li>
-                                        <?php else: ?>
-                                            <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status = 1 AND id_menu = 2 AND link != 'static'"); 
-                                                foreach($menutentangstatic as $key1) { ?>
-                                                <li><a href="{{ url($key1->link) }}">{{ $key1->judul }}</a></li>
-                                            <?php } ?>
-                                        <?php endif ?>
-                                        
-                                        <?php 
-                                        $menu3 = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 3)->get();
-                                        if ($menu3->count() > 1): ?>
-                                        <?php $header = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 3)->where('static',1)->first(); ?>
-                                            <li class='dropdown'><a href="#">{{ $header->judul }}</a>
-                                                <ul>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status_link = 'active' AND id_menu = 3 order by urut asc"); 
-                                                        foreach($menutentangstatic as $key) { ?>
-                                                        <?php if ($key->link != "static") { ?>
-                                                            
-                                                            <?php if($key->status == 0) { ?>
-                                                                <li><a href="{{ url('Beranda/detaildata/'.$key->slug) }}">{{ $key->judul }}</a></li>
-                                                            <?php } else { ?>
-                                                                <li><a href="{{ url($key->link) }}">{{ $key->judul }}</a></li>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    <?php } ?>
-                                                </ul>
-                                            </li>
-                                        <?php else: ?>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status = 1 AND status_link = 'active' AND id_menu = 3 AND link != 'static'"); 
-                                                        foreach($menutentangstatic as $key1) { ?>
-                                                        <li><a href="{{ url($key1->link) }}">{{ $key1->judul }}</a></li>
-                                                    <?php } ?>
-                                        <?php endif ?>
-                                        
-                                         <?php 
-                                        $menu4 = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 4)->get();
-                                        if ($menu4->count() > 1): ?>
-                                        <?php $header = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 4)->where('static',1)->first(); ?>
-                                            <li class='dropdown'><a href="#">{{ $header->judul }}</a>
-                                                <ul>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status_link = 'active' AND id_menu = 4 order by urut asc"); 
-                                                        foreach($menutentangstatic as $key) { ?>
-                                                        <?php if ($key->link != "static") { ?>
-                                                            
-                                                            <?php if($key->status == 0) { ?>
-                                                                <li><a href="{{ url('Beranda/detaildata/'.$key->slug) }}">{{ $key->judul }}</a></li>
-                                                            <?php } else { ?>
-                                                                <li><a href="{{ url($key->link) }}">{{ $key->judul }}</a></li>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    <?php } ?>
-                                                </ul>
-                                            </li>
-                                        <?php else: ?>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status = 1 AND status_link = 'active' AND id_menu = 4 AND link != 'static'"); 
-                                                        foreach($menutentangstatic as $key1) { ?>
-                                                        <li><a href="{{ url($key1->link) }}">{{ $key1->judul }}</a></li>
-                                                    <?php } ?>
-                                        <?php endif ?>
-                                        
-                                        <?php 
-                                        $menu5 = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 5)->get();
-                                        if ($menu5->count() > 1): ?>
-                                        <?php $header = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 5)->where('static',1)->first(); ?>
-                                            <li class='dropdown'><a href="#">{{ $header->judul }}</a>
-                                                <ul>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status_link = 'active' AND id_menu = 5 order by urut asc"); 
-                                                        foreach($menutentangstatic as $key) { ?>
-                                                        <?php if ($key->link != "static") { ?>
-                                                            
-                                                            <?php if($key->status == 0) { ?>
-                                                                <li><a href="{{ url('Beranda/detaildata/'.$key->slug) }}">{{ $key->judul }}</a></li>
-                                                            <?php } else { ?>
-                                                                <li><a href="{{ url($key->link) }}">{{ $key->judul }}</a></li>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    <?php } ?>
-                                                </ul>
-                                            </li>
-                                        <?php else: ?>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status = 1 AND status_link = 'active' AND id_menu = 5 AND link != 'static'"); 
-                                                        foreach($menutentangstatic as $key1) { ?>
-                                                        <li><a href="{{ url($key1->link) }}">{{ $key1->judul }}</a></li>
-                                                    <?php } ?>
-                                        <?php endif ?>
-                                        
-                                        <?php 
+                                        // Menu Auth Khusus
                                         if (!auth()->check()) {
-                                        $menu6 = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 6)->get();
-                                        if ($menu6->count() > 1): ?>
-                                        <?php $header = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 6)->where('static',1)->first(); ?>
-                                            <li class='dropdown'><a href="#">{{ $header->judul }}</a>
-                                                <ul>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status_link = 'active' AND id_menu = 6 order by urut asc"); 
-                                                        foreach($menutentangstatic as $key) { ?>
-                                                        <?php if ($key->link != "static") { ?>
-                                                            
-                                                            <?php if($key->status == 0) { ?>
-                                                                <li><a href="{{ url('Beranda/detaildata/'.$key->slug) }}">{{ $key->judul }}</a></li>
-                                                            <?php } else { ?>
-                                                                <li><a href="{{ url($key->link) }}">{{ $key->judul }}</a></li>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    <?php } ?>
-                                                </ul>
-                                            </li>
-                                        <?php else: ?>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status = 1 AND status_link = 'active' AND id_menu = 6 AND link != 'static'"); 
-                                                        foreach($menutentangstatic as $key1) { ?>
-                                                        <li class="login-card-btn"><a href="{{ url($key1->link) }}"><i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i> {{ $key1->judul }}</a></li>
-                                                    <?php } ?>
-                                        <?php endif ?>
-                                        <?php }else{ ?>
+                                            $loginMenu = \Illuminate\Support\Facades\DB::table('menu')->where('id', 6)->where('status_link', 'active')->first();
+                                            if ($loginMenu) {
+                                                // Cek jika Login punya dropdown (jarang, tapi ditangani agar aman)
+                                                $loginChildren = \Illuminate\Support\Facades\DB::table('menu')
+                                                    ->where('id_menu', 6)->where('sub_menu', 1)->where('status_link', 'active')->get();
+                                                if ($loginChildren->count() > 0) { ?>
+                                                    <li class='dropdown login-card-btn'><a href="#"><i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i> {{ $loginMenu->judul }}</a>
+                                                        <ul>
+                                                            <?php foreach($loginChildren as $child): ?>
+                                                                <?php if($child->link != 'static'): ?>
+                                                                    <li><a href="{{ url($child->link) }}">{{ $child->judul }}</a></li>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        </ul>
+                                                    </li>
+                                                <?php } else { ?>
+                                                    <li class="login-card-btn"><a href="{{ url($loginMenu->link) }}"><i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i> {{ $loginMenu->judul }}</a></li>
+                                                <?php }
+                                            }
+                                        } else { ?>
                                             <li class="login-card-btn"><a href="{{ url('permohonan') }}"><i class="fas fa-file-alt" style="margin-right: 8px;"></i> Permohonan</a></li>
                                             <li class="login-card-btn" style="margin-left: 5px;"><a href="{{ url('secure/logout') }}" style="background: linear-gradient(135deg, #e53935 0%, #b71c1c 100%) !important; box-shadow: 0 4px 15px rgba(183, 28, 28, 0.25);"><i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout</a></li>
                                         <?php } ?>
-                                        
-                                        <?php 
-                                        $menu7 = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 7)->get();
-                                        if ($menu7->count() > 1): ?>
-                                        <?php $header = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 7)->where('static',1)->first(); ?>
-                                            <li class='dropdown'><a href="#">{{ $header->judul }}</a>
-                                                <ul>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status_link = 'active' AND id_menu = 7 order by urut asc"); 
-                                                        foreach($menutentangstatic as $key) { ?>
-                                                        <?php if ($key->link != "static") { ?>
-                                                            
-                                                            <?php if($key->status == 0) { ?>
-                                                                <li><a href="{{ url('Beranda/detaildata/'.$key->slug) }}">{{ $key->judul }}</a></li>
-                                                            <?php } else { ?>
-                                                                <li><a href="{{ url($key->link) }}">{{ $key->judul }}</a></li>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    <?php } ?>
-                                                </ul>
-                                            </li>
-                                        <?php else: ?>
-                                                    <?php $menutentangstatic = \Illuminate\Support\Facades\DB::select("SELECT * FROM `menu` WHERE status = 1 AND status_link = 'active' AND id_menu = 7 AND link != 'static'"); 
-                                                        foreach($menutentangstatic as $key1) { ?>
-                                                        <li><a href="{{ url($key1->link) }}">{{ $key1->judul }}</a></li>
-                                                    <?php } ?>
-                                        <?php endif ?>
-                                        
-                                        <?php 
-                                        $menu8 = \Illuminate\Support\Facades\DB::table('menu')->where('id_menu', 11)->where('status_link','active')->get();
-                                        if ($menu8->count() > 0): ?>
-                                                    <?php foreach($menu8 as $key1) { ?>
-                                                        <li><a href="{{ url('Beranda/detaildata/'.$key1->slug) }}">{{ $key1->judul }}</a></li>
-                                                    <?php } ?>
-                                        <?php endif ?>
                                     </ul>
                                 </div>
                                
