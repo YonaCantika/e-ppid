@@ -73,7 +73,6 @@ class AuthController extends Controller
             return redirect()->route('user.dashboard');
         }
 
-<<<<<<< HEAD
         // Jika keduanya gagal
         if ($request->ajax() || $request->wantsJson()) {
             return response("Login Gagal! Kombinasi email dan password tidak ditemukan di tabel Admin maupun Pemohon. Email yang dimasukkan: " . $credentials['email'], 401);
@@ -83,10 +82,6 @@ class AuthController extends Controller
             ->withInput($request->only('email'))
             ->withErrors(['email' => 'Login Gagal! Kombinasi email dan kata sandi tidak ditemukan atau belum terdaftar.'])
             ->with('login_error', 'Login Gagal! Kombinasi email dan kata sandi tidak cocok. Silakan periksa kembali email dan password Anda.');
-=======
-        // Jika keduanya gagal, kembalikan dengan pesan error (kembali ke halaman login)
-        return back()->with('error_login', 'Login Gagal! Kombinasi email dan password tidak valid.')->withInput($request->except('password'));
->>>>>>> 51e80362285b4163897b31b1d3a529dd02d3d0f4
     }
 
     public function submit_daftar(Request $request)
