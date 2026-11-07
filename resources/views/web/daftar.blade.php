@@ -107,12 +107,12 @@
                         </div>
 
                         <!-- Feedback Alerts (Error / Success / Warning) -->
-                        @if (session('login_error') || $errors->has('login_error') || $errors->has('email') || $errors->has('password'))
+                        @if (session('login_error') || session('error_login') || $errors->has('login_error') || $errors->has('email') || $errors->has('password'))
                             <div class="auth-alert alert-danger-custom">
                                 <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
                                 <div class="alert-body">
                                     <strong>Login Gagal!</strong>
-                                    <p>{{ session('login_error') ?? $errors->first('login_error') ?? $errors->first('email') ?? $errors->first('password') }}</p>
+                                    <p>{{ session('login_error') ?? session('error_login') ?? $errors->first('login_error') ?? $errors->first('email') ?? $errors->first('password') }}</p>
                                 </div>
                             </div>
                         @endif
