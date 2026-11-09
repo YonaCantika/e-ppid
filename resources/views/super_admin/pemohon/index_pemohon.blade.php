@@ -6,16 +6,18 @@
         position: relative;
     }
     
-    /* The Blue Hero Background (Small version for list page) */
+    /* The Blue Hero Background (Navy Curved Hero) */
     .hero-bg-list {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 160px;
-        background: #5a5ce2;
-        border-bottom-left-radius: 30px;
+        height: 220px;
+        background: linear-gradient(135deg, #0f3964 0%, #004b93 50%, #1d4ed8 100%) !important;
+        border-bottom-left-radius: 30px !important;
+        border-bottom-right-radius: 30px !important;
         z-index: 0;
+        box-shadow: 0 4px 20px rgba(0, 75, 147, 0.2);
     }
 
     /* Container holding the card */
@@ -201,14 +203,13 @@
 
     <div class="content-header" style="position: relative; z-index: 2;">
         <div class="container-fluid">
-            <div class="row mb-2 mt-3">
-                <div class="col-sm-6">
-                    <h1 class="m-0">
-                        Manajemen Akun Pemohon
-                    </h1>
+            <div class="row align-items-center mb-2">
+                <div class="col-md-7 col-sm-12">
+                    <h1 class="m-0 font-weight-bold">Manajemen Akun Pemohon &bull; Super Admin</h1>
+                    <p class="hero-subtitle">Daftar seluruh akun pemohon informasi publik dan status verifikasinya.</p>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                <div class="col-md-5 col-sm-12 text-md-right mt-3 mt-md-0">
+                    <ol class="breadcrumb float-md-right">
                         <li class="breadcrumb-item"><a href="{{ route('super_admin.dashboard') }}">Super Admin</a></li>
                         <li class="breadcrumb-item active">Akun Pemohon</li>
                     </ol>

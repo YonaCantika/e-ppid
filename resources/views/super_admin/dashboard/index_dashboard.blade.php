@@ -1,142 +1,243 @@
 <style>
-    /* Reference Design Overrides */
-    body, .content-wrapper {
+    /* Styling Dasar Wrapper Dashboard */
+    .content-wrapper {
         background-color: #f4f6f9 !important;
-        font-family: 'Inter', 'Source Sans Pro', sans-serif;
-    }
-    .content-header {
+        font-family: 'Inter', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         position: relative;
-        z-index: 2;
-        padding-top: 30px;
-    }
-    .content-header h1 {
-        color: #fff;
-        font-weight: 700;
-        font-size: 1.8rem;
-    }
-    .content-header .breadcrumb-item a,
-    .content-header .breadcrumb-item.active {
-        color: rgba(255, 255, 255, 0.8) !important;
     }
     
-    /* The Blue Hero Background */
-    .hero-bg {
+    /* Hero Background Khas PT Garam */
+    .hero-bg-list {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 200px;
-        background: #5a5ce2;
+        height: 220px;
+        background: linear-gradient(135deg, #0f3964 0%, #004b93 50%, #1d4ed8 100%);
         border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
         z-index: 0;
+        box-shadow: 0 4px 20px rgba(0, 75, 147, 0.2);
     }
 
-    /* Cards Layout matching reference */
-    .dashboard-container {
+    .content-header, .content {
         position: relative;
         z-index: 2;
-        margin-top: 10px;
     }
     
-    .ref-card {
-        background: #fff;
-        border-radius: 16px;
-        padding: 15px 20px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        border: 1px solid #e2e8f0;
-        margin-bottom: 20px;
-        position: relative;
+    .content-header {
+        padding-top: 25px;
+        padding-bottom: 15px;
+    }
+    
+    .content-header h1 {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.65rem;
+        margin: 0;
+        line-height: 1.2;
+    }
+    
+    .content-header .hero-subtitle {
+        color: #e0f2fe;
+        font-size: 0.95rem;
+        margin-top: 6px;
+        margin-bottom: 0;
     }
 
-    /* Stat Cards */
+    .content-header .breadcrumb {
+        background: transparent !important;
+        padding: 0;
+        margin-bottom: 8px;
+    }
+
+    .content-header .breadcrumb-item a {
+        color: #e0f2fe !important;
+    }
+    
+    .content-header .breadcrumb-item.active {
+        color: #ffffff !important;
+        font-weight: 600;
+    }
+
+    .btn-hero-action {
+        background: #ffffff !important;
+        color: #004b93 !important;
+        border: none !important;
+        padding: 9px 20px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        transition: all 0.25s ease;
+        cursor: pointer;
+        text-decoration: none !important;
+    }
+    .btn-hero-action:hover {
+        background: #f8fafc !important;
+        color: #003366 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+    }
+
+    .dashboard-container {
+        margin-top: 10px;
+        padding-bottom: 40px;
+    }
+
+    /* ==============================================================
+       1. KARTU METRIK MODERN (4 GRID DINAMIS)
+       ============================================================== */
+    .metric-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 22px 24px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 4px 10px -2px rgba(0, 0, 0, 0.02);
+        border: 1px solid #e2e8f0;
+        margin-bottom: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 175px;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .metric-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 30px -5px rgba(0, 40, 100, 0.12);
+    }
+
+    /* Top Accent Line */
+    .metric-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+    }
+    .card-accent-blue::before   { background: linear-gradient(90deg, #004b93, #3b82f6); }
+    .card-accent-green::before  { background: linear-gradient(90deg, #16a34a, #22c55e); }
+    .card-accent-red::before    { background: linear-gradient(90deg, #dc2626, #ef4444); }
+    .card-accent-amber::before  { background: linear-gradient(90deg, #d97706, #f59e0b); }
+
     .stat-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 10px;
-    }
-    .stat-title {
-        color: #7b8398;
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
-    .stat-tag {
-        font-size: 0.7rem;
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-weight: 700;
-    }
-    .tag-blue { background-color: #e5edff; color: #5a5ce2; }
-    .tag-green { background-color: #dcfce7; color: #22c55e; }
-    .tag-red { background-color: #fee2e2; color: #ef4444; }
-    .tag-yellow { background-color: #fef3c7; color: #f59e0b; }
-    
-    .stat-value {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #1e293b;
         margin-bottom: 12px;
     }
+    .stat-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .stat-icon-box {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+    }
+    .icon-box-blue   { background-color: #eff6ff; color: #004b93; }
+    .icon-box-green  { background-color: #f0fdf4; color: #16a34a; }
+    .icon-box-red    { background-color: #fef2f2; color: #dc2626; }
+    .icon-box-amber  { background-color: #fffbeb; color: #d97706; }
 
-    /* Progress bars */
+    .stat-title {
+        color: #475569;
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .stat-tag {
+        font-size: 0.72rem;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+    }
+    .tag-blue   { background-color: #e0f2fe; color: #0284c7; }
+    .tag-green  { background-color: #dcfce7; color: #15803d; }
+    .tag-red    { background-color: #fee2e2; color: #b91c1c; }
+    .tag-amber  { background-color: #fef3c7; color: #d97706; }
+    
+    .stat-value {
+        font-size: 2.3rem;
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1;
+        margin: 10px 0 14px 0;
+    }
+
     .progress-line {
         height: 6px;
-        border-radius: 3px;
+        border-radius: 4px;
         background-color: #f1f5f9;
         position: relative;
         overflow: hidden;
+        margin-bottom: 12px;
     }
     .progress-fill {
         position: absolute;
         top: 0;
         left: 0;
         height: 100%;
-        border-radius: 3px;
+        border-radius: 4px;
+        transition: width 0.6s ease;
     }
-    .fill-blue { background-color: #3b82f6; width: 90%; }
-    .fill-green { background-color: #22c55e; width: 75%; }
-    .fill-red { background-color: #ef4444; width: 30%; }
-    .fill-yellow { background-color: #f59e0b; width: 60%; }
+    .fill-blue   { background-color: #004b93; }
+    .fill-green  { background-color: #22c55e; }
+    .fill-red    { background-color: #ef4444; }
+    .fill-amber  { background-color: #f59e0b; }
 
-    /* Chart Cards */
-    .chart-card {
-        background: #dbeafe;
-        border-radius: 16px;
-        padding: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        border: 1px solid #bfdbfe;
-        margin-bottom: 20px;
-    }
-    .chart-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-    }
-    .chart-title {
-        color: #7b8398;
-        font-size: 0.9rem;
+    .card-link {
+        font-size: 0.85rem;
+        color: #004b93;
+        text-decoration: none;
         font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.2s;
+        margin-top: auto;
+    }
+    .card-link:hover {
+        color: #1d4ed8;
+        text-decoration: underline;
+        transform: translateX(3px);
     }
 </style>
 
 <!-- Content Wrapper -->
-<div class="content-wrapper" style="position: relative;">
+<div class="content-wrapper">
     <!-- The Blue Hero Background -->
-    <div class="hero-bg"></div>
+    <div class="hero-bg-list"></div>
 
     <!-- Content Header -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Dashboard</h1>
-                    <p style="color: rgba(255,255,255,0.8); margin-top: 5px;">Selamat Datang, <strong>{{ Auth::guard('web')->user()->name ?? 'Super Admin' }}</strong>!</p>
+            <div class="row align-items-center mb-2">
+                <div class="col-md-7 col-sm-12">
+                    <h1 class="m-0 font-weight-bold">Dashboard &bull; Super Admin</h1>
+                    <p class="hero-subtitle">Selamat Datang, <strong>{{ Auth::guard('web')->user()->name ?? 'Super Admin' }}</strong>! Pusat kontrol utama dan statistik sistem keterbukaan informasi publik PT Garam.</p>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Super Admin</a></li>
+                <div class="col-md-5 col-sm-12 text-md-right mt-3 mt-md-0">
+                    <ol class="breadcrumb float-md-right mb-2">
+                        <li class="breadcrumb-item"><a href="{{ route('super_admin.dashboard') }}">Super Admin</a></li>
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
+                    <div class="clearfix"></div>
+                    <a href="{{ route('super_admin.view_admin') }}" class="btn btn-hero-action">
+                        <i class="fas fa-user-plus"></i> + Tambah Admin Baru
+                    </a>
                 </div>
             </div>
         </div>
@@ -147,112 +248,115 @@
     <section class="content dashboard-container">
         <div class="container-fluid">
             
-            <!-- Stat Cards -->
+            <!-- 4 Metric Cards -->
             <div class="row">
                 <!-- Total Admin -->
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <a href="{{ route('super_admin.view_admin') }}" class="text-decoration-none">
-                        <div class="ref-card h-100" style="transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.1)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)';">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="metric-card card-accent-blue">
+                        <div>
                             <div class="stat-header">
-                                <div class="stat-title">Total User Admin</div>
-                                <div class="stat-tag tag-blue">TOTAL</div>
+                                <div class="stat-header-left">
+                                    <div class="stat-icon-box icon-box-blue">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                    <div class="stat-title">Total User Admin</div>
+                                </div>
+                                <span class="stat-tag tag-blue">TOTAL</span>
                             </div>
                             <div class="stat-value">{{ $total_admin }}</div>
                             <div class="progress-line">
-                                <div class="progress-fill fill-blue"></div>
+                                <div class="progress-fill fill-blue" style="width: 100%;"></div>
                             </div>
                         </div>
-                    </a>
+                        <a href="{{ route('super_admin.view_admin') }}" class="card-link">
+                            <span>Kelola data admin</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Admin Aktif -->
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="ref-card h-100">
-                        <div class="stat-header">
-                            <div class="stat-title">Admin Aktif</div>
-                            <div class="stat-tag tag-green">AKTIF</div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="metric-card card-accent-green">
+                        <div>
+                            <div class="stat-header">
+                                <div class="stat-header-left">
+                                    <div class="stat-icon-box icon-box-green">
+                                        <i class="fas fa-user-check"></i>
+                                    </div>
+                                    <div class="stat-title">Admin Aktif</div>
+                                </div>
+                                <span class="stat-tag tag-green">AKTIF</span>
+                            </div>
+                            <div class="stat-value">{{ $admin_aktif }}</div>
+                            <div class="progress-line">
+                                @php
+                                    $pct_aktif = ($total_admin > 0) ? round(($admin_aktif / $total_admin) * 100) : 0;
+                                @endphp
+                                <div class="progress-fill fill-green" style="width: {{ $pct_aktif }}%;"></div>
+                            </div>
                         </div>
-                        <div class="stat-value">{{ $admin_aktif }}</div>
-                        <div class="progress-line">
-                            <div class="progress-fill fill-green"></div>
-                        </div>
+                        <a href="{{ route('super_admin.view_admin') }}" class="card-link" style="color: #16a34a;">
+                            <span>Lihat akun aktif</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Admin Nonaktif -->
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="ref-card h-100">
-                        <div class="stat-header">
-                            <div class="stat-title">Admin Nonaktif</div>
-                            <div class="stat-tag tag-red">NONAKTIF</div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="metric-card card-accent-red">
+                        <div>
+                            <div class="stat-header">
+                                <div class="stat-header-left">
+                                    <div class="stat-icon-box icon-box-red">
+                                        <i class="fas fa-user-slash"></i>
+                                    </div>
+                                    <div class="stat-title">Admin Nonaktif</div>
+                                </div>
+                                <span class="stat-tag tag-red">NONAKTIF</span>
+                            </div>
+                            <div class="stat-value">{{ $admin_nonaktif }}</div>
+                            <div class="progress-line">
+                                @php
+                                    $pct_nonaktif = ($total_admin > 0) ? round(($admin_nonaktif / $total_admin) * 100) : 0;
+                                @endphp
+                                <div class="progress-fill fill-red" style="width: {{ $pct_nonaktif }}%;"></div>
+                            </div>
                         </div>
-                        <div class="stat-value">{{ $admin_nonaktif }}</div>
-                        <div class="progress-line">
-                            <div class="progress-fill fill-red"></div>
-                        </div>
+                        <a href="{{ route('super_admin.view_admin') }}" class="card-link" style="color: #dc2626;">
+                            <span>Tinjau nonaktif</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Total Pemohon -->
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <a href="{{ route('super_admin.view_pemohon') }}" class="text-decoration-none">
-                        <div class="ref-card h-100" style="transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.1)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)';">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="metric-card card-accent-amber">
+                        <div>
                             <div class="stat-header">
-                                <div class="stat-title">Total Pemohon</div>
-                                <div class="stat-tag tag-yellow">PEMOHON</div>
+                                <div class="stat-header-left">
+                                    <div class="stat-icon-box icon-box-amber">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="stat-title">Total Pemohon</div>
+                                </div>
+                                <span class="stat-tag tag-amber">PEMOHON</span>
                             </div>
                             <div class="stat-value">{{ $total_pemohon }}</div>
                             <div class="progress-line">
-                                <div class="progress-fill fill-yellow"></div>
+                                <div class="progress-fill fill-amber" style="width: 100%;"></div>
                             </div>
                         </div>
-                    </a>
+                        <a href="{{ route('super_admin.view_pemohon') }}" class="card-link" style="color: #d97706;">
+                            <span>Kelola pemohon</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             <!-- /.row Stat Cards -->
-
-            <!-- Quick Access Cards -->
-            <div class="row mt-2">
-                <div class="col-lg-4 col-md-4 mb-4">
-                     <a href="{{ route('super_admin.view_admin') }}" class="text-decoration-none">
-                         <div class="chart-card d-flex align-items-center" style="transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.1)';" onmouseout="this.style.transform=''; this.style.boxShadow='';">
-                             <div style="width: 50px; height: 50px; border-radius: 50%; background: #60a5fa; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                                 <i class="fas fa-user-shield text-white"></i>
-                             </div>
-                             <div>
-                                 <div style="color: #1e293b; font-weight: 600; font-size: 1rem;">Tambah Admin Baru</div>
-                                 <div style="color: #475569; font-size: 0.8rem;">Buat akun user admin</div>
-                             </div>
-                         </div>
-                     </a>
-                </div>
-                <div class="col-lg-4 col-md-4 mb-4">
-                     <a href="{{ route('super_admin.view_pemohon') }}" class="text-decoration-none">
-                         <div class="chart-card d-flex align-items-center" style="background: #eef2ff; border-color: #c7d2fe; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.1)';" onmouseout="this.style.transform=''; this.style.boxShadow='';">
-                             <div style="width: 50px; height: 50px; border-radius: 50%; background: #a855f7; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                                 <i class="fas fa-users text-white"></i>
-                             </div>
-                             <div>
-                                 <div style="color: #1e293b; font-weight: 600; font-size: 1rem;">Kelola Pemohon</div>
-                                 <div style="color: #475569; font-size: 0.8rem;">Aktifkan/nonaktifkan akun</div>
-                             </div>
-                         </div>
-                     </a>
-                </div>
-                <div class="col-lg-4 col-md-4 mb-4">
-                     <a href="{{ url('/admin') }}" class="text-decoration-none">
-                         <div class="chart-card d-flex align-items-center" style="background: #f0fdf4; border-color: #bbf7d0; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.1)';" onmouseout="this.style.transform=''; this.style.boxShadow='';">
-                             <div style="width: 50px; height: 50px; border-radius: 50%; background: #22c55e; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                                 <i class="fas fa-tools text-white"></i>
-                             </div>
-                             <div>
-                                 <div style="color: #1e293b; font-weight: 600; font-size: 1rem;">Panel Admin</div>
-                                 <div style="color: #475569; font-size: 0.8rem;">Jawab & kelola permohonan</div>
-                             </div>
-                         </div>
-                     </a>
-                </div>
-            </div>
 
         </div><!-- /.container-fluid -->
     </section>

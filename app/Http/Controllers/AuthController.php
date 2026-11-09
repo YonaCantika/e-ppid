@@ -26,6 +26,9 @@ class AuthController extends Controller
     public function daftar()
     {
         if (Auth::guard('web')->check()) {
+            if (Auth::guard('web')->user()->role === 'super_admin') {
+                return redirect()->route('super_admin.dashboard');
+            }
             return redirect()->route('admin.dashboard');
         }
         if (Auth::guard('pemohon')->check()) {

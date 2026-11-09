@@ -2,6 +2,19 @@
     .content-wrapper {
         background-color: #f4f6f9 !important;
         font-family: 'Inter', 'Source Sans Pro', sans-serif;
+        position: relative;
+    }
+    .hero-bg-list {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 220px;
+        background: linear-gradient(135deg, #0f3964 0%, #004b93 50%, #1d4ed8 100%) !important;
+        border-bottom-left-radius: 30px !important;
+        border-bottom-right-radius: 30px !important;
+        z-index: 0;
+        box-shadow: 0 4px 20px rgba(0, 75, 147, 0.2);
     }
     .card {
         background: #fff;
@@ -35,27 +48,29 @@
         background-color: #2563eb;
         color: white;
     }
-    .btn-add-modern {
-        background: #5a5ce2;
-        color: white;
-        border-radius: 8px;
-        padding: 8px 16px;
-        font-weight: 600;
-        transition: all 0.2s;
-        border: none;
-    }
-    .btn-add-modern:hover {
-        background: #4338ca;
-        color: white;
-    }
 </style>
 
 <div class="content-wrapper">
-    <div class="content-header">
+    <!-- The Blue Hero Background -->
+    <div class="hero-bg-list"></div>
+
+    <div class="content-header" style="position: relative; z-index: 2;">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark font-weight-bold">Regulasi</h1>
+            <div class="row align-items-center mb-2">
+                <div class="col-md-7 col-sm-12">
+                    <h1 class="m-0 font-weight-bold">Pengaturan Regulasi &bull; Super Admin</h1>
+                    <p class="hero-subtitle">Kelola dokumen undang-undang dan peraturan terkait keterbukaan informasi publik.</p>
+                </div>
+                <div class="col-md-5 col-sm-12 text-md-right mt-3 mt-md-0">
+                    <ol class="breadcrumb float-md-right mb-2">
+                        <li class="breadcrumb-item"><a href="{{ route('super_admin.dashboard') }}">Super Admin</a></li>
+                        <li class="breadcrumb-item">Pengaturan</li>
+                        <li class="breadcrumb-item active">Regulasi</li>
+                    </ol>
+                    <div class="clearfix"></div>
+                    <button class="btn btn-hero-action" onclick="add_regulasi({{ $id }})">
+                        <i class="fas fa-plus-circle"></i> + Tambah Regulasi
+                    </button>
                 </div>
             </div>
         </div>
@@ -64,13 +79,10 @@
     <section class="content">
         <div class="container-fluid">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header">
                     <h5 class="m-0 font-weight-bold text-primary">
                         <i class="fas fa-balance-scale mr-2"></i> Daftar Regulasi
                     </h5>
-                    <button class="btn btn-add-modern" onclick="add_regulasi({{ $id }})">
-                        <i class="fas fa-plus mr-1"></i> Tambah Regulasi
-                    </button>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

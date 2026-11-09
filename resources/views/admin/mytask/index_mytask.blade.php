@@ -3,32 +3,75 @@
     body, .content-wrapper {
         background-color: #f4f6f9 !important;
         font-family: 'Inter', 'Source Sans Pro', sans-serif;
-    }
-    .content-header {
         position: relative;
-        z-index: 2;
-        padding-top: 30px;
-    }
-    .content-header h1 {
-        color: #fff;
-        font-weight: 700;
-        font-size: 1.8rem;
-    }
-    .content-header .breadcrumb-item a,
-    .content-header .breadcrumb-item.active {
-        color: rgba(255, 255, 255, 0.8) !important;
     }
     
-    /* The Blue Hero Background */
-    .hero-bg {
+    /* The Blue Hero Background (Navy Curved Hero) */
+    .hero-bg-list {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 180px;
-        background: #5a5ce2;
-        border-bottom-left-radius: 30px;
+        height: 220px;
+        background: linear-gradient(135deg, #0f3964 0%, #004b93 50%, #1d4ed8 100%) !important;
+        border-bottom-left-radius: 30px !important;
+        border-bottom-right-radius: 30px !important;
         z-index: 0;
+        box-shadow: 0 4px 20px rgba(0, 75, 147, 0.2);
+    }
+
+    .content-header {
+        position: relative;
+        z-index: 2;
+        padding-top: 25px;
+        padding-bottom: 15px;
+    }
+    .content-header h1 {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.65rem;
+        margin: 0;
+        line-height: 1.2;
+    }
+    .content-header .hero-subtitle {
+        color: #e0f2fe !important;
+        font-size: 0.95rem;
+        margin-top: 6px;
+        margin-bottom: 0;
+    }
+    .content-header .breadcrumb {
+        background: transparent !important;
+        padding: 0;
+        margin-bottom: 8px;
+    }
+    .content-header .breadcrumb-item a {
+        color: #e0f2fe !important;
+    }
+    .content-header .breadcrumb-item.active {
+        color: #ffffff !important;
+        font-weight: 600;
+    }
+    .btn-hero-action {
+        background: #ffffff !important;
+        color: #004b93 !important;
+        border: none !important;
+        padding: 9px 20px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        transition: all 0.25s ease;
+        cursor: pointer;
+        text-decoration: none !important;
+    }
+    .btn-hero-action:hover {
+        background: #f8fafc !important;
+        color: #003366 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
     }
 
     /* Cards Layout matching reference */
@@ -36,83 +79,144 @@
         position: relative;
         z-index: 2;
         margin-top: 10px;
+        padding-bottom: 40px;
     }
     
-    .ref-card {
-        background: #fff;
+    .metric-card {
+        background: #ffffff;
         border-radius: 16px;
-        padding: 15px 20px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        padding: 22px 24px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 4px 10px -2px rgba(0, 0, 0, 0.02);
         border: 1px solid #e2e8f0;
-        margin-bottom: 20px;
+        margin-bottom: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 175px;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
         position: relative;
+        overflow: hidden;
     }
+    .metric-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 30px -5px rgba(0, 40, 100, 0.12);
+    }
+    .metric-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+    }
+    .card-accent-blue::before  { background: linear-gradient(90deg, #004b93, #3b82f6); }
+    .card-accent-amber::before { background: linear-gradient(90deg, #d97706, #f59e0b); }
 
     /* Stat Cards */
     .stat-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
     }
+    .stat-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .stat-icon-box {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+    }
+    .icon-box-blue  { background-color: #eff6ff; color: #004b93; }
+    .icon-box-amber { background-color: #fffbeb; color: #d97706; }
+
     .stat-title {
-        color: #7b8398;
-        font-size: 0.9rem;
-        font-weight: 600;
+        color: #475569;
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1.2;
     }
     .stat-tag {
-        font-size: 0.7rem;
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-weight: 700;
+        font-size: 0.72rem;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
     }
-    .tag-blue { background-color: #e5edff; color: #5a5ce2; }
-    .tag-green { background-color: #dcfce7; color: #22c55e; }
+    .tag-blue  { background-color: #e0f2fe; color: #0284c7; }
+    .tag-amber { background-color: #fef3c7; color: #d97706; }
     
     .stat-value {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 12px;
+        font-size: 2.3rem;
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1;
+        margin: 10px 0 14px 0;
     }
 
     /* Progress bars */
     .progress-line {
         height: 6px;
-        border-radius: 3px;
+        border-radius: 4px;
         background-color: #f1f5f9;
         position: relative;
         overflow: hidden;
+        margin-bottom: 12px;
     }
     .progress-fill {
         position: absolute;
         top: 0;
         left: 0;
         height: 100%;
-        border-radius: 3px;
+        border-radius: 4px;
+        transition: width 0.6s ease;
     }
-    .fill-blue { background-color: #3b82f6; width: 95%; }
-    .fill-green { background-color: #22c55e; width: 75%; }
+    .fill-blue  { background-color: #004b93; }
+    .fill-amber { background-color: #f59e0b; }
+
+    .card-link {
+        font-size: 0.85rem;
+        color: #004b93;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.2s;
+        margin-top: auto;
+    }
+    .card-link:hover {
+        color: #1d4ed8;
+        text-decoration: underline;
+        transform: translateX(3px);
+    }
 
     /* Chart Cards */
     .chart-card {
-        background: #F8FAFC;
+        background: #ffffff;
         border-radius: 16px;
-        padding: 15px;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        padding: 22px 24px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 4px 10px -2px rgba(0, 0, 0, 0.02);
         border: 1px solid #e2e8f0;
-        border-top: 3px solid #3b82f6;
-        margin-bottom: 20px;
+        margin-bottom: 24px;
     }
     .chart-header {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 10px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 12px;
     }
     .chart-title {
-        color: #7b8398;
-        font-size: 0.9rem;
-        font-weight: 600;
+        color: #1e293b;
+        font-size: 1.05rem;
+        font-weight: 700;
     }
     
     .chart-body {
@@ -125,8 +229,8 @@
     
     .chart-container {
         position: relative;
-        width: 120px;
-        height: 120px;
+        width: 130px;
+        height: 130px;
         flex-shrink: 0;
     }
     
@@ -165,24 +269,29 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper" style="position: relative;">
    <!-- The Blue Hero Background -->
-   <div class="hero-bg"></div>
+   <div class="hero-bg-list"></div>
 
    <!-- Content Header (Page header) -->
-   <section class="content-header">
+   <div class="content-header">
       <div class="container-fluid">
-         <div class="row mb-2">
-            <div class="col-sm-6">
-               <h1>My Task</h1>
+         <div class="row align-items-center mb-2">
+            <div class="col-md-7 col-sm-12">
+               <h1 class="m-0 font-weight-bold">My Task &bull; Dashboard Admin</h1>
+               <p class="hero-subtitle">Ringkasan permohonan informasi publik yang membutuhkan tindak lanjut dan disposisi resmi.</p>
             </div>
-            <div class="col-sm-6">
-               <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item"><a href="#">Admin</a></li>
+            <div class="col-md-5 col-sm-12 text-md-right mt-3 mt-md-0">
+               <ol class="breadcrumb float-md-right mb-2">
+                  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Admin</a></li>
                   <li class="breadcrumb-item active">My Task</li>
                </ol>
+               <div class="clearfix"></div>
+               <a href="{{ route('admin.view_permohonan') }}" class="btn btn-hero-action">
+                   <i class="fas fa-list"></i> + Lihat Semua Permohonan
+               </a>
             </div>
          </div>
       </div><!-- /.container-fluid -->
-   </section>
+   </div>
 
    <!-- Main content -->
    <section class="content dashboard-container">
@@ -190,38 +299,61 @@
         <!-- TOP STATS ROW -->
         <div class="row justify-content-start">
             <!-- Total Permohonan -->
-            <div class="col-lg-5 col-md-6">
-                <div class="ref-card">
-                    <div class="stat-header">
-                        <div class="stat-title">Total Permohonan</div>
-                        <div class="stat-tag tag-blue">TOTAL</div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <div class="metric-card card-accent-blue">
+                    <div>
+                        <div class="stat-header">
+                            <div class="stat-header-left">
+                                <div class="stat-icon-box icon-box-blue">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                                <div class="stat-title">Total Permohonan</div>
+                            </div>
+                            <span class="stat-tag tag-blue">TOTAL</span>
+                        </div>
+                        <?php
+                        $tot = collect(\Illuminate\Support\Facades\DB::select("SELECT COALESCE(COUNT(id),0) total FROM informasi_permohonan"))->first();
+                        ?>
+                        <div class="stat-value">{{ $tot->total }}</div>
+                        
+                        <div class="progress-line">
+                            <div class="progress-fill fill-blue" style="width: 100%;"></div>
+                        </div>
                     </div>
-                    <?php
-                    $tot = collect(\Illuminate\Support\Facades\DB::select("SELECT COALESCE(COUNT(id),0) total FROM informasi_permohonan"))->first();
-                    ?>
-                    <div class="stat-value">{{ $tot->total }}</div>
-                    
-                    <div class="progress-line">
-                        <div class="progress-fill fill-blue"></div>
-                    </div>
+                    <a href="{{ route('admin.view_permohonan') }}" class="card-link">
+                        <span>Kelola permohonan masuk</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
 
             <!-- Permohonan Belum Ditanggapi -->
-            <div class="col-lg-5 col-md-6">
-                <div class="ref-card">
-                    <div class="stat-header">
-                        <div class="stat-title">Permohonan Belum Ditanggapi</div>
-                        <div class="stat-tag tag-green">PENDING</div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <div class="metric-card card-accent-amber">
+                    <div>
+                        <div class="stat-header">
+                            <div class="stat-header-left">
+                                <div class="stat-icon-box icon-box-amber">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="stat-title">Permohonan Belum Ditanggapi</div>
+                            </div>
+                            <span class="stat-tag tag-amber">PENDING</span>
+                        </div>
+                        <?php
+                        $tot_blm_ditanggapi = collect(\Illuminate\Support\Facades\DB::select("SELECT COALESCE(COUNT(id),0) blm FROM informasi_permohonan WHERE status = 'OPEN'"))->first();
+                        $pct_blm = ($tot->total > 0) ? round(($tot_blm_ditanggapi->blm / $tot->total) * 100) : 0;
+                        ?>
+                        <div class="stat-value">{{ $tot_blm_ditanggapi->blm }}</div>
+                        
+                        <div class="progress-line">
+                            <div class="progress-fill fill-amber" style="width: {{ $pct_blm }}%;"></div>
+                        </div>
                     </div>
-                    <?php
-                    $tot_blm_ditanggapi = collect(\Illuminate\Support\Facades\DB::select("SELECT COALESCE(COUNT(id),0) blm FROM informasi_permohonan WHERE status = 'OPEN'"))->first();
-                    ?>
-                    <div class="stat-value">{{ $tot_blm_ditanggapi->blm }}</div>
-                    
-                    <div class="progress-line">
-                        <div class="progress-fill fill-green"></div>
-                    </div>
+                    <a href="{{ route('admin.view_permohonan') }}" class="card-link" style="color: #d97706;">
+                        <span>Proses disposisi sekarang</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
         </div>

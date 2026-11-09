@@ -2,10 +2,10 @@
 <aside class="main-sidebar sa-sidebar elevation-0">
     <!-- Brand Logo -->
     <a href="{{ route('super_admin.dashboard') }}" class="brand-link">
-        <i class="fas fa-shield-alt nav-icon"></i>
+        <i class="fas fa-shield-alt nav-icon" style="color: #004b93;"></i>
         <span class="brand-text">
             E-PPID
-            <span class="brand-badge" style="background:#4338ca; color:#fff;">SUPER ADMIN</span>
+            <span class="brand-badge" style="background:#004b93; color:#fff;">SUPER ADMIN</span>
         </span>
     </a>
 
@@ -14,9 +14,9 @@
         <!-- User panel -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="border-bottom: 1px solid #f1f5f9;">
             <div class="image">
-                <div style="width:34px; height:34px; border-radius:50%; background:#eef2ff;
+                <div style="width:34px; height:34px; border-radius:50%; background:#e0f2fe;
                             display:flex; align-items:center; justify-content:center;">
-                    <i class="fas fa-crown" style="color:#4338ca; font-size:1rem;"></i>
+                    <i class="fas fa-crown" style="color:#004b93; font-size:1rem;"></i>
                 </div>
             </div>
             <div class="info">

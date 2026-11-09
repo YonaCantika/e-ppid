@@ -6,16 +6,18 @@
         position: relative;
     }
     
-    /* The Blue Hero Background (Small version for list page) */
+    /* The Blue Hero Background (Navy Curved Hero) */
     .hero-bg-list {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 160px;
-        background: #5a5ce2;
-        border-bottom-left-radius: 30px;
+        height: 220px;
+        background: linear-gradient(135deg, #0f3964 0%, #004b93 50%, #1d4ed8 100%) !important;
+        border-bottom-left-radius: 30px !important;
+        border-bottom-right-radius: 30px !important;
         z-index: 0;
+        box-shadow: 0 4px 20px rgba(0, 75, 147, 0.2);
     }
 
     /* Container holding the card */
@@ -201,17 +203,20 @@
 
     <div class="content-header" style="position: relative; z-index: 2;">
         <div class="container-fluid">
-            <div class="row mb-2 mt-3">
-                <div class="col-sm-6">
-                    <h1 class="m-0">
-                        Manajemen User Admin
-                    </h1>
+            <div class="row align-items-center mb-2">
+                <div class="col-md-7 col-sm-12">
+                    <h1 class="m-0 font-weight-bold">Manajemen User Admin &bull; Super Admin</h1>
+                    <p class="hero-subtitle">Kelola hak akses dan akun administrator pengelola sistem PPID.</p>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                <div class="col-md-5 col-sm-12 text-md-right mt-3 mt-md-0">
+                    <ol class="breadcrumb float-md-right mb-2">
                         <li class="breadcrumb-item"><a href="{{ route('super_admin.dashboard') }}">Super Admin</a></li>
                         <li class="breadcrumb-item active">User Admin</li>
                     </ol>
+                    <div class="clearfix"></div>
+                    <button id="btn-add-admin" class="btn btn-hero-action" onclick="openModalAddAdmin()">
+                        <i class="fas fa-plus-circle"></i> + Tambah Admin Baru
+                    </button>
                 </div>
             </div>
         </div>
@@ -221,13 +226,10 @@
         <div class="container-fluid">
             <div class="card">
                 <!-- Card Header -->
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header">
                     <h5 class="m-0 font-weight-bold" style="color: #1E293B;">
-                        <i class="fas fa-list mr-2" style="color: #5a5ce2;"></i> Daftar User Admin
+                        <i class="fas fa-list mr-2" style="color: #004b93;"></i> Daftar User Admin
                     </h5>
-                    <button id="btn-add-admin" class="btn filter-btn-modern" onclick="openModalAddAdmin()">
-                        <i class="fas fa-plus mr-1"></i> Tambah Admin Baru
-                    </button>
                 </div>
 
                 <!-- Card Body -->

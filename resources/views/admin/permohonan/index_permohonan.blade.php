@@ -9,23 +9,57 @@ $today = date("Y");
         position: relative;
     }
     
-    /* The Blue Hero Background (Small version for list page) */
+    /* The Blue Hero Background (Navy Curved Hero) */
     .hero-bg-list {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 160px;
-        background: #5a5ce2;
-        border-bottom-left-radius: 30px;
+        height: 220px;
+        background: linear-gradient(135deg, #0f3964 0%, #004b93 50%, #1d4ed8 100%) !important;
+        border-bottom-left-radius: 30px !important;
+        border-bottom-right-radius: 30px !important;
         z-index: 0;
+        box-shadow: 0 4px 20px rgba(0, 75, 147, 0.2);
+    }
+
+    .content-header {
+        position: relative;
+        z-index: 2;
+        padding-top: 25px;
+        padding-bottom: 15px;
+    }
+    .content-header h1 {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.65rem;
+        margin: 0;
+        line-height: 1.2;
+    }
+    .content-header .hero-subtitle {
+        color: #e0f2fe !important;
+        font-size: 0.95rem;
+        margin-top: 6px;
+        margin-bottom: 0;
+    }
+    .content-header .breadcrumb {
+        background: transparent !important;
+        padding: 0;
+        margin-bottom: 8px;
+    }
+    .content-header .breadcrumb-item a {
+        color: #e0f2fe !important;
+    }
+    .content-header .breadcrumb-item.active {
+        color: #ffffff !important;
+        font-weight: 600;
     }
 
     /* Container holding the card */
     .content {
         position: relative;
         z-index: 2;
-        padding-top: 25px;
+        padding-top: 5px;
     }
 
     /* Main Card Styling */
@@ -33,8 +67,8 @@ $today = date("Y");
         background: #fff;
         border-radius: 16px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-        border: none;
-        margin-top: 55px;
+        border: 1px solid #e2e8f0;
+        margin-top: 10px;
     }
     .card-header {
         background-color: #fff;
@@ -209,7 +243,25 @@ $today = date("Y");
 <div class="content-wrapper">
   <!-- The Blue Hero Background -->
   <div class="hero-bg-list"></div>
+  
   <!-- Content Header (Page header) -->
+  <div class="content-header">
+      <div class="container-fluid">
+          <div class="row align-items-center mb-2">
+              <div class="col-md-7 col-sm-12">
+                  <h1 class="m-0 font-weight-bold">Daftar Permohonan &bull; Panel Admin</h1>
+                  <p class="hero-subtitle">Kelola, verifikasi, dan berikan tanggapan resmi terhadap permohonan informasi publik.</p>
+              </div>
+              <div class="col-md-5 col-sm-12 text-md-right mt-3 mt-md-0">
+                  <ol class="breadcrumb float-md-right mb-2">
+                      <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Admin</a></li>
+                      <li class="breadcrumb-item active">Daftar Permohonan</li>
+                  </ol>
+              </div>
+          </div>
+      </div>
+  </div>
+
    <!-- Main content -->
    <section class="content">
       <div class="container-fluid">
