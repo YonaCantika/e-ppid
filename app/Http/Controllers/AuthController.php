@@ -26,6 +26,9 @@ class AuthController extends Controller
     public function daftar()
     {
         if (Auth::guard('web')->check()) {
+            if (Auth::guard('web')->user()->role === 'super_admin') {
+                return redirect()->route('super_admin.dashboard');
+            }
             return redirect()->route('admin.dashboard');
         }
         if (Auth::guard('pemohon')->check()) {
@@ -81,7 +84,8 @@ class AuthController extends Controller
         return redirect()->back()
             ->withInput($request->only('email'))
             ->withErrors(['email' => 'Login Gagal! Kombinasi email dan kata sandi tidak ditemukan atau belum terdaftar.'])
-            ->with('login_error', 'Login Gagal! Kombinasi email dan kata sandi tidak cocok. Silakan periksa kembali email dan password Anda.');
+            ->with('login_error', 'Login Gagal! Kombinasi email dan password tidak valid. Silakan periksa kembali email dan kata sandi Anda.')
+            ->with('error_login', 'Login Gagal! Kombinasi email dan password tidak valid. Silakan periksa kembali email dan kata sandi Anda.');
     }
 
     public function submit_daftar(Request $request)

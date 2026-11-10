@@ -9,15 +9,53 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
     /**
-     * Menampilkan halaman dasbor / My Task untuk pemohon.
+     * Menampilkan halaman dasbor / My Task untuk pemohon dengan metrik dinamis dan data permohonan terbaru.
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
+        $id_pemohon = Auth::guard('pemohon')->id();
+
+        // 1. Data Dinamis untuk 4 Kartu Metrik
+        $metric_total = DB::table('informasi_permohonan')
+            ->where('id_pemohon', $id_pemohon)
+            ->count();
+
+        $metric_belum = DB::table('informasi_permohonan')
+            ->where('id_pemohon', $id_pemohon)
+            ->where(function($q) {
+                $q->whereIn('status', ['OPEN', 'BELUM DITANGGAPI', 'PENDING'])
+                  ->orWhereNull('status');
+            })
+            ->count();
+
+        $metric_proses = DB::table('informasi_permohonan')
+            ->where('id_pemohon', $id_pemohon)
+            ->whereIn('status', ['PROCESS', 'PROSES', 'SEDANG DIPROSES', 'APPROVE_HALF'])
+            ->count();
+
+        $metric_selesai = DB::table('informasi_permohonan')
+            ->where('id_pemohon', $id_pemohon)
+            ->whereIn('status', ['APPROVE', 'SUDAH DITANGGAPI', 'SELESAI', 'REJECT', 'DITOLAK'])
+            ->count();
+
+        // 2. Data 5 Permohonan Terbaru Milik Pemohon (Urut tanggal terbaru)
+        $permohonan_terbaru = DB::table('informasi_permohonan')
+            ->where('id_pemohon', $id_pemohon)
+            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
+            ->limit(5)
+            ->get();
+
         return view('user.template_user.gabungan', [
-            'judul_header' => 'My Task',
-            'content' => 'user.mytask.index_mytask' // Asumsi ada view ini
+            'judul_header'       => 'My Task',
+            'content'            => 'user.mytask.index_mytask',
+            'metric_total'       => $metric_total,
+            'metric_belum'       => $metric_belum,
+            'metric_proses'      => $metric_proses,
+            'metric_selesai'     => $metric_selesai,
+            'permohonan_terbaru' => $permohonan_terbaru
         ]);
     }
 

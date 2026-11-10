@@ -3,33 +3,96 @@
    .content-wrapper {
        background-color: #f4f6f9 !important;
        font-family: 'Inter', 'Source Sans Pro', sans-serif;
+       position: relative;
    }
    
-    /* The Blue Hero Background (Small version for list page) */
+    /* The Blue Hero Background (Navy Curved Hero) */
     .hero-bg-list {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 160px;
-        background: #5a5ce2;
-        border-bottom-left-radius: 30px;
+        height: 220px;
+        background: linear-gradient(135deg, #0f3964 0%, #004b93 50%, #1d4ed8 100%) !important;
+        border-bottom-left-radius: 30px !important;
+        border-bottom-right-radius: 30px !important;
         z-index: 0;
+        box-shadow: 0 4px 20px rgba(0, 75, 147, 0.2);
+    }
+
+    .content-header {
+        position: relative;
+        z-index: 2;
+        padding-top: 25px;
+        padding-bottom: 15px;
+    }
+    
+    .content-header h1 {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.65rem;
+        margin: 0;
+        line-height: 1.2;
+    }
+    
+    .content-header .hero-subtitle {
+        color: #e0f2fe;
+        font-size: 0.95rem;
+        margin-top: 6px;
+        margin-bottom: 0;
+    }
+
+    .content-header .breadcrumb {
+        background: transparent !important;
+        padding: 0;
+        margin-bottom: 8px;
+    }
+
+    .content-header .breadcrumb-item a {
+        color: #e0f2fe !important;
+    }
+    
+    .content-header .breadcrumb-item.active {
+        color: #ffffff !important;
+        font-weight: 600;
+    }
+
+    .btn-hero-action {
+        background: #ffffff !important;
+        color: #004b93 !important;
+        border: none !important;
+        padding: 9px 20px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        transition: all 0.25s ease;
+        cursor: pointer;
+        text-decoration: none !important;
+    }
+    .btn-hero-action:hover {
+        background: #f8fafc !important;
+        color: #003366 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
     }
 
     /* Container holding the card */
     .content {
         position: relative;
         z-index: 2;
-        padding-top: 25px;
+        padding-top: 5px;
     }
 
     .card {
         background: #fff;
         border-radius: 16px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-        border: none;
-        margin-top: 55px;
+        border: 1px solid #e2e8f0;
+        margin-top: 10px;
     }
     .card-header {
         background-color: #fff;
@@ -169,7 +232,28 @@
    <!-- The Blue Hero Background -->
    <div class="hero-bg-list"></div>
 
-  <!-- Content Header (Page header) -->
+   <!-- Content Header (Page header) -->
+   <div class="content-header">
+       <div class="container-fluid">
+           <div class="row align-items-center mb-2">
+               <div class="col-md-7 col-sm-12">
+                   <h1 class="m-0 font-weight-bold">Daftar Permohonan &bull; Panel Pemohon</h1>
+                   <p class="hero-subtitle">Pantau riwayat disposisi dan status verifikasi permohonan informasi publik Anda.</p>
+               </div>
+               <div class="col-md-5 col-sm-12 text-md-right mt-3 mt-md-0">
+                   <ol class="breadcrumb float-md-right mb-2">
+                       <li class="breadcrumb-item"><a href="{{ route('user.dashboard') }}">Home</a></li>
+                       <li class="breadcrumb-item active">Daftar Permohonan</li>
+                   </ol>
+                   <div class="clearfix"></div>
+                   <button class="btn btn-hero-action" id="buttonAdd">
+                       <i class="fas fa-plus-circle"></i> + Tambah Permohonan
+                   </button>
+               </div>
+           </div>
+       </div>
+   </div>
+
    <!-- Main content -->
    <section class="content">
       <div class="container-fluid">
@@ -199,9 +283,9 @@
                            <i class="fas fa-filter mr-1"></i> Filter
                         </button>
                      </div>
-                     <button class="btn-add-modern" id="buttonAdd">
-                         <i class="fas fa-plus"></i> Tambah Permohonan
-                     </button>
+                     <div>
+                        <span class="text-muted small"><i class="fas fa-info-circle mr-1"></i> Gunakan tombol di atas untuk mengajukan permohonan baru</span>
+                     </div>
                   </div>
                   <div class="card-body">
                      <div class="table-responsive">

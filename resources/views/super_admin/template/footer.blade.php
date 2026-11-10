@@ -1,11 +1,11 @@
   <!-- Footer -->
-  <footer class="main-footer" style="border-top: 2px solid #e0e7ff; background:#fff;">
+  <footer class="main-footer" style="border-top: 1px solid #e2e8f0; background:#ffffff; color: #64748b; font-size: 0.9rem;">
     <div class="float-right d-none d-sm-block">
-      <i class="fas fa-shield-alt mr-1" style="color: #3730a3;"></i>
-      <strong>Super Admin Panel</strong>
+      <i class="fas fa-shield-alt mr-1" style="color: #004b93;"></i>
+      <strong style="color: #1e293b;">Super Admin Panel</strong>
     </div>
     <strong>Copyright &copy; {{ date('Y') }}
-      <a href="#" style="color: #3730a3;">E-PPID PT Garam (Persero)</a>
+      <a href="#" style="color: #004b93; font-weight: 600;">E-PPID PT Garam (Persero)</a>
     </strong>
   </footer>
 

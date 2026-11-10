@@ -78,16 +78,97 @@
         font-size: 0.95rem;
     }
     
-    /* Modern Cards */
+    /* ─── Global Navy Hero Banner & SaaS Layout ─────────────────── */
+    .content-wrapper {
+        background-color: #f4f6f9 !important;
+        font-family: 'Inter', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        position: relative;
+    }
+    .hero-bg-list, .hero-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 220px;
+        background: linear-gradient(135deg, #0f3964 0%, #004b93 50%, #1d4ed8 100%) !important;
+        border-bottom-left-radius: 30px !important;
+        border-bottom-right-radius: 30px !important;
+        z-index: 0;
+        box-shadow: 0 4px 20px rgba(0, 75, 147, 0.2);
+    }
+    .content-header {
+        position: relative;
+        z-index: 2;
+        padding-top: 25px;
+        padding-bottom: 20px;
+    }
+    .content-header h1 {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.65rem;
+        margin: 0;
+        line-height: 1.2;
+    }
+    .content-header .hero-subtitle {
+        color: #e0f2fe !important;
+        font-size: 0.95rem;
+        margin-top: 6px;
+        margin-bottom: 0;
+    }
+    .content-header .breadcrumb {
+        background: transparent !important;
+        padding: 0;
+        margin-bottom: 10px;
+    }
+    .content-header .breadcrumb-item, 
+    .content-header .breadcrumb-item a {
+        color: #e0f2fe !important;
+        font-size: 0.88rem;
+    }
+    .content-header .breadcrumb-item.active {
+        color: #ffffff !important;
+        font-weight: 600;
+    }
+    .btn-hero-action {
+        background: #ffffff !important;
+        color: #004b93 !important;
+        border: none !important;
+        padding: 9px 20px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        transition: all 0.25s ease;
+        cursor: pointer;
+        text-decoration: none !important;
+    }
+    .btn-hero-action:hover {
+        background: #f8fafc !important;
+        color: #003366 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+    }
+    /* Card Overlay over the Curved Banner */
+    section.content, .dashboard-container {
+        position: relative;
+        z-index: 2;
+        margin-top: 5px;
+        padding-bottom: 40px;
+    }
     .card {
         border-radius: 12px !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-        border: none !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 4px 10px -2px rgba(0, 0, 0, 0.02) !important;
+        border: 1px solid #e2e8f0 !important;
+        background: #ffffff !important;
     }
     .card-header {
         background-color: #fff !important;
         border-bottom: 1px solid #f1f5f9 !important;
         border-radius: 12px 12px 0 0 !important;
+        padding: 18px 24px !important;
     }
     
     /* Modern Modals */

@@ -2,6 +2,19 @@
     .content-wrapper {
         background-color: #f4f6f9 !important;
         font-family: 'Inter', 'Source Sans Pro', sans-serif;
+        position: relative;
+    }
+    .hero-bg-list {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 220px;
+        background: linear-gradient(135deg, #0f3964 0%, #004b93 50%, #1d4ed8 100%) !important;
+        border-bottom-left-radius: 30px !important;
+        border-bottom-right-radius: 30px !important;
+        z-index: 0;
+        box-shadow: 0 4px 20px rgba(0, 75, 147, 0.2);
     }
     .card {
         background: #fff;
@@ -38,11 +51,22 @@
 </style>
 
 <div class="content-wrapper">
-    <div class="content-header">
+    <!-- The Blue Hero Background -->
+    <div class="hero-bg-list"></div>
+
+    <div class="content-header" style="position: relative; z-index: 2;">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark font-weight-bold">Profil</h1>
+            <div class="row align-items-center mb-2">
+                <div class="col-md-7 col-sm-12">
+                    <h1 class="m-0 font-weight-bold">Pengaturan Profil &bull; Super Admin</h1>
+                    <p class="hero-subtitle">Kelola visi, misi, dan profil PPID PT Garam.</p>
+                </div>
+                <div class="col-md-5 col-sm-12 text-md-right mt-3 mt-md-0">
+                    <ol class="breadcrumb float-md-right mb-2">
+                        <li class="breadcrumb-item"><a href="{{ route('super_admin.dashboard') }}">Super Admin</a></li>
+                        <li class="breadcrumb-item">Pengaturan</li>
+                        <li class="breadcrumb-item active">Profil</li>
+                    </ol>
                 </div>
             </div>
         </div>
