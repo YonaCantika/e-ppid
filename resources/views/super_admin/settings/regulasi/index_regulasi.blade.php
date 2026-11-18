@@ -48,6 +48,18 @@
         background-color: #2563eb;
         color: white;
     }
+    .btn-action-red {
+        background-color: #fee2e2;
+        color: #ef4444;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 10px;
+        transition: all 0.2s;
+    }
+    .btn-action-red:hover {
+        background-color: #ef4444;
+        color: white;
+    }
 </style>
 
 <div class="content-wrapper">
@@ -93,7 +105,7 @@
                                     <th>Nama Regulasi (Aturan)</th>
                                     <th>File Terlampir</th>
                                     <th width="100">Status</th>
-                                    <th width="100" class="text-center">Aksi</th>
+                                    <th width="150" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

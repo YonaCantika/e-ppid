@@ -245,6 +245,29 @@ class SuperAdminController extends Controller
         return response()->json(['status' => true, 'msg' => "Akun pemohon berhasil {$label}.", 'new_status' => $new_status]);
     }
 
+    /**
+     * Menampilkan modal detail lengkap akun pemohon.
+     */
+    public function detail_pemohon(Request $request)
+    {
+        $id = $request->input('id');
+        $pemohon = DB::table('pemohon')->where('id_pemohon', $id)->first();
+        if (!$pemohon) {
+            return response()->json(['status' => false, 'msg' => 'Data pemohon tidak ditemukan.'], 404);
+        }
+
+        // Ambil riwayat permohonan pemohon ini
+        $permohonan = DB::table('informasi_permohonan')
+            ->where('id_pemohon', $id)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('super_admin.pemohon.modal_detail_pemohon', [
+            'pemohon'    => $pemohon,
+            'permohonan' => $permohonan,
+        ]);
+    }
+
     // ─────────────────────────────────────────────────────────────
     // MANAJEMEN AKSES MENU — ADMIN
     // ─────────────────────────────────────────────────────────────
@@ -273,7 +296,7 @@ class SuperAdminController extends Controller
      * $allowed_menus = array of menu_key yang DIIZINKAN (dikirim via checkbox).
      * Yang tidak ada di array → diblokir.
      */
-    public function save_akses_admin(Request $request)
+public function save_akses_admin(Request $request)
     {
         $id            = $request->input('user_id');
         $allowed_menus = $request->input('allowed_menus', []);  // array dari checkbox
@@ -365,6 +388,7 @@ class SuperAdminController extends Controller
                 $content = 'super_admin.settings.maklumat.index_maklumat';
                 break;
             case 'informasi/7':
+            case 'informasi/8':
             case 'informasi/9':
                 $content = 'super_admin.settings.informasi_publik.index_informasi';
                 break;
@@ -387,6 +411,7 @@ class SuperAdminController extends Controller
                     $content = 'super_admin.settings.maklumat.index_maklumat';
                     break;
                 case '7':
+                case '8':
                 case '9':
                     $content = 'super_admin.settings.informasi_publik.index_informasi';
                     break;
@@ -613,6 +638,7 @@ class SuperAdminController extends Controller
             ->join('kategori as b', 'a.kategori_id', '=', 'b.kategori_id')
             ->join('menu as c', 'a.menu_id', '=', 'c.id')
             ->where('a.menu_id', $id)
+            ->orderBy('a.informasi_id', 'desc')
             ->get();
 
         $data = [];
@@ -665,7 +691,8 @@ class SuperAdminController extends Controller
             'judul'       => $judul,
             'tipe'        => $tipe,
             'status'      => 0,
-            'datetime'    => now(),
+            'created_at'  => now(),
+            'updated_at'  => now(),
         ];
 
         $id = DB::table('informasi')->insertGetId($data);
@@ -742,7 +769,7 @@ class SuperAdminController extends Controller
                 'tipe'        => $tipe,
                 'link'        => $link,
                 'status'      => $status,
-                'datetime'    => now()
+                'updated_at'  => now()
             ];
         } else {
             if ($request->hasFile('files')) {
@@ -766,7 +793,7 @@ class SuperAdminController extends Controller
                 'judul'       => $judul,
                 'tipe'        => $tipe,
                 'status'      => $status,
-                'datetime'    => now()
+                'updated_at'  => now()
             ];
         }
 
@@ -779,9 +806,34 @@ class SuperAdminController extends Controller
         }
     }
 
+    public function delete_informasi_publik(Request $request)
+    {
+        $id = $request->input('id');
+        $informasi = DB::table('informasi')->where('informasi_id', $id)->first();
+        if (!$informasi) {
+            return response()->json(['status' => false, 'msg' => 'Data informasi tidak ditemukan.']);
+        }
+
+        // Hapus file fisik jika bertipe file unduhan
+        if ($informasi->tipe == 0 && $informasi->link) {
+            $filePath = public_path('upload/Informasi/' . $informasi->link);
+            if (file_exists($filePath)) {
+                @unlink($filePath);
+            }
+        }
+
+        $affected = DB::table('informasi')->where('informasi_id', $id)->delete();
+
+        if ($affected) {
+            return response()->json(['status' => true]);
+        } else {
+            return response()->json(['status' => false, 'msg' => 'Gagal menghapus informasi.']);
+        }
+    }
+
     public function list_regulasi()
     {
-        $query = DB::table('regulasi')->get();
+        $query = DB::table('regulasi')->orderBy('regulasi_id', 'desc')->get();
         $data = [];
         $i = 1;
         foreach ($query as $hasil) {
@@ -814,9 +866,10 @@ class SuperAdminController extends Controller
         $id_admin = Auth::guard('web')->id();
 
         $data = [
-            'aturan'   => $aturan,
-            'status'   => 0,
-            'datetime' => now(),
+            'aturan'     => $aturan,
+            'status'     => 0,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
 
         $id = DB::table('regulasi')->insertGetId($data);
@@ -888,14 +941,39 @@ class SuperAdminController extends Controller
         }
 
         $data = [
-            'aturan'   => $aturan,
-            'status'   => $status,
-            'datetime' => now()
+            'aturan'     => $aturan,
+            'status'     => $status,
+            'updated_at' => now()
         ];
 
         DB::table('regulasi')->where('regulasi_id', $id)->update($data);
 
         return response()->json(['status' => true]);
+    }
+
+    public function delete_regulasi(Request $request)
+    {
+        $id = $request->input('id');
+        $regulasi = DB::table('regulasi')->where('regulasi_id', $id)->first();
+        if (!$regulasi) {
+            return response()->json(['status' => false, 'msg' => 'Data regulasi tidak ditemukan.']);
+        }
+
+        // Hapus file fisik jika ada
+        if ($regulasi->file) {
+            $filePath = public_path('upload/Regulasi/' . $regulasi->file);
+            if (file_exists($filePath)) {
+                @unlink($filePath);
+            }
+        }
+
+        $affected = DB::table('regulasi')->where('regulasi_id', $id)->delete();
+
+        if ($affected) {
+            return response()->json(['status' => true]);
+        } else {
+            return response()->json(['status' => false, 'msg' => 'Gagal menghapus regulasi.']);
+        }
     }
 
     public function list_maklumat()

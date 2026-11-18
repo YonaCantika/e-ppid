@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Background;
 use App\Models\Kontak;
 use App\Models\Regulasi;
@@ -194,7 +195,7 @@ class WelcomeController extends Controller
             'alamat'            => $request->input('alamat-register'),
             'notelp'            => $request->input('telp-register'),
             'nofax'             => $request->input('fax-register'),
-            'password'          => md5($request->input('password-register')), // Sesuai CI3
+            'password'          => Hash::make($request->input('password-register')),
             'kode_unik'         => $generate_kode,
             'status'            => '0'
         ];

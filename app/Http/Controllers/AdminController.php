@@ -68,7 +68,7 @@ class AdminController extends Controller
             $query->where('a.status', $status);
         }
 
-        $results = $query->get();
+        $results = $query->orderBy('a.id', 'desc')->get();
 
         $data = array();
         $i = 1;
@@ -147,11 +147,9 @@ class AdminController extends Controller
             $row = array();
             $row[] = $i;
             $row[] = $hasil->nama;
-            $row[] = $hasil->email;
             $row[] = $hasil->notelp;
             $row[] = $hasil->pekerjaan;
             $row[] = $hasil->alamat;
-            $row[] = $hasil->nofax;
             $row[] = $hasil->total_pengajuan;
             $row[] = $hasil->blm_ditanggapi;
             $row[] = $hasil->sdh_ditanggapi;
@@ -260,14 +258,11 @@ class AdminController extends Controller
             'status'       => $status
         ];
 
-        $affected = DB::table('informasi_permohonan')->where('id', $id)->update($data);
-
-        if ($affected) {
-            // Notifikasi WA / API WhatsApp dimatikan sementara untuk testing
-            return response()->json(['status' => true]);
-        } else {
-            return response()->json(['status' => false, 'msg' => 'gagal simpan']);
+        try {
+            DB::table('informasi_permohonan')->where('id', $id)->update($data);
+            return response()->json(['status' => true, 'msg' => 'Tanggapan berhasil dikirim!']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'msg' => 'Gagal simpan: ' . $e->getMessage()]);
         }
     }
-
 }

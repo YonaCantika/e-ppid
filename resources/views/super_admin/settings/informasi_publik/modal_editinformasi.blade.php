@@ -6,17 +6,18 @@
 </div>
 <div class="modal-body p-4">
     <form id="form-edit-informasi" onsubmit="event.preventDefault(); submitEditInformasi();" enctype="multipart/form-data">
+        @csrf
         <input type="hidden" name="id_informasi" value="{{ $data_informasi->informasi_id }}">
         
         <div class="form-group">
             <label class="font-weight-bold">Judul Informasi <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="judul" required value="{{ $data_informasi->judul }}" style="border-radius: 8px;">
+            <input type="text" class="form-control" name="judul" id="judul-edit" required value="{{ $data_informasi->judul }}" style="border-radius: 8px;">
         </div>
 
         <div class="row">
             <div class="col-md-4 form-group mt-3">
                 <label class="font-weight-bold">Kategori <span class="text-danger">*</span></label>
-                <select name="kategori" class="form-control" required style="border-radius: 8px;">
+                <select name="kategori" id="kategori-edit" class="form-control" required style="border-radius: 8px;">
                     <option value="">-- Pilih Kategori --</option>
                     @foreach($list_kategori as $k)
                         <option value="{{ $k->kategori_id }}" {{ $data_informasi->kategori_id == $k->kategori_id ? 'selected' : '' }}>{{ $k->nama_kategori }}</option>
@@ -49,18 +50,19 @@
                 </table>
             </div>
             <label class="font-weight-bold mt-2">Unggah File Baru (Opsional)</label>
-            <input type="file" class="form-control-file" name="files" id="file-edit" accept=".pdf,.doc,.docx,.zip">
+            <input type="file" class="form-control-file" name="files" id="file-edit" accept=".pdf,.doc,.docx,.zip,.xls,.xlsx">
             <small class="text-muted">Biarkan kosong jika tidak ingin mengubah. Maks 10MB.</small>
         </div>
 
         <div class="form-group mt-3" id="container-link-edit" style="{{ $data_informasi->tipe == 1 ? '' : 'display: none;' }}">
             <label class="font-weight-bold">Link URL <span class="text-danger">*</span></label>
-            <input type="url" class="form-control" name="link" id="link-edit" value="{{ $data_informasi->tipe == 1 ? $data_informasi->link : '' }}" placeholder="https://..." style="border-radius: 8px;" {{ $data_informasi->tipe == 1 ? 'required' : '' }}>
+            <input type="text" class="form-control" name="link" id="link-edit" value="{{ $data_informasi->tipe == 1 ? $data_informasi->link : '' }}" placeholder="https://..." style="border-radius: 8px;">
+            <small class="text-muted">Dapat berupa tautan website atau dokumen eksternal.</small>
         </div>
 
         <div class="text-right mt-4 pt-3" style="border-top: 1px solid #e2e8f0;">
             <button type="button" class="btn btn-light" data-dismiss="modal" style="border-radius: 8px;">Batal</button>
-            <button type="submit" class="btn btn-primary" style="background-color: #3b82f6; border-color: #3b82f6; border-radius: 8px;">
+            <button type="submit" id="btn-submit-edit-informasi" class="btn btn-primary" style="background-color: #3b82f6; border-color: #3b82f6; border-radius: 8px;">
                 <i class="fas fa-save mr-1"></i> Simpan Perubahan
             </button>
         </div>
@@ -72,14 +74,10 @@ function toggleTipeEdit() {
     var tipe = $('#tipe-edit').val();
     if (tipe === '0') {
         $('#container-file-edit').show();
-        
         $('#container-link-edit').hide();
-        $('#link-edit').prop('required', false);
     } else {
         $('#container-file-edit').hide();
-        
         $('#container-link-edit').show();
-        $('#link-edit').prop('required', true);
     }
 }
 
@@ -93,14 +91,39 @@ function delete_file(button) {
         cancelButtonColor: '#6c757d',
         confirmButtonText: 'Ya, Hapus!'
     }).then((result) => {
-        if (result.isConfirmed) {
+        if (result.value || result.isConfirmed) {
             $(button).closest('tr').remove();
         }
     });
 }
 
 function submitEditInformasi() {
+    var judul = $.trim($('#judul-edit').val());
+    var kategori = $('#kategori-edit').val();
+    var tipe = $('#tipe-edit').val();
+
+    if (!judul) {
+        toastr.warning('Judul informasi wajib diisi.');
+        return;
+    }
+    if (!kategori) {
+        toastr.warning('Silakan pilih kategori.');
+        return;
+    }
+    if (tipe === '1') {
+        var link = $.trim($('#link-edit').val());
+        if (!link) {
+            toastr.warning('Link URL wajib diisi.');
+            return;
+        }
+    }
+
+    var $btn = $('#btn-submit-edit-informasi');
+    var originalHtml = $btn.html();
+    $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i> Menyimpan...');
+
     var formData = new FormData($('#form-edit-informasi')[0]);
+
     $.ajax({
         url: '{{ url("super-admin/save_editinformasi") }}',
         type: 'POST',
@@ -118,8 +141,15 @@ function submitEditInformasi() {
                 toastr.error(res.msg || 'Gagal menyimpan informasi.');
             }
         },
-        error: function() {
-            toastr.error('Terjadi kesalahan server saat menyimpan data.');
+        error: function(xhr) {
+            var msg = 'Terjadi kesalahan server saat menyimpan data.';
+            if(xhr.responseJSON && xhr.responseJSON.message) {
+                msg = xhr.responseJSON.message;
+            }
+            toastr.error(msg);
+        },
+        complete: function() {
+            $btn.prop('disabled', false).html(originalHtml);
         }
     });
 }

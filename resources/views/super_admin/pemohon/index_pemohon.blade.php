@@ -163,6 +163,18 @@
         background-color: #ea580c;
         color: white;
     }
+    .btn-action-info {
+        background-color: #e0f2fe;
+        color: #0284c7;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 10px;
+        transition: all 0.2s;
+    }
+    .btn-action-info:hover {
+        background-color: #0284c7;
+        color: white;
+    }
     
     /* Pagination */
     .dataTables_wrapper .dataTables_paginate .paginate_button.current {
@@ -248,7 +260,7 @@
                                     <th>No. Telp</th>
                                     <th>Pekerjaan</th>
                                     <th width="110">Status</th>
-                                    <th width="120" class="text-center">Aksi</th>
+                                    <th width="160" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -260,6 +272,15 @@
     </section>
 </div>
 <!-- /.content-wrapper -->
+
+<!-- Modal Detail Pemohon -->
+<div class="modal fade" id="modal-detail-pemohon" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content" id="modal-detail-pemohon-content" style="border-radius:14px; overflow:hidden;">
+            {{-- Dimuat via AJAX --}}
+        </div>
+    </div>
+</div>
 
 <!-- Modal Akses Menu Pemohon -->
 <div class="modal fade" id="modal-akses-menu" tabindex="-1" role="dialog" aria-hidden="true">
@@ -274,6 +295,7 @@
 $(document).ready(function () {
 
     var table = $('#tbl-pemohon').DataTable({
+        order: [],
         ajax: {
             url: '{{ route("super_admin.list_pemohon") }}',
             type: 'GET'
@@ -294,6 +316,9 @@ $(document).ready(function () {
                     var id     = parts[0];
                     var status = parts[1];
 
+                    var detailBtn = '<button class="btn btn-sm btn-action-info mr-1" onclick="viewDetailPemohon(' + id + ')" title="Lihat Semua Data">'
+                                  + '<i class="fas fa-eye"></i></button>';
+
                     var toggleBtn = status === '1'
                         ? '<button class="btn btn-sm btn-action-orange mr-1" onclick="togglePemohon(' + id + ')" title="Nonaktifkan">'
                           + '<i class="fas fa-toggle-on"></i></button>'
@@ -303,7 +328,7 @@ $(document).ready(function () {
                     var aksesBtn = '<button class="btn btn-sm btn-action-blue" onclick="openModalAksesPemohon(' + id + ')" title="Atur Akses Menu">'
                                  + '<i class="fas fa-key"></i></button>';
 
-                    return toggleBtn + aksesBtn;
+                    return detailBtn + toggleBtn + aksesBtn;
                 }
             }
         ],
@@ -317,6 +342,16 @@ $(document).ready(function () {
     });
 
     window.tablePemohon = table;
+
+    // ── View Detail Pemohon ────────────────────────────────────
+    window.viewDetailPemohon = function(id) {
+        $.post('{{ route("super_admin.detail_pemohon") }}', { id: id, _token: '{{ csrf_token() }}' }, function(html) {
+            $('#modal-detail-pemohon-content').html(html);
+            $('#modal-detail-pemohon').modal('show');
+        }).fail(function() {
+            toastr.error('Gagal memuat detail data pemohon.');
+        });
+    };
 
     // ── Open Modal Akses Menu Pemohon ──────────────────────────
     window.openModalAksesPemohon = function(id) {
@@ -338,7 +373,7 @@ $(document).ready(function () {
             confirmButtonText: 'Ya, Ubah!',
             cancelButtonText: 'Batal',
         }).then(function(result) {
-            if (result.isConfirmed) {
+            if (result.value || result.isConfirmed) {
                 $.post('{{ route("super_admin.toggle_status_pemohon") }}', { id: id }, function(res) {
                     if (res.status) {
                         toastr.success(res.msg);

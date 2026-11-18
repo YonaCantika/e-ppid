@@ -229,11 +229,9 @@ $today = date("Y");
                               <tr>
                                  <th>No</th>
                                  <th>Nama</th>
-                                 <th>Email</th>
                                  <th>Telp</th>
                                  <th>Pekerjaan</th>
                                  <th>Alamat</th>                                
-                                 <th>No Fax</th>
                                  <th>Total Pengajuan</th>
                                  <th>Belum Ditanggapi</th>
                                  <th>Sudah Ditanggapi</th>
@@ -307,7 +305,7 @@ $("#filter").click(function(){
          "displayLength": 10,
          "columnDefs": [
             {
-               "targets": 7,
+               "targets": 5,
                "render": function ( data, type, row, meta ) {
                   if(type === 'display') {
                       return '<span class="badge" style="background-color: #f1f5f9; color: #475569; padding: 6px 12px; border-radius: 20px; font-weight: 600;">' + data + '</span>';
@@ -316,7 +314,7 @@ $("#filter").click(function(){
                }
             },
             {
-               "targets": 8,
+               "targets": 6,
                "render": function ( data, type, row, meta ) {
                   if(type === 'display') {
                       if (data > 0) return '<span class="badge" style="background-color: #fff7ed; color: #ea580c; padding: 6px 12px; border-radius: 20px; font-weight: 600;">' + data + '</span>';
@@ -326,7 +324,7 @@ $("#filter").click(function(){
                }
             },
             {
-               "targets": 9,
+               "targets": 7,
                "render": function ( data, type, row, meta ) {
                   if(type === 'display') {
                       if (data > 0) return '<span class="badge" style="background-color: #f0fdf4; color: #16a34a; padding: 6px 12px; border-radius: 20px; font-weight: 600;">' + data + '</span>';
@@ -347,7 +345,7 @@ $("#filter").click(function(){
    $('#buttonDetail').click( function () {
       var rows = $('#example1').DataTable().rows('.selected').data().length;
       if(rows > 0){
-         var edit = $('#example1').DataTable().row('.selected').data()[10];
+         var edit = $('#example1').DataTable().row('.selected').data()[8];
          $('#modal-lg').modal('show');
          $.ajax({
             type:"POST",

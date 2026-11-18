@@ -48,6 +48,18 @@
         background-color: #2563eb;
         color: white;
     }
+    .btn-action-red {
+        background-color: #fee2e2;
+        color: #ef4444;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 10px;
+        transition: all 0.2s;
+    }
+    .btn-action-red:hover {
+        background-color: #ef4444;
+        color: white;
+    }
     .btn-add-modern {
         background: #5a5ce2;
         color: white;
@@ -109,7 +121,7 @@
                                     <th>Tipe</th>
                                     <th>Link / File</th>
                                     <th width="100">Status</th>
-                                    <th width="100" class="text-center">Aksi</th>
+                                    <th width="150" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -133,6 +145,7 @@
 <script>
 $(document).ready(function () {
     var table = $('#tbl-informasi').DataTable({
+        order: [],
         ajax: {
             url: '{{ url("super-admin/list_informasi_publik") }}',
             type: 'GET',
@@ -163,7 +176,9 @@ $(document).ready(function () {
                 orderable: false,
                 className: 'text-center',
                 render: function(data) {
-                    return '<button class="btn btn-sm btn-action-blue" onclick="edit_informasi(' + data + ')" title="Edit"><i class="fas fa-edit"></i> Edit</button>';
+                    var editBtn = '<button class="btn btn-sm btn-action-blue mr-1" onclick="edit_informasi(' + data + ')" title="Edit"><i class="fas fa-edit"></i> Edit</button>';
+                    var deleteBtn = '<button class="btn btn-sm btn-action-red" onclick="delete_informasi(' + data + ')" title="Hapus"><i class="fas fa-trash"></i> Hapus</button>';
+                    return editBtn + deleteBtn;
                 }
             }
         ],
@@ -186,6 +201,32 @@ $(document).ready(function () {
         $.post('{{ url("super-admin/form_editView_informasi") }}', { id: id, status: 'edit', header: 'Edit Informasi' }, function(html) {
             $('#modal-informasi-content').html(html);
             $('#modal-informasi').modal('show');
+        });
+    };
+
+    window.delete_informasi = function(id) {
+        Swal.fire({
+            title: 'Konfirmasi Hapus',
+            text: 'Apakah Anda yakin ingin menghapus data informasi publik ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal',
+        }).then(function(result) {
+            if (result.value || result.isConfirmed) {
+                $.post('{{ url("super-admin/delete_informasi_publik") }}', { id: id, _token: '{{ csrf_token() }}' }, function(res) {
+                    if (res.status) {
+                        toastr.success('Informasi publik berhasil dihapus!');
+                        table.ajax.reload(null, false);
+                    } else {
+                        toastr.error(res.msg || 'Gagal menghapus informasi.');
+                    }
+                }).fail(function() {
+                    toastr.error('Terjadi kesalahan server saat menghapus data.');
+                });
+            }
         });
     };
 });

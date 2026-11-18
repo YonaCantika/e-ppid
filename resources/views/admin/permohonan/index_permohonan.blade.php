@@ -368,6 +368,7 @@ $("#filter").click(function(){
          "searching": true,
          "serverSide": false,  
          "ordering": true,
+         "order": [],
          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Semua"]],   
          "ajax": "{{ url('/') }}/admin/listdatapemohon?&status="+$("#kategori").val()+"&periode="+$("#date").val(),         
          "paging": true,

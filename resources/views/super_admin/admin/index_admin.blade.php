@@ -369,7 +369,7 @@ $(document).ready(function () {
             confirmButtonText: 'Ya, Ubah!',
             cancelButtonText: 'Batal',
         }).then(function(result) {
-            if (result.isConfirmed) {
+            if (result.value || result.isConfirmed) {
                 $.post('{{ route("super_admin.toggle_status_admin") }}', { id: id }, function(res) {
                     if (res.status) {
                         toastr.success(res.msg);
@@ -394,7 +394,7 @@ $(document).ready(function () {
             confirmButtonText: 'Ya, Hapus!',
             cancelButtonText: 'Batal',
         }).then(function(result) {
-            if (result.isConfirmed) {
+            if (result.value || result.isConfirmed) {
                 $.post('{{ route("super_admin.delete_admin") }}', { id: id }, function(res) {
                     if (res.status) {
                         toastr.success(res.msg);

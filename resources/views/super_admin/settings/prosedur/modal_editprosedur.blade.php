@@ -53,7 +53,7 @@ function delete_file_prosedur(button) {
         cancelButtonColor: '#6c757d',
         confirmButtonText: 'Ya, Hapus!'
     }).then((result) => {
-        if (result.isConfirmed) {
+        if (result.value || result.isConfirmed) {
             $(button).closest('tr').remove();
         }
     });

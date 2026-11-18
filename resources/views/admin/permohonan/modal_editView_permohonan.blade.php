@@ -50,6 +50,7 @@ switch ($data_permohonan->status) {
          <!-- /.card-header -->
          <!-- form start -->
          <form role="form" id="ajaxform">
+            @csrf
             <input type="hidden" value="{{ $data_permohonan->id }}" id="id_informasi_permohonan" name="id_informasi_permohonan">
             <div class="card-body">
                <div class="form-group">
@@ -166,50 +167,51 @@ switch ($data_permohonan->status) {
    });
 
    $('#edit').click(function() {
+      var tanggapan = $.trim($('#isi_tanggapan').val());
+      if (!tanggapan) {
+         toastr.warning('Harap isi tanggapan terlebih dahulu!');
+         $('#isi_tanggapan').focus();
+         return false;
+      }
 
-      // if($('#files').val()){
-         $('#loader-icon').show();
-         $('#targetLayer').hide();
-         $('#edit').hide();
-         var formData = new FormData(document.forms['ajaxform']);  // with the file input
-         // alert('hbjfj');
-         $.ajax({
-            type: "POST",
-            url: "{{ asset('admin/tanggapan') }}",
-            data: formData,
-            processData: false,
-            contentType: false,
-            enctype: 'multipart/form-data',
-            target: '#targetLayer',
- 
-            success: function(balikan) {
-               $('#loader-icon').hide();
-               $('#targetLayer').show();
-               var obj = jQuery.parseJSON(balikan);
-               if(obj.status == 0)
-               {
-                  Swal.fire('Gagal!',obj.msg,'error');
-               }else{
-                  $('#modal-lg').modal('hide');
-                     Swal.fire({
-                        text: 'Data Berhasil Ditambahkan',
-                        target: '#custom-target',
-                        customClass: {
-                           container: 'position-absolute'
-                        },
-                        toast: true,
-                        position: 'top-right'
-                     })
-                  $('#example1').DataTable().ajax.reload();
+      $('#loader-icon').show();
+      $('#targetLayer').hide();
+      $('#edit').hide();
+      var formData = new FormData(document.forms['ajaxform']);
+
+      $.ajax({
+         type: "POST",
+         url: "{{ asset('admin/tanggapan') }}",
+         data: formData,
+         processData: false,
+         contentType: false,
+         enctype: 'multipart/form-data',
+         target: '#targetLayer',
+
+         success: function(balikan) {
+            $('#loader-icon').hide();
+            $('#targetLayer').show();
+            var obj = (typeof balikan === 'object') ? balikan : JSON.parse(balikan);
+            if(!obj.status || obj.status == 0)
+            {
+               $('#edit').show();
+               Swal.fire('Gagal!', obj.msg || 'Gagal menyimpan tanggapan', 'error');
+            }else{
+               $('#modal-lg').modal('hide');
+               toastr.success('Tanggapan berhasil dikirim dan status telah diperbarui!');
+               if ($.fn.DataTable.isDataTable('#example1')) {
+                  $('#example1').DataTable().ajax.reload(null, false);
                }
             }
-         });
-      // }else{
-
-      //    alert('NO FILE');
-      // }
-
-   })
+         },
+         error: function(xhr, status, error) {
+            $('#loader-icon').hide();
+            $('#targetLayer').show();
+            $('#edit').show();
+            toastr.error('Terjadi kesalahan server saat mengirim tanggapan.');
+         }
+      });
+   });
 
    
 

@@ -99,6 +99,7 @@ Route::middleware(['auth:web', 'super_admin'])->prefix('super-admin')->name('sup
     Route::get('/view_pemohon', [SuperAdminController::class, 'view_pemohon'])->name('view_pemohon');
     Route::get('/list_pemohon', [SuperAdminController::class, 'list_pemohon'])->name('list_pemohon');
     Route::post('/toggle_status_pemohon', [SuperAdminController::class, 'toggle_status_pemohon'])->name('toggle_status_pemohon');
+    Route::post('/detail_pemohon', [SuperAdminController::class, 'detail_pemohon'])->name('detail_pemohon');
 
     // Manajemen Akses Menu — Admin
     Route::post('/getModalAksesAdmin', [SuperAdminController::class, 'getModalAksesAdmin'])->name('getModalAksesAdmin');
@@ -129,12 +130,14 @@ Route::middleware(['auth:web', 'super_admin'])->prefix('super-admin')->name('sup
     Route::post('/add_informasi_publik', [SuperAdminController::class, 'add_informasi_publik']);
     Route::post('/form_editView_informasi', [SuperAdminController::class, 'form_editView_informasi']);
     Route::post('/save_editinformasi', [SuperAdminController::class, 'save_editinformasi']);
+    Route::post('/delete_informasi_publik', [SuperAdminController::class, 'delete_informasi_publik']);
 
     // CRUD Settings (Regulasi, Maklumat, Profil, Prosedur)
     Route::post('/getModalAddMenu_regulasi', [SuperAdminController::class, 'getModalAddMenu_regulasi']);
     Route::post('/add_regulasi', [SuperAdminController::class, 'add_regulasi']);
     Route::post('/form_editView_regulasi', [SuperAdminController::class, 'form_editView_regulasi']);
     Route::post('/edit_regulasi', [SuperAdminController::class, 'edit_regulasi']);
+    Route::post('/delete_regulasi', [SuperAdminController::class, 'delete_regulasi']);
     
     Route::post('/form_editView_maklumat', [SuperAdminController::class, 'form_editView_maklumat']);
     Route::post('/edit_maklumat', [SuperAdminController::class, 'edit_maklumat']);

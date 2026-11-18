@@ -50,6 +50,7 @@ switch ($data_permohonan->status) {
          <!-- /.card-header -->
          <!-- form start -->
          <form role="form" id="ajaxform">
+            @csrf
             <input type="hidden" value="{{ $data_permohonan->id }}" id="id_informasi_permohonan" name="id_informasi_permohonan">
             <div class="card-body">
                <div class="form-group">
@@ -82,7 +83,7 @@ switch ($data_permohonan->status) {
                <div class="form-group">
                   <label for="exampleInputEmail1">Status</label>
                   <select class="custom-select" name="status" id="status" {{ $disabel }}>
-                    <?php if($status == 'view'){?><option value="{{ $data_permohonan->status }}" selected> {{ $st;} }}</option>
+                    <?php if($status == 'view'){?><option value="{{ $data_permohonan->status }}" selected> {{ $st }}</option><?php } ?>
                     <option value="APPROVE">SUDAH DITANGGAPI</option>
                     <option value="APPROVE_HALF">DITANGGAPI SEBAGIAN</option>
                     <option value="REJECT">DITOLAK</option>
@@ -192,34 +193,28 @@ switch ($data_permohonan->status) {
             success: function(balikan) {
                $('#loader-icon').hide();
                $('#targetLayer').show();
-               var obj = jQuery.parseJSON(balikan);
-               if(obj.status == 0)
+               var obj = (typeof balikan === 'object') ? balikan : JSON.parse(balikan);
+               if(!obj.status || obj.status == 0)
                {
-                  Swal.fire('Gagal!',obj.msg,'error');
+                  $('#edit').show();
+                  Swal.fire('Gagal!', obj.msg || 'Gagal menyimpan tanggapan', 'error');
                }else{
                   $('#modal-lg').modal('hide');
-                     Swal.fire({
-                        text: 'Data Berhasil Ditambahkan',
-                        target: '#custom-target',
-                        customClass: {
-                           container: 'position-absolute'
-                        },
-                        toast: true,
-                        position: 'top-right'
-                     })
-                  $('#example1').DataTable().ajax.reload();
+                  toastr.success('Tanggapan berhasil dikirim!');
+                  if ($.fn.DataTable.isDataTable('#example1')) {
+                     $('#example1').DataTable().ajax.reload(null, false);
+                  }
                }
+            },
+            error: function(xhr, status, error) {
+               $('#loader-icon').hide();
+               $('#targetLayer').show();
+               $('#edit').show();
+               toastr.error('Terjadi kesalahan server saat mengirim tanggapan.');
             }
          });
       }
    });
 
 
-
-
-
  </script>
-
-
-
-

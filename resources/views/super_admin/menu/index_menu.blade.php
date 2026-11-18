@@ -240,7 +240,7 @@
 </div>
 
 <script>
-$(document).ready(function () {
+window.addEventListener('load', function () {
 
     var table = $('#tbl-menu').DataTable({
         ajax: {
@@ -311,13 +311,33 @@ $(document).ready(function () {
             confirmButtonText: 'Ya, Hapus!',
             cancelButtonText: 'Batal',
         }).then(function(result) {
-            if (result.isConfirmed) {
-                $.post('{{ url("super-admin/delete_menu") }}', { id: id }, function(res) {
+            if (result.value || result.isConfirmed) {
+                $.ajax({
+                    url: '{{ url("super-admin/delete_menu") }}',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function(res) {
                     if (res.status) {
                         toastr.success('Menu berhasil dihapus!');
                         table.ajax.reload(null, false);
                     } else {
                         toastr.error(res.msg || 'Gagal menghapus menu.');
+                    }
+                    },
+                    error: function(xhr) {
+                        var message = 'Gagal menghapus menu.';
+                        if (xhr.responseJSON && xhr.responseJSON.msg) {
+                            message = xhr.responseJSON.msg;
+                        } else if (xhr.status === 419) {
+                            message = 'Sesi telah kedaluwarsa. Silakan muat ulang halaman.';
+                        } else if (xhr.status === 403) {
+                            message = 'Anda tidak memiliki izin untuk menghapus menu.';
+                        }
+                        toastr.error(message);
                     }
                 });
             }

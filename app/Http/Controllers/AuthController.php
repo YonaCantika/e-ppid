@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use App\Models\Pemohon;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Background;
@@ -58,16 +57,17 @@ class AuthController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        // Jika gagal, coba login sebagai Pemohon (tabel pemohon)
+        // Coba login sebagai Pemohon (tabel pemohon)
         if (Auth::guard('pemohon')->attempt($credentials)) {
             $request->session()->regenerate();
+            /** @var Pemohon $pemohon */
             $pemohon = Auth::guard('pemohon')->user();
             
             // Catat last login
             $pemohon->lastLogin = now();
             $pemohon->save();
 
-            // Jika belum terverifikasi, arahkan langsung ke halaman verifikasi OTP (gaya Laravel Breeze)
+            // Jika belum terverifikasi, arahkan langsung ke halaman verifikasi OTP
             if ($pemohon->status == 0 || $pemohon->status == '0') {
                 return redirect()->route('validasi', ['id' => $pemohon->id_pemohon])
                     ->with('warning', 'Silakan verifikasi email Anda terlebih dahulu untuk mengakses halaman pengguna.');
@@ -78,14 +78,13 @@ class AuthController extends Controller
 
         // Jika keduanya gagal
         if ($request->ajax() || $request->wantsJson()) {
-            return response("Login Gagal! Kombinasi email dan password tidak ditemukan di tabel Admin maupun Pemohon. Email yang dimasukkan: " . $credentials['email'], 401);
+            return response("Login Gagal! Kombinasi email dan password tidak ditemukan di sistem. Email yang dimasukkan: " . $credentials['email'], 401);
         }
 
         return redirect()->back()
             ->withInput($request->only('email'))
             ->withErrors(['email' => 'Login Gagal! Kombinasi email dan kata sandi tidak ditemukan atau belum terdaftar.'])
-            ->with('login_error', 'Login Gagal! Kombinasi email dan password tidak valid. Silakan periksa kembali email dan kata sandi Anda.')
-            ->with('error_login', 'Login Gagal! Kombinasi email dan password tidak valid. Silakan periksa kembali email dan kata sandi Anda.');
+            ->with('login_error', 'Login Gagal! Kombinasi email dan password tidak valid. Silakan periksa kembali email dan kata sandi Anda.');
     }
 
     public function submit_daftar(Request $request)
@@ -142,7 +141,7 @@ class AuthController extends Controller
             \Illuminate\Support\Facades\Log::error("Gagal mengirim email verifikasi ke {$pemohon->email}: " . $e->getMessage());
         }
 
-        // Otomatis loginkan pemohon dan arahkan ke halaman verifikasi email (gaya Laravel Breeze)
+        // Otomatis loginkan pemohon dan arahkan ke halaman verifikasi email
         Auth::guard('pemohon')->login($pemohon);
 
         return redirect()->route('validasi', ['id' => $pemohon->id_pemohon])

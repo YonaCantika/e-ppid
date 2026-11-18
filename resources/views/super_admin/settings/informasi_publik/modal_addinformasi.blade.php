@@ -6,17 +6,18 @@
 </div>
 <div class="modal-body p-4">
     <form id="form-add-informasi" onsubmit="event.preventDefault(); submitAddInformasi();" enctype="multipart/form-data">
+        @csrf
         <input type="hidden" name="id" value="{{ $id }}">
         
         <div class="form-group">
             <label class="font-weight-bold">Judul Informasi <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="judul" required placeholder="Contoh: Laporan Keuangan" style="border-radius: 8px;">
+            <input type="text" class="form-control" name="judul" id="judul-add" required placeholder="Contoh: Laporan Keuangan" style="border-radius: 8px;">
         </div>
 
         <div class="row">
             <div class="col-md-6 form-group mt-3">
                 <label class="font-weight-bold">Kategori <span class="text-danger">*</span></label>
-                <select name="kategori" class="form-control" required style="border-radius: 8px;">
+                <select name="kategori" id="kategori-add" class="form-control" required style="border-radius: 8px;">
                     <option value="">-- Pilih Kategori --</option>
                     @foreach($kategori as $k)
                         <option value="{{ $k->kategori_id }}">{{ $k->nama_kategori }}</option>
@@ -36,18 +37,19 @@
 
         <div class="form-group mt-3" id="container-file-add" style="display: none;">
             <label class="font-weight-bold">Unggah File (PDF/DOC/ZIP) <span class="text-danger">*</span></label>
-            <input type="file" class="form-control-file" name="files" id="file-add">
+            <input type="file" class="form-control-file" name="files" id="file-add" accept=".pdf,.doc,.docx,.zip,.xls,.xlsx">
             <small class="text-muted">Maksimal 10MB.</small>
         </div>
 
         <div class="form-group mt-3" id="container-link-add" style="display: none;">
             <label class="font-weight-bold">Link URL <span class="text-danger">*</span></label>
-            <input type="url" class="form-control" name="link" id="link-add" placeholder="https://..." style="border-radius: 8px;">
+            <input type="text" class="form-control" name="link" id="link-add" placeholder="https://..." style="border-radius: 8px;">
+            <small class="text-muted">Dapat berupa tautan website atau dokumen eksternal.</small>
         </div>
 
         <div class="text-right mt-4 pt-3" style="border-top: 1px solid #e2e8f0;">
             <button type="button" class="btn btn-light" data-dismiss="modal" style="border-radius: 8px;">Batal</button>
-            <button type="submit" class="btn btn-primary" style="background-color: #5a5ce2; border-color: #5a5ce2; border-radius: 8px;">
+            <button type="submit" id="btn-submit-informasi" class="btn btn-primary" style="background-color: #5a5ce2; border-color: #5a5ce2; border-radius: 8px;">
                 <i class="fas fa-save mr-1"></i> Simpan
             </button>
         </div>
@@ -59,26 +61,54 @@ function toggleTipeAdd() {
     var tipe = $('#tipe-add').val();
     if (tipe === '0') {
         $('#container-file-add').show();
-        $('#file-add').prop('required', true);
-        
         $('#container-link-add').hide();
-        $('#link-add').prop('required', false);
     } else if (tipe === '1') {
         $('#container-file-add').hide();
-        $('#file-add').prop('required', false);
-        
         $('#container-link-add').show();
-        $('#link-add').prop('required', true);
     } else {
         $('#container-file-add').hide();
         $('#container-link-add').hide();
-        $('#file-add').prop('required', false);
-        $('#link-add').prop('required', false);
     }
 }
 
 function submitAddInformasi() {
+    var judul = $.trim($('#judul-add').val());
+    var kategori = $('#kategori-add').val();
+    var tipe = $('#tipe-add').val();
+
+    if (!judul) {
+        toastr.warning('Judul informasi wajib diisi.');
+        return;
+    }
+    if (!kategori) {
+        toastr.warning('Silakan pilih kategori.');
+        return;
+    }
+    if (tipe === '') {
+        toastr.warning('Silakan pilih tipe informasi.');
+        return;
+    }
+
+    if (tipe === '0') {
+        var fileInput = document.getElementById('file-add');
+        if (!fileInput.files || fileInput.files.length === 0) {
+            toastr.warning('Silakan pilih file yang akan diunggah.');
+            return;
+        }
+    } else if (tipe === '1') {
+        var link = $.trim($('#link-add').val());
+        if (!link) {
+            toastr.warning('Link URL wajib diisi.');
+            return;
+        }
+    }
+
+    var $btn = $('#btn-submit-informasi');
+    var originalHtml = $btn.html();
+    $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i> Menyimpan...');
+
     var formData = new FormData($('#form-add-informasi')[0]);
+
     $.ajax({
         url: '{{ url("super-admin/add_informasi_publik") }}',
         type: 'POST',
@@ -87,7 +117,7 @@ function submitAddInformasi() {
         processData: false,
         success: function(res) {
             if(res.status) {
-                toastr.success('Informasi berhasil ditambahkan!');
+                toastr.success('Informasi publik berhasil ditambahkan!');
                 $('#modal-informasi').modal('hide');
                 if(window.tableInformasi) {
                     window.tableInformasi.ajax.reload(null, false);
@@ -96,8 +126,15 @@ function submitAddInformasi() {
                 toastr.error(res.msg || 'Gagal menyimpan informasi.');
             }
         },
-        error: function() {
-            toastr.error('Terjadi kesalahan server saat menyimpan data.');
+        error: function(xhr) {
+            var msg = 'Terjadi kesalahan server saat menyimpan data.';
+            if(xhr.responseJSON && xhr.responseJSON.message) {
+                msg = xhr.responseJSON.message;
+            }
+            toastr.error(msg);
+        },
+        complete: function() {
+            $btn.prop('disabled', false).html(originalHtml);
         }
     });
 }
